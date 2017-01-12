@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/bunyan": "0.0.34",
-    "hive-service": "git+http://git.fengchaohuzhu.com:10080/Titan/hive-service.git",
-    "hive-verify": "git+http://git.fengchaohuzhu.com:10080/feiluo/hive-verify.git"
+    "hive-verify": "git+http://git.fengchaohuzhu.com:10080/feiluo/hive-verify.git",
+    "bluebird": "^3.4.1"
   }
 }
