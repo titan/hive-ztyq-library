@@ -2,7 +2,9 @@
   "name": "ztyq-library",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "readmeFilename": "README.md",
   "repository": {
     "type": "git",
     "url": "ssh://git@git.fengchaohuzhu.com:10080/server/ztyq-library"
