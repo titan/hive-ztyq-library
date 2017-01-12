@@ -39,6 +39,9 @@ export interface GetUndInfoReply {
     synchFlag: string;
     payLink: string;
 }
-export declare function doApplyPolicyCheck(log: Logger, insureCode: string, bizID: string, channelCode: string, applicantName: string, applicantIdNo: string, applicantMobile: string, addresseeName: string, addresseeMobile: string, addresseeDetails: string, addresseeCounty: string, addresseeCity: string, addresseeProvince: string, policyEmail: string): void;
-export declare function doGetPaylink(log: Logger, bizID: string): void;
-export declare function doGetUndInfo(log: Logger, bizID: string, verificationCode: string): void;
+export interface Option {
+    log: Logger;
+}
+export declare function applyPolicyCheck(insureCode: string, bizID: string, channelCode: string, applicantName: string, applicantIdNo: string, applicantMobile: string, addresseeName: string, addresseeMobile: string, addresseeDetails: string, addresseeCounty: string, addresseeCity: string, addresseeProvince: string, policyEmail: string, options?: Option): Promise<{}>;
+export declare function getPaylink(bizID: string, options?: Option): Promise<{}>;
+export declare function getUndInfo(bizID: string, verificationCode: string, options?: Option): Promise<{}>;

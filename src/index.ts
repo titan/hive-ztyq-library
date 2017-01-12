@@ -80,11 +80,9 @@ export async function applyPolicyCheck(
   options?: Option // 可选参数
 ) {
   const sn = crypto.randomBytes(64).toString("base64");
-  let log: Logger = options ? options.log : null;
   return new Promise((resolve, reject) => {
-    if (log) {
-      log.info(`sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insureCode: ${insureCode}, bizID: ${bizID}, channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
-    }
+    logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insureCode: ${insureCode}, bizID: ${bizID}, channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
+
     const applyPolicyCheckTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "insureCode": insureCode,
@@ -110,9 +108,7 @@ export async function applyPolicyCheck(
       "data": requestData
     };
     const applyPolicyCheckPostData: string = JSON.stringify(req);
-    if (log) {
-      log.info(`sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
-    }
+    logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
     if (!verify([
       stringVerifier("insureCode", insureCode),
       stringVerifier("bizID", bizID),
@@ -147,22 +143,16 @@ export async function applyPolicyCheck(
       }
     };
     const applyPolicyCheckReq = http.request(applyPolicyCheckOptions, function (res) {
-      if (log) {
-        log.info(`sn: ${sn}, applyPolicyCheck => applyPolicyCheckReq status: ${res.statusCode}`);
-      }
+      logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let applyPolicyCheckResult: string = "";
       res.on("data", (body) => {
         applyPolicyCheckResult += body;
       });
       res.on("end", () => {
-        if (log) {
-          log.info(`sn: ${sn}, getPayLink => End of paylinkReq`);
-        }
+        logInfo(options, `sn: ${sn}, getPayLink => End of paylinkReq`);
         const repData = JSON.parse(applyPolicyCheckResult);
-        if (log) {
-          log.info(`sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${JSON.stringify(applyPolicyCheckResult)}`);
-        }
+        logInfo(options, `sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${JSON.stringify(applyPolicyCheckResult)}`);
         if (repData["state"] === "1") {
           let replyData: ApplyPolicyCheckReply = {
             biProposalNo: repData["data"]["biProposalNo"],
@@ -190,9 +180,7 @@ export async function applyPolicyCheck(
         }
       });
       res.on("error", (err) => {
-        if (log) {
-          log.info(`sn: ${sn}, Error on applyPolicyCheck: ${err}`);
-        }
+        logError(options, `sn: ${sn}, Error on applyPolicyCheck: ${err}`);
         // return {
         //   code: 500,
         //   msg: err
@@ -213,11 +201,8 @@ export async function getPaylink(
   options?: Option // 可选参数
 ) {
   const sn = crypto.randomBytes(64).toString("base64");
-  let log: Logger = options ? options.log : null;
   return new Promise((resolve, reject) => {
-    if (log) {
-      log.info(`sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
-    }
+    logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
     if (!verify([
       stringVerifier("bizID", bizID)
     ], (errors: string[]) => {
@@ -243,9 +228,7 @@ export async function getPaylink(
       "data": requestData
     };
     const paylinkPostData: string = JSON.stringify(req);
-    if (log) {
-      log.info(`sn: ${sn}, getPayLink => paylinkPostData: ${paylinkPostData}`);
-    }
+    logInfo(options, `sn: ${sn}, getPayLink => paylinkPostData: ${paylinkPostData}`);
     const paylinkOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -256,9 +239,7 @@ export async function getPaylink(
       }
     };
     const paylinkReq = http.request(paylinkOptions, function (res) {
-      if (log) {
-        log.info(`sn: ${sn}, getPayLink => paylinkReq status: ${res.statusCode}`);
-      }
+      logInfo(options, `sn: ${sn}, getPayLink => paylinkReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
 
       let paylinkResult: string = "";
@@ -266,11 +247,9 @@ export async function getPaylink(
         paylinkResult += body;
       });
       res.on("end", () => {
-        if (log) {
-          log.info(`sn: ${sn}, getPayLink => End of paylinkReq`);
-        }
+        logInfo(options, `sn: ${sn}, getPayLink => End of paylinkReq`);
         const repData = JSON.parse(paylinkResult);
-        log.info(`sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${JSON.stringify(paylinkResult)}`);
+        logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${JSON.stringify(paylinkResult)}`);
         if (repData["state"] === "1") {
           let replyData: GetPaylinkReply = {
             biProposalNo: repData["data"]["biProposalNo"],
@@ -298,7 +277,7 @@ export async function getPaylink(
         }
       });
       res.on("error", (err) => {
-        log.info(`sn: ${sn}, Error on getPayLink: ${err}`);
+        logError(options, `sn: ${sn}, Error on getPayLink: ${err}`);
         // return {
         //   code: 500,
         //   msg: err
@@ -322,11 +301,8 @@ export async function getUndInfo(
   options?: Option // 可选参数
 ) {
   const sn = crypto.randomBytes(64).toString("base64");
-  let log: Logger = options ? options.log : null;
   return new Promise((resolve, reject) => {
-    if (log) {
-      log.info(`sn: ${sn}, getUndInfo => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
-    }
+    logInfo(options, `sn: ${sn}, getUndInfo => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
     if (!verify([
       stringVerifier("bizID", bizID),
       stringVerifier("verificationCode", verificationCode)
@@ -354,9 +330,7 @@ export async function getUndInfo(
       "data": requestData
     };
     const getUndInfoPostData: string = JSON.stringify(req);
-    if (log) {
-      log.info(`sn: ${sn}, getUndInfo => ReplyTime: ${new Date()} , getUndInfoPostData: ${getUndInfoPostData}`);
-    }
+    logInfo(options, `sn: ${sn}, getUndInfo => ReplyTime: ${new Date()} , getUndInfoPostData: ${getUndInfoPostData}`);
     const getUndInfoOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -367,9 +341,7 @@ export async function getUndInfo(
       }
     };
     const getUndInfoReq = http.request(getUndInfoOptions, function (res) {
-      if (log) {
-        log.info(`sn: ${sn}, getUndInfo => getUndInfoReq status: ${res.statusCode}`);
-      }
+      logInfo(options, `sn: ${sn}, getUndInfo => getUndInfoReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
 
       let getUndInfoResult: string = "";
@@ -377,13 +349,9 @@ export async function getUndInfo(
         getUndInfoResult += body;
       });
       res.on("end", () => {
-        if (log) {
-          log.info(`sn: ${sn}, getUndInfo => End of getUndInfoReq`);
-        }
+        logInfo(options, `sn: ${sn}, getUndInfo => End of getUndInfoReq`);
         const repData = JSON.parse(getUndInfoResult);
-        if (log) {
-          log.info(`sn: ${sn}, getUndInfo => getUndInfoResult: ${getUndInfoResult}`);
-        }
+        logInfo(options, `sn: ${sn}, getUndInfo => getUndInfoResult: ${getUndInfoResult}`);
         if (repData["state"] === "1") {
           let replyData: GetUndInfoReply = {
             biProposalNo: repData["data"]["biProposalNo"],
@@ -411,9 +379,7 @@ export async function getUndInfo(
         }
       });
       res.on("error", (err) => {
-        if (log) {
-          log.info(`sn: ${sn}, Error on getUndInfo: ${err}`);
-        }
+        logError(options, `sn: ${sn}, Error on getUndInfo: ${err}`);
         // return {
         //   code: 500,
         //   msg: err
@@ -426,4 +392,19 @@ export async function getUndInfo(
     });
     getUndInfoReq.end(getUndInfoPostData);
   });
+}
+
+
+function logInfo(options: Option, msg: string) {
+  if (options && options.log) {
+    let log: Logger = options.log;
+    log.info(msg);
+  }
+}
+
+function logError(options: Option, msg: string) {
+  if (options && options.log) {
+    let log: Logger = options.log;
+    log.error(msg);
+  }
 }
