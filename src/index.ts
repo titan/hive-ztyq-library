@@ -110,7 +110,7 @@ export interface SPAgreement {
   spaCode: string; // 特约条款码
   spaName: string; // 特约条款名称
   spaContent: string; // 特约条款内容
-  riskCode: string; //险种代码
+  riskCode: string; // 险种代码
 }
 
 // 精准报价
@@ -126,7 +126,7 @@ export interface GetAccuratePriceReply {
   ciBeginDate: string; // 交强险起期
   ciPremium: string; // 交强险保费
   carshipTax: string; // 车船税金额
-  spAgreement: SPAgreement[];// 特约信息
+  spAgreement: SPAgreement[]; // 特约信息
   cIntegral: string; // 结算交强险费率
   bIntegral: string; // 结算商业险费率
   showCiCost: string; // 显示交强险费率
@@ -197,8 +197,18 @@ export async function getVehicleInfoByLicense(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
+  if (!verify([
+    stringVerifier("licenseNo", licenseNo)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
     const getVehicleInfoByLicenseTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -213,16 +223,6 @@ export async function getVehicleInfoByLicense(
     };
     const getVehicleInfoByLicensePostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => getVehicleInfoByLicensePostData: ${getVehicleInfoByLicensePostData}`);
-    if (!verify([
-      stringVerifier("licenseNo", licenseNo)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getVehicleInfoByLicenseOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -277,9 +277,18 @@ export async function getVehicleInfoByFrameNo(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
+  if (!verify([
+    stringVerifier("frameNo", frameNo)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
-
     const getVehicleInfoByFrameNoTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -294,16 +303,6 @@ export async function getVehicleInfoByFrameNo(
     };
     const getVehicleInfoByFrameNoPostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => getVehicleInfoByFrameNoPostData: ${getVehicleInfoByFrameNoPostData}`);
-    if (!verify([
-      stringVerifier("frameNo", frameNo)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getVehicleInfoByFrameNoOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -360,9 +359,20 @@ export async function getCarModel(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
+  if (!verify([
+    stringVerifier("frameNo", frameNo),
+    stringVerifier("licenseNo", licenseNo),
+    stringVerifier("responseNo", responseNo)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
-
     const getCarModelTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -379,19 +389,6 @@ export async function getCarModel(
     };
     const getCarModelPostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, getCarModel => getCarModelPostData: ${getCarModelPostData}`);
-    if (!verify([
-      stringVerifier("frameNo", frameNo),
-      stringVerifier("licenseNo", licenseNo),
-      stringVerifier("responseNo", responseNo)
-
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getCarModelOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -458,9 +455,20 @@ export async function getFuzzyVehicleInfo(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
+  if (!verify([
+    stringVerifier("brandName", brandName),
+    stringVerifier("row", row),
+    stringVerifier("page", page)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
-
     const getFuzzyVehicleInfoTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -477,18 +485,6 @@ export async function getFuzzyVehicleInfo(
     };
     const getFuzzyVehicleInfoPostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => getFuzzyVehicleInfoPostData: ${getFuzzyVehicleInfoPostData}`);
-    if (!verify([
-      stringVerifier("brandName", brandName),
-      stringVerifier("row", row),
-      stringVerifier("page", page)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getFuzzyVehicleInfoOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -567,9 +563,32 @@ export async function getNextPolicyDate(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { channelCode: ${channelCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, vehicleFrameNo: ${vehicleFrameNo}, vehicleModelCode: ${vehicleModelCode}, engineNo: ${engineNo}, specialCarFlag: ${specialCarFlag}, specialCarDate: ${specialCarDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
+  if (!verify([
+    stringVerifier("channelCode", channelCode),
+    stringVerifier("responseNo", responseNo),
+    stringVerifier("licenseNo", licenseNo),
+    stringVerifier("vehicleFrameNo", vehicleFrameNo),
+    stringVerifier("vehicleModelCode", vehicleModelCode),
+    stringVerifier("engineNo", engineNo),
+    stringVerifier("specialCarFlag", specialCarFlag),
+    stringVerifier("specialCarDate", specialCarDate),
+    stringVerifier("seatCount", seatCount),
+    stringVerifier("isLoanCar", isLoanCar),
+    stringVerifier("cityCode", cityCode),
+    stringVerifier("ownerName", ownerName),
+    stringVerifier("ownerMobile", ownerMobile),
+    stringVerifier("ownerIdNo", ownerIdNo),
+    stringVerifier("registerDate", registerDate)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { channelCode: ${channelCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, vehicleFrameNo: ${vehicleFrameNo}, vehicleModelCode: ${vehicleModelCode}, engineNo: ${engineNo}, specialCarFlag: ${specialCarFlag}, specialCarDate: ${specialCarDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
-
     const getNextPolicyDateTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -598,30 +617,6 @@ export async function getNextPolicyDate(
     };
     const getNextPolicyDatePostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, getNextPolicyDate => getNextPolicyDatePostData: ${getNextPolicyDatePostData}`);
-    if (!verify([
-      stringVerifier("channelCode", channelCode),
-      stringVerifier("responseNo", responseNo),
-      stringVerifier("licenseNo", licenseNo),
-      stringVerifier("vehicleFrameNo", vehicleFrameNo),
-      stringVerifier("vehicleModelCode", vehicleModelCode),
-      stringVerifier("engineNo", engineNo),
-      stringVerifier("specialCarFlag", specialCarFlag),
-      stringVerifier("specialCarDate", specialCarDate),
-      stringVerifier("seatCount", seatCount),
-      stringVerifier("isLoanCar", isLoanCar),
-      stringVerifier("cityCode", cityCode),
-      stringVerifier("ownerName", ownerName),
-      stringVerifier("ownerMobile", ownerMobile),
-      stringVerifier("ownerIdNo", ownerIdNo),
-      stringVerifier("registerDate", registerDate)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getNextPolicyDateOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -667,7 +662,6 @@ export async function getNextPolicyDate(
   });
 }
 
-
 // 参考报价
 export async function getReferrencePrice(
   cityCode: string, // 行驶城市代码
@@ -679,9 +673,20 @@ export async function getReferrencePrice(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+  if (!verify([
+    stringVerifier("cityCode", cityCode),
+    stringVerifier("responseNo", responseNo),
+    stringVerifier("insurerCode", insurerCode)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
-
     const getReferrencePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -701,18 +706,6 @@ export async function getReferrencePrice(
     };
     const getReferrencePricePostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
-    if (!verify([
-      stringVerifier("cityCode", cityCode),
-      stringVerifier("responseNo", responseNo),
-      stringVerifier("insurerCode", insurerCode)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getReferrencePriceOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -781,9 +774,25 @@ export async function getAccuratePrice(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, licenseNo: ${licenseNo}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+  if (!verify([
+    stringVerifier("thpBizID", thpBizID),
+    stringVerifier("licenseNo", licenseNo),
+    stringVerifier("cityCode", cityCode),
+    stringVerifier("responseNo", responseNo),
+    stringVerifier("biBeginDate", biBeginDate),
+    stringVerifier("ciBeginDate", ciBeginDate),
+    stringVerifier("channelCode", channelCode),
+    stringVerifier("insurerCode", insurerCode)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, licenseNo: ${licenseNo}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
-
     const getAccuratePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -808,23 +817,6 @@ export async function getAccuratePrice(
     };
     const getAccuratePricePostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, getAccuratePrice => getAccuratePricePostData: ${getAccuratePricePostData}`);
-    if (!verify([
-      stringVerifier("thpBizID", thpBizID),
-      stringVerifier("licenseNo", licenseNo),
-      stringVerifier("cityCode", cityCode),
-      stringVerifier("responseNo", responseNo),
-      stringVerifier("biBeginDate", biBeginDate),
-      stringVerifier("ciBeginDate", ciBeginDate),
-      stringVerifier("channelCode", channelCode),
-      stringVerifier("insurerCode", insurerCode)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getAccuratePriceOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -904,9 +896,28 @@ export async function applyPolicyCheck(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insureCode: ${insureCode}, bizID: ${bizID}, channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
+  if (!verify([
+    stringVerifier("insureCode", insureCode),
+    stringVerifier("bizID", bizID),
+    stringVerifier("channelCode", channelCode),
+    stringVerifier("applicantName", applicantName),
+    stringVerifier("applicantIdNo", applicantIdNo),
+    stringVerifier("applicantMobile", applicantMobile),
+    stringVerifier("addresseeName", addresseeName),
+    stringVerifier("addresseeDetails", addresseeDetails),
+    stringVerifier("addresseeCounty", addresseeCounty),
+    stringVerifier("addresseeCity", addresseeCity),
+    stringVerifier("policyEmail", policyEmail)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insureCode: ${insureCode}, bizID: ${bizID}, channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
-
     const applyPolicyCheckTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "insureCode": insureCode,
@@ -933,26 +944,6 @@ export async function applyPolicyCheck(
     };
     const applyPolicyCheckPostData: string = JSON.stringify(req);
     logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
-    if (!verify([
-      stringVerifier("insureCode", insureCode),
-      stringVerifier("bizID", bizID),
-      stringVerifier("channelCode", channelCode),
-      stringVerifier("applicantName", applicantName),
-      stringVerifier("applicantIdNo", applicantIdNo),
-      stringVerifier("applicantMobile", applicantMobile),
-      stringVerifier("addresseeName", addresseeName),
-      stringVerifier("addresseeDetails", addresseeDetails),
-      stringVerifier("addresseeCounty", addresseeCounty),
-      stringVerifier("addresseeCity", addresseeCity),
-      stringVerifier("policyEmail", policyEmail)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const applyPolicyCheckOptions = {
       "hostname": "api.ztwltech.com",
       "method": "POST",
@@ -1006,18 +997,18 @@ export async function getPaylink(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
+  if (!verify([
+    stringVerifier("bizID", bizID)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
-    if (!verify([
-      stringVerifier("bizID", bizID)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const paylinkSendTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -1042,7 +1033,6 @@ export async function getPaylink(
     const paylinkReq = http.request(paylinkOptions, function (res) {
       logInfo(options, `sn: ${sn}, getPayLink => paylinkReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
-
       let paylinkResult: string = "";
       res.on("data", (body) => {
         paylinkResult += body;
@@ -1088,19 +1078,19 @@ export async function getUndInfo(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
+  logInfo(options, `sn: ${sn}, getUndInfo => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
+  if (!verify([
+    stringVerifier("bizID", bizID),
+    stringVerifier("verificationCode", verificationCode)
+  ], (errors: string[]) => {
+    return Promise.reject({
+      code: 400,
+      msg: errors.join("\n")
+    });
+  })) {
+    // return;
+  }
   return new Promise((resolve, reject) => {
-    logInfo(options, `sn: ${sn}, getUndInfo => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
-    if (!verify([
-      stringVerifier("bizID", bizID),
-      stringVerifier("verificationCode", verificationCode)
-    ], (errors: string[]) => {
-      reject({
-        code: 400,
-        msg: errors.join("\n")
-      });
-    })) {
-      return;
-    }
     const getUndInfoSendTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -1126,7 +1116,6 @@ export async function getUndInfo(
     const getUndInfoReq = http.request(getUndInfoOptions, function (res) {
       logInfo(options, `sn: ${sn}, getUndInfo => getUndInfoReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
-
       let getUndInfoResult: string = "";
       res.on("data", (body) => {
         getUndInfoResult += body;

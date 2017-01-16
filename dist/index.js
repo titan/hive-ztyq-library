@@ -16,8 +16,17 @@ function getVehicleInfoByLicense(licenseNo, // 车牌号码
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("licenseNo", licenseNo)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
             const getVehicleInfoByLicenseTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -32,16 +41,6 @@ function getVehicleInfoByLicense(licenseNo, // 车牌号码
             };
             const getVehicleInfoByLicensePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => getVehicleInfoByLicensePostData: ${getVehicleInfoByLicensePostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("licenseNo", licenseNo)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getVehicleInfoByLicenseOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -98,8 +97,17 @@ function getVehicleInfoByFrameNo(frameNo, // 车架号
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("frameNo", frameNo)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
             const getVehicleInfoByFrameNoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -114,16 +122,6 @@ function getVehicleInfoByFrameNo(frameNo, // 车架号
             };
             const getVehicleInfoByFrameNoPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => getVehicleInfoByFrameNoPostData: ${getVehicleInfoByFrameNoPostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("frameNo", frameNo)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getVehicleInfoByFrameNoOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -182,8 +180,19 @@ function getCarModel(frameNo, // 车架号
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("frameNo", frameNo),
+            hive_verify_1.stringVerifier("licenseNo", licenseNo),
+            hive_verify_1.stringVerifier("responseNo", responseNo)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
             const getCarModelTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -200,18 +209,6 @@ function getCarModel(frameNo, // 车架号
             };
             const getCarModelPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getCarModel => getCarModelPostData: ${getCarModelPostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("frameNo", frameNo),
-                hive_verify_1.stringVerifier("licenseNo", licenseNo),
-                hive_verify_1.stringVerifier("responseNo", responseNo)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getCarModelOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -280,8 +277,19 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("brandName", brandName),
+            hive_verify_1.stringVerifier("row", row),
+            hive_verify_1.stringVerifier("page", page)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
             const getFuzzyVehicleInfoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -298,18 +306,6 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
             };
             const getFuzzyVehicleInfoPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => getFuzzyVehicleInfoPostData: ${getFuzzyVehicleInfoPostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("brandName", brandName),
-                hive_verify_1.stringVerifier("row", row),
-                hive_verify_1.stringVerifier("page", page)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getFuzzyVehicleInfoOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -390,8 +386,31 @@ function getNextPolicyDate(channelCode, // 请求方标识
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { channelCode: ${channelCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, vehicleFrameNo: ${vehicleFrameNo}, vehicleModelCode: ${vehicleModelCode}, engineNo: ${engineNo}, specialCarFlag: ${specialCarFlag}, specialCarDate: ${specialCarDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("channelCode", channelCode),
+            hive_verify_1.stringVerifier("responseNo", responseNo),
+            hive_verify_1.stringVerifier("licenseNo", licenseNo),
+            hive_verify_1.stringVerifier("vehicleFrameNo", vehicleFrameNo),
+            hive_verify_1.stringVerifier("vehicleModelCode", vehicleModelCode),
+            hive_verify_1.stringVerifier("engineNo", engineNo),
+            hive_verify_1.stringVerifier("specialCarFlag", specialCarFlag),
+            hive_verify_1.stringVerifier("specialCarDate", specialCarDate),
+            hive_verify_1.stringVerifier("seatCount", seatCount),
+            hive_verify_1.stringVerifier("isLoanCar", isLoanCar),
+            hive_verify_1.stringVerifier("cityCode", cityCode),
+            hive_verify_1.stringVerifier("ownerName", ownerName),
+            hive_verify_1.stringVerifier("ownerMobile", ownerMobile),
+            hive_verify_1.stringVerifier("ownerIdNo", ownerIdNo),
+            hive_verify_1.stringVerifier("registerDate", registerDate)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { channelCode: ${channelCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, vehicleFrameNo: ${vehicleFrameNo}, vehicleModelCode: ${vehicleModelCode}, engineNo: ${engineNo}, specialCarFlag: ${specialCarFlag}, specialCarDate: ${specialCarDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
             const getNextPolicyDateTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -420,30 +439,6 @@ function getNextPolicyDate(channelCode, // 请求方标识
             };
             const getNextPolicyDatePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getNextPolicyDate => getNextPolicyDatePostData: ${getNextPolicyDatePostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("channelCode", channelCode),
-                hive_verify_1.stringVerifier("responseNo", responseNo),
-                hive_verify_1.stringVerifier("licenseNo", licenseNo),
-                hive_verify_1.stringVerifier("vehicleFrameNo", vehicleFrameNo),
-                hive_verify_1.stringVerifier("vehicleModelCode", vehicleModelCode),
-                hive_verify_1.stringVerifier("engineNo", engineNo),
-                hive_verify_1.stringVerifier("specialCarFlag", specialCarFlag),
-                hive_verify_1.stringVerifier("specialCarDate", specialCarDate),
-                hive_verify_1.stringVerifier("seatCount", seatCount),
-                hive_verify_1.stringVerifier("isLoanCar", isLoanCar),
-                hive_verify_1.stringVerifier("cityCode", cityCode),
-                hive_verify_1.stringVerifier("ownerName", ownerName),
-                hive_verify_1.stringVerifier("ownerMobile", ownerMobile),
-                hive_verify_1.stringVerifier("ownerIdNo", ownerIdNo),
-                hive_verify_1.stringVerifier("registerDate", registerDate)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getNextPolicyDateOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -502,8 +497,19 @@ function getReferrencePrice(cityCode, // 行驶城市代码
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("cityCode", cityCode),
+            hive_verify_1.stringVerifier("responseNo", responseNo),
+            hive_verify_1.stringVerifier("insurerCode", insurerCode)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
             const getReferrencePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -523,18 +529,6 @@ function getReferrencePrice(cityCode, // 行驶城市代码
             };
             const getReferrencePricePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("cityCode", cityCode),
-                hive_verify_1.stringVerifier("responseNo", responseNo),
-                hive_verify_1.stringVerifier("insurerCode", insurerCode)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getReferrencePriceOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -604,8 +598,24 @@ function getAccuratePrice(thpBizID, // 车架号
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, licenseNo: ${licenseNo}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("thpBizID", thpBizID),
+            hive_verify_1.stringVerifier("licenseNo", licenseNo),
+            hive_verify_1.stringVerifier("cityCode", cityCode),
+            hive_verify_1.stringVerifier("responseNo", responseNo),
+            hive_verify_1.stringVerifier("biBeginDate", biBeginDate),
+            hive_verify_1.stringVerifier("ciBeginDate", ciBeginDate),
+            hive_verify_1.stringVerifier("channelCode", channelCode),
+            hive_verify_1.stringVerifier("insurerCode", insurerCode)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, licenseNo: ${licenseNo}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
             const getAccuratePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -630,23 +640,6 @@ function getAccuratePrice(thpBizID, // 车架号
             };
             const getAccuratePricePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getAccuratePrice => getAccuratePricePostData: ${getAccuratePricePostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("thpBizID", thpBizID),
-                hive_verify_1.stringVerifier("licenseNo", licenseNo),
-                hive_verify_1.stringVerifier("cityCode", cityCode),
-                hive_verify_1.stringVerifier("responseNo", responseNo),
-                hive_verify_1.stringVerifier("biBeginDate", biBeginDate),
-                hive_verify_1.stringVerifier("ciBeginDate", ciBeginDate),
-                hive_verify_1.stringVerifier("channelCode", channelCode),
-                hive_verify_1.stringVerifier("insurerCode", insurerCode)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getAccuratePriceOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -728,8 +721,27 @@ function applyPolicyCheck(insureCode, // 保险人代码
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insureCode: ${insureCode}, bizID: ${bizID}, channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("insureCode", insureCode),
+            hive_verify_1.stringVerifier("bizID", bizID),
+            hive_verify_1.stringVerifier("channelCode", channelCode),
+            hive_verify_1.stringVerifier("applicantName", applicantName),
+            hive_verify_1.stringVerifier("applicantIdNo", applicantIdNo),
+            hive_verify_1.stringVerifier("applicantMobile", applicantMobile),
+            hive_verify_1.stringVerifier("addresseeName", addresseeName),
+            hive_verify_1.stringVerifier("addresseeDetails", addresseeDetails),
+            hive_verify_1.stringVerifier("addresseeCounty", addresseeCounty),
+            hive_verify_1.stringVerifier("addresseeCity", addresseeCity),
+            hive_verify_1.stringVerifier("policyEmail", policyEmail)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insureCode: ${insureCode}, bizID: ${bizID}, channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
             const applyPolicyCheckTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "insureCode": insureCode,
@@ -756,26 +768,6 @@ function applyPolicyCheck(insureCode, // 保险人代码
             };
             const applyPolicyCheckPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("insureCode", insureCode),
-                hive_verify_1.stringVerifier("bizID", bizID),
-                hive_verify_1.stringVerifier("channelCode", channelCode),
-                hive_verify_1.stringVerifier("applicantName", applicantName),
-                hive_verify_1.stringVerifier("applicantIdNo", applicantIdNo),
-                hive_verify_1.stringVerifier("applicantMobile", applicantMobile),
-                hive_verify_1.stringVerifier("addresseeName", addresseeName),
-                hive_verify_1.stringVerifier("addresseeDetails", addresseeDetails),
-                hive_verify_1.stringVerifier("addresseeCounty", addresseeCounty),
-                hive_verify_1.stringVerifier("addresseeCity", addresseeCity),
-                hive_verify_1.stringVerifier("policyEmail", policyEmail)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const applyPolicyCheckOptions = {
                 "hostname": "api.ztwltech.com",
                 "method": "POST",
@@ -831,18 +823,17 @@ function getPaylink(bizID, // 业务号
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("bizID", bizID)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("bizID", bizID)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const paylinkSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -914,19 +905,18 @@ function getUndInfo(bizID, // 业务号
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getUndInfo => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("bizID", bizID),
+            hive_verify_1.stringVerifier("verificationCode", verificationCode)
+        ], (errors) => {
+            return Promise.reject({
+                code: 400,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
         return new Promise((resolve, reject) => {
-            logInfo(options, `sn: ${sn}, getUndInfo => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
-            if (!hive_verify_1.verify([
-                hive_verify_1.stringVerifier("bizID", bizID),
-                hive_verify_1.stringVerifier("verificationCode", verificationCode)
-            ], (errors) => {
-                reject({
-                    code: 400,
-                    msg: errors.join("\n")
-                });
-            })) {
-                return;
-            }
             const getUndInfoSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
