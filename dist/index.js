@@ -584,7 +584,6 @@ function getReferrencePrice(cityCode, // 行驶城市代码
 exports.getReferrencePrice = getReferrencePrice;
 // 精准报价
 function getAccuratePrice(thpBizID, // 车架号
-    licenseNo, // 车牌信息
     cityCode, // 行驶城市代码
     responseNo, // 响应码
     biBeginDate, // 商业险起期
@@ -598,10 +597,9 @@ function getAccuratePrice(thpBizID, // 车架号
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, licenseNo: ${licenseNo}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+        logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("thpBizID", thpBizID),
-            hive_verify_1.stringVerifier("licenseNo", licenseNo),
             hive_verify_1.stringVerifier("cityCode", cityCode),
             hive_verify_1.stringVerifier("responseNo", responseNo),
             hive_verify_1.stringVerifier("biBeginDate", biBeginDate),
@@ -620,7 +618,6 @@ function getAccuratePrice(thpBizID, // 车架号
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "thpBizID": thpBizID,
-                "licenseNo": licenseNo,
                 "cityCode": cityCode,
                 "responseNo": responseNo,
                 "biBeginDate": biBeginDate,
