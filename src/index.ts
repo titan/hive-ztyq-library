@@ -761,7 +761,6 @@ export async function getReferrencePrice(
 // 精准报价
 export async function getAccuratePrice(
   thpBizID: string, // 车架号
-  licenseNo: string, // 车牌信息
   cityCode: string, // 行驶城市代码
   responseNo: string, // 响应码
   biBeginDate: string, // 商业险起期
@@ -774,10 +773,9 @@ export async function getAccuratePrice(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
-  logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, licenseNo: ${licenseNo}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+  logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, channelCode: ${channelCode}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("thpBizID", thpBizID),
-    stringVerifier("licenseNo", licenseNo),
     stringVerifier("cityCode", cityCode),
     stringVerifier("responseNo", responseNo),
     stringVerifier("biBeginDate", biBeginDate),
@@ -797,7 +795,6 @@ export async function getAccuratePrice(
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
       "thpBizID": thpBizID,
-      "licenseNo": licenseNo,
       "cityCode": cityCode,
       "responseNo": responseNo,
       "biBeginDate": biBeginDate,
