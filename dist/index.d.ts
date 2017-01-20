@@ -64,6 +64,9 @@ export interface Person {
     ownerName?: string;
     ownerID?: string;
     ownerMobile?: string;
+    insuredName?: string;
+    insuredID?: string;
+    insuredMobile?: string;
 }
 export interface Coverage {
     coverageCode: string;
@@ -154,9 +157,9 @@ export declare function getVehicleInfoByLicense(licenseNo: string, options?: Opt
 export declare function getVehicleInfoByFrameNo(frameNo: string, options?: Option): Promise<any>;
 export declare function getCarModel(frameNo: string, licenseNo: string, responseNo: string, options?: Option): Promise<any>;
 export declare function getFuzzyVehicleInfo(brandName: string, row: string, page: string, options?: Option): Promise<any>;
-export declare function getNextPolicyDate(channelCode: string, responseNo: string, licenseNo: string, vehicleFrameNo: string, vehicleModelCode: string, engineNo: string, specialCarFlag: string, specialCarDate: string, seatCount: string, isLoanCar: string, cityCode: string, ownerName: string, ownerMobile: string, ownerIdNo: string, registerDate: string, options?: Option): Promise<any>;
+export declare function getNextPolicyDate(responseNo: string, licenseNo: string, vehicleFrameNo: string, vehicleModelCode: string, engineNo: string, specialCarFlag: string, specialCarDate: string, seatCount: string, isLoanCar: string, cityCode: string, ownerName: string, ownerMobile: string, ownerIdNo: string, registerDate: string, options?: Option): Promise<any>;
 export declare function getReferrencePrice(cityCode: string, responseNo: string, carInfo: Car, personInfo: Person, insurerCode: string, coverageList: Coverage[], options?: Option): Promise<any>;
-export declare function getAccuratePrice(thpBizID: string, cityCode: string, responseNo: string, biBeginDate: string, ciBeginDate: string, carInfo: Car, personInfo: Person, channelCode: string, insurerCode: string, coverageList: Coverage[], options?: Option): Promise<any>;
+export declare function getAccuratePrice(thpBizID: string, cityCode: string, responseNo: string, biBeginDate: string, ciBeginDate: string, carInfo: Car, personInfo: Person, insurerCode: string, coverageList: Coverage[], options?: Option): Promise<any>;
 export declare function applyPolicyCheck(insureCode: string, bizID: string, channelCode: string, applicantName: string, applicantIdNo: string, applicantMobile: string, addresseeName: string, addresseeMobile: string, addresseeDetails: string, addresseeCounty: string, addresseeCity: string, addresseeProvince: string, policyEmail: string, applicantUrl: string, options?: Option): Promise<any>;
 export declare function getPaylink(bizID: string, options?: Option): Promise<any>;
 export declare function getUndInfo(bizID: string, verificationCode: string, options?: Option): Promise<any>;
