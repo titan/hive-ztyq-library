@@ -25,7 +25,7 @@ function getVehicleInfoByLicense(licenseNo, // 车牌号码
             hive_verify_1.stringVerifier("licenseNo", licenseNo)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -73,7 +73,7 @@ function getVehicleInfoByLicense(licenseNo, // 车牌号码
                             engineNo: repData["data"]["engineNo"],
                             licenseNo: repData["data"]["licenseNo"],
                             frameNo: repData["data"]["frameNo"],
-                            firstRegisterDate: repData["data"]["firstRegisterDate"]
+                            registerDate: repData["data"]["firstRegisterDate"]
                         };
                         resolve({
                             code: 200,
@@ -108,7 +108,7 @@ function getVehicleInfoByFrameNo(frameNo, // 车架号
             hive_verify_1.stringVerifier("frameNo", frameNo)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -156,7 +156,7 @@ function getVehicleInfoByFrameNo(frameNo, // 车架号
                             engineNo: repData["data"]["engineNo"],
                             licenseNo: repData["data"]["licenseNo"],
                             frameNo: repData["data"]["frameNo"],
-                            firstRegisterDate: repData["data"]["firstRegisterDate"]
+                            registerDate: repData["data"]["firstRegisterDate"]
                         };
                         resolve({
                             code: 200,
@@ -195,7 +195,7 @@ function getCarModel(frameNo, // 车架号
             hive_verify_1.stringVerifier("responseNo", responseNo)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -244,7 +244,7 @@ function getCarModel(frameNo, // 车架号
                             vehicleFgwCode: repData["data"][0]["vehicleFgwCode"],
                             vehicleFgwName: repData["data"][0]["vehicleFgwName"],
                             parentVehName: repData["data"][0]["parentVehName"],
-                            brandCode: repData["data"][0]["brandCode"],
+                            modelCode: repData["data"][0]["brandCode"],
                             brandName: repData["data"][0]["brandName"],
                             engineDesc: repData["data"][0]["engineDesc"],
                             familyName: repData["data"][0]["familyName"],
@@ -254,7 +254,7 @@ function getCarModel(frameNo, // 车架号
                             purchasePriceTax: repData["data"][0]["purchasePriceTax"],
                             importFlag: repData["data"][0]["importFlag"],
                             purchasePrice: repData["data"][0]["purchasePrice"],
-                            seat: repData["data"][0]["seat"],
+                            seatCount: repData["data"][0]["seat"],
                             standardName: repData["data"][0]["standardName"]
                         };
                         resolve({
@@ -288,14 +288,13 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
-        console.log(`sn: ${sn}, getFuzzyVehicleInfo => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("brandName", brandName),
             hive_verify_1.stringVerifier("row", row),
             hive_verify_1.stringVerifier("page", page)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -339,26 +338,31 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
                     logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => End of getFuzzyVehicleInfoReq`);
                     const repData = JSON.parse(getFuzzyVehicleInfoResult);
                     logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => ReplyTime: ${new Date()} , getFuzzyVehicleInfoResult: ${JSON.stringify(getFuzzyVehicleInfoResult)}`);
-                    console.log(`sn: ${sn}, getFuzzyVehicleInfo => ReplyTime: ${new Date()} , getFuzzyVehicleInfoResult: ${JSON.stringify(getFuzzyVehicleInfoResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = repData["data"];
-                        // let replyData: GetFuzzyVehicleInfoReply = {
-                        //   vehicleFgwCode: repData["data"]["vehicleFgwCode"],
-                        //   vehicleFgwName: repData["data"]["vehicleFgwName"],
-                        //   parentVehName: repData["data"]["parentVehName"],
-                        //   brandCode: repData["data"]["brandCode"],
-                        //   brandName: repData["data"]["brandName"],
-                        //   engineDesc: repData["data"]["engineDesc"],
-                        //   familyName: repData["data"]["familyName"],
-                        //   gearboxType: repData["data"]["gearboxType"],
-                        //   remark: repData["data"]["remark"],
-                        //   newCarPric: repData["data"]["newCarPric"],
-                        //   purchasePriceTax: repData["data"]["purchasePriceTax"],
-                        //   importFlag: repData["data"]["importFlag"],
-                        //   price: repData["data"]["price"],
-                        //   seat: repData["data"]["seat"],
-                        //   standardName: repData["data"]["standardName"]
-                        // };
+                        let replyData = [];
+                        if (repData["data"] && repData["data"].length > 0) {
+                            const dataSet = repData["data"];
+                            for (let data of dataSet) {
+                                let vehicleInfo = {
+                                    vehicleFgwCode: data["vehicleFgwCode"],
+                                    vehicleFgwName: data["vehicleFgwName"],
+                                    parentVehName: data["parentVehName"],
+                                    modelCode: data["brandCode"],
+                                    brandName: data["brandName"],
+                                    engineDesc: data["engineDesc"],
+                                    familyName: data["familyName"],
+                                    gearboxType: data["gearboxType"],
+                                    remark: data["remark"],
+                                    newCarPrice: data["newCarPrice"],
+                                    purchasePriceTax: data["purchasePriceTax"],
+                                    importFlag: data["importFlag"],
+                                    purchasePrice: data["price"],
+                                    seatCount: data["seat"],
+                                    standardName: data["standardName"]
+                                };
+                                replyData.push(vehicleInfo);
+                            }
+                        }
                         resolve({
                             code: 200,
                             data: replyData
@@ -384,11 +388,11 @@ exports.getFuzzyVehicleInfo = getFuzzyVehicleInfo;
 // 获取下期投保起期
 function getNextPolicyDate(responseNo, // 响应码
     licenseNo, // 车牌号码
-    vehicleFrameNo, // 车架号(VIN)
-    vehicleModelCode, // 品牌型号代码
+    frameNo, // 车架号(VIN)
+    modelCode, // 品牌型号代码
     engineNo, // 发动机号
-    specialCarFlag, // 是否过户
-    specialCarDate, // 过户日期
+    isTrans, // 是否过户
+    transDate, // 过户日期
     seatCount, // 座位数
     isLoanCar, // 是否贷款车
     cityCode, // 机构代码
@@ -400,15 +404,15 @@ function getNextPolicyDate(responseNo, // 响应码
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, vehicleFrameNo: ${vehicleFrameNo}, vehicleModelCode: ${vehicleModelCode}, engineNo: ${engineNo}, specialCarFlag: ${specialCarFlag}, specialCarDate: ${specialCarDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
+        logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("responseNo", responseNo),
             hive_verify_1.stringVerifier("licenseNo", licenseNo),
-            hive_verify_1.stringVerifier("vehicleFrameNo", vehicleFrameNo),
-            hive_verify_1.stringVerifier("vehicleModelCode", vehicleModelCode),
+            hive_verify_1.stringVerifier("frameNo", frameNo),
+            hive_verify_1.stringVerifier("modelCode", modelCode),
             hive_verify_1.stringVerifier("engineNo", engineNo),
-            hive_verify_1.stringVerifier("specialCarFlag", specialCarFlag),
-            hive_verify_1.stringVerifier("specialCarDate", specialCarDate),
+            hive_verify_1.stringVerifier("isTrans", isTrans),
+            hive_verify_1.stringVerifier("transDate", transDate),
             hive_verify_1.stringVerifier("seatCount", seatCount),
             hive_verify_1.stringVerifier("isLoanCar", isLoanCar),
             hive_verify_1.stringVerifier("cityCode", cityCode),
@@ -418,7 +422,7 @@ function getNextPolicyDate(responseNo, // 响应码
             hive_verify_1.stringVerifier("registerDate", registerDate)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -429,11 +433,11 @@ function getNextPolicyDate(responseNo, // 响应码
                 "channelCode": "FENGCHAOHUZHU_SERVICE",
                 "responseNo": responseNo,
                 "licenseNo": licenseNo,
-                "vehicleFrameNo": vehicleFrameNo,
-                "vehicleModelCode": vehicleModelCode,
+                "vehicleFrameNo": frameNo,
+                "vehicleModelCode": modelCode,
                 "engineNo": engineNo,
-                "specialCarFlag": specialCarFlag,
-                "specialCarDate": specialCarDate,
+                "specialCarFlag": isTrans,
+                "specialCarDate": transDate,
                 "seatCount": seatCount,
                 "isLoanCar": isLoanCar,
                 "cityCode": cityCode,
@@ -518,7 +522,7 @@ function getReferrencePrice(cityCode, // 行驶城市代码
             hive_verify_1.stringVerifier("insurerCode", insurerCode)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -567,14 +571,14 @@ function getReferrencePrice(cityCode, // 行驶城市代码
                     logInfo(options, `sn: ${sn}, getReferrencePrice => ReplyTime: ${new Date()} , getReferrencePriceResult: ${JSON.stringify(getReferrencePriceResult)}`);
                     if (repData["state"] === "1") {
                         let replyData = {
-                            insurerCode: repData["data"]["insurerCode"],
-                            biBeginDate: repData["data"]["biBeginDate"],
-                            biPremium: repData["data"]["biPremium"],
-                            coverageList: repData["data"]["coverageList"],
-                            integral: repData["data"]["integral"],
-                            ciBeginDate: repData["data"]["ciBeginDate"],
-                            ciPremium: repData["data"]["ciPremium"],
-                            carshipTax: repData["data"]["carshipTax"]
+                            insurerCode: repData["data"][0]["insurerCode"],
+                            biBeginDate: repData["data"][0]["biBeginDate"],
+                            biPremium: repData["data"][0]["biPremium"],
+                            coverageList: repData["data"][0]["coverageList"],
+                            integral: repData["data"][0]["integral"],
+                            ciBeginDate: repData["data"][0]["ciBeginDate"],
+                            ciPremium: repData["data"][0]["ciPremium"],
+                            carshipTax: repData["data"][0]["carshipTax"]
                         };
                         resolve({
                             code: 200,
@@ -599,7 +603,7 @@ function getReferrencePrice(cityCode, // 行驶城市代码
 }
 exports.getReferrencePrice = getReferrencePrice;
 // 精准报价
-function getAccuratePrice(thpBizID, // 车架号
+function getAccuratePrice(thpBizID, // 请求方业务号
     cityCode, // 行驶城市代码
     responseNo, // 响应码
     biBeginDate, // 商业险起期
@@ -622,7 +626,7 @@ function getAccuratePrice(thpBizID, // 车架号
             hive_verify_1.stringVerifier("insurerCode", insurerCode)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -675,23 +679,23 @@ function getAccuratePrice(thpBizID, // 车架号
                     logInfo(options, `sn: ${sn}, getAccuratePrice => ReplyTime: ${new Date()} , getAccuratePriceResult: ${JSON.stringify(getAccuratePriceResult)}`);
                     if (repData["state"] === "1") {
                         let replyData = {
-                            insurerCode: repData["data"]["insurerCode"],
-                            channelCode: repData["data"]["channelCode"],
-                            thpBizID: repData["data"]["thpBizID"],
-                            bizID: repData["data"]["bizID"],
-                            biBeginDate: repData["data"]["biBeginDate"],
-                            biPremium: repData["data"]["biPremium"],
-                            coverageList: repData["data"]["coverageList"],
-                            integral: repData["data"]["integral"],
-                            ciBeginDate: repData["data"]["ciBeginDate"],
-                            ciPremium: repData["data"]["ciPremium"],
-                            carshipTax: repData["data"]["carshipTax"],
-                            spAgreement: repData["data"][""],
-                            cIntegral: repData["data"]["cIntegral"],
-                            bIntegral: repData["data"]["bIntegral"],
-                            showCiCost: repData["data"]["showCiCost"],
-                            showBiCost: repData["data"]["showBiCost"],
-                            showSumIntegral: repData["data"]["showSumIntegral"]
+                            insurerCode: repData["data"][0]["insurerCode"],
+                            channelCode: repData["data"][0]["channelCode"],
+                            thpBizID: repData["data"][0]["thpBizID"],
+                            bizID: repData["data"][0]["bizID"],
+                            biBeginDate: repData["data"][0]["biBeginDate"],
+                            biPremium: repData["data"][0]["biPremium"],
+                            coverageList: repData["data"][0]["coverageList"],
+                            integral: repData["data"][0]["integral"],
+                            ciBeginDate: repData["data"][0]["ciBeginDate"],
+                            ciPremium: repData["data"][0]["ciPremium"],
+                            carshipTax: repData["data"][0]["carshipTax"],
+                            spAgreement: repData["data"][0][""],
+                            cIntegral: repData["data"][0]["cIntegral"],
+                            bIntegral: repData["data"][0]["bIntegral"],
+                            showCiCost: repData["data"][0]["showCiCost"],
+                            showBiCost: repData["data"][0]["showBiCost"],
+                            showSumIntegral: repData["data"][0]["showSumIntegral"]
                         };
                         resolve({
                             code: 200,
@@ -716,7 +720,7 @@ function getAccuratePrice(thpBizID, // 车架号
 }
 exports.getAccuratePrice = getAccuratePrice;
 // 申请核保
-function applyPolicyCheck(insureCode, // 保险人代码
+function applyPolicyCheck(insurerCode, // 保险人代码
     bizID, // 业务号
     channelCode, // 渠道编码, 从精准报价接口的出参获取
     applicantName, // 投保人姓名
@@ -734,9 +738,9 @@ function applyPolicyCheck(insureCode, // 保险人代码
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insureCode: ${insureCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
+        logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
         if (!hive_verify_1.verify([
-            hive_verify_1.stringVerifier("insureCode", insureCode),
+            hive_verify_1.stringVerifier("insurerCode", insurerCode),
             hive_verify_1.stringVerifier("bizID", bizID),
             hive_verify_1.stringVerifier("channelCode", channelCode),
             hive_verify_1.stringVerifier("applicantName", applicantName),
@@ -749,7 +753,7 @@ function applyPolicyCheck(insureCode, // 保险人代码
             hive_verify_1.stringVerifier("policyEmail", policyEmail)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -757,7 +761,7 @@ function applyPolicyCheck(insureCode, // 保险人代码
         return new Promise((resolve, reject) => {
             const applyPolicyCheckTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
-                "insureCode": insureCode,
+                "insureCode": insurerCode,
                 "bizID": bizID,
                 "channelCode": channelCode,
                 "applicantName": applicantName,
@@ -839,12 +843,11 @@ function getPaylink(bizID, // 业务号
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
-        console.log(`sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("bizID", bizID)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
@@ -884,7 +887,6 @@ function getPaylink(bizID, // 业务号
                     logInfo(options, `sn: ${sn}, getPayLink => End of paylinkReq`);
                     const repData = JSON.parse(paylinkResult);
                     logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${JSON.stringify(paylinkResult)}`);
-                    console.log(`sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${JSON.stringify(paylinkResult)}`);
                     if (repData["state"] === "1") {
                         let replyData = {
                             biProposalNo: repData["data"]["biProposalNo"],
@@ -930,7 +932,7 @@ function getUndInfo(bizID, // 业务号
             hive_verify_1.stringVerifier("verificationCode", verificationCode)
         ], (errors) => {
             return Promise.reject({
-                code: 400,
+                code: 403,
                 msg: errors.join("\n")
             });
         })) {
