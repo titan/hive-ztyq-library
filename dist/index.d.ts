@@ -1,12 +1,12 @@
 import { Logger } from "bunyan";
-export interface VehicleInfo {
+export interface Vehicle {
     responseNo: string;
     engineNo: string;
     licenseNo: string;
     frameNo: string;
     registerDate: string;
 }
-export interface CarModelInfo {
+export interface CarModel {
     vehicleFgwCode: string;
     vehicleFgwName: string;
     parentVehName: string;
@@ -57,7 +57,7 @@ export interface SPAgreement {
     spaContent: string;
     riskCode: string;
 }
-export interface QuotePriceInfo {
+export interface QuotePrice {
     insurerCode: string;
     channelCode?: string;
     thpBizID?: string;
@@ -76,7 +76,7 @@ export interface QuotePriceInfo {
     showBiCost?: string;
     showSumIntegral?: string;
 }
-export interface PaylinkInfo {
+export interface Paylink {
     biProposalNo: string;
     ciProposalNo: string;
     payLink: string;
@@ -86,13 +86,13 @@ export interface PaylinkInfo {
 export interface Option {
     log: Logger;
 }
-export declare function getVehicleInfoByLicense(licenseNo: string, options?: Option): Promise<any>;
-export declare function getVehicleInfoByFrameNo(frameNo: string, options?: Option): Promise<any>;
+export declare function getVehicleByLicense(licenseNo: string, options?: Option): Promise<any>;
+export declare function getVehicleByFrameNo(frameNo: string, options?: Option): Promise<any>;
 export declare function getCarModel(frameNo: string, licenseNo: string, responseNo: string, options?: Option): Promise<any>;
-export declare function getFuzzyVehicleInfo(brandName: string, row: string, page: string, options?: Option): Promise<any>;
+export declare function getFuzzyVehicle(brandName: string, row: string, page: string, options?: Option): Promise<any>;
 export declare function getNextPolicyDate(responseNo: string, licenseNo: string, frameNo: string, modelCode: string, engineNo: string, isTrans: string, transDate: string, seatCount: string, isLoanCar: string, cityCode: string, ownerName: string, ownerMobile: string, ownerIdNo: string, registerDate: string, options?: Option): Promise<any>;
-export declare function getReferrencePrice(cityCode: string, responseNo: string, carInfo: Car, personInfo: Person, insurerCode: string, coverageList: Coverage[], options?: Option): Promise<any>;
-export declare function getAccuratePrice(thpBizID: string, cityCode: string, responseNo: string, biBeginDate: string, ciBeginDate: string, carInfo: Car, personInfo: Person, insurerCode: string, coverageList: Coverage[], options?: Option): Promise<any>;
+export declare function getReferrencePrice(cityCode: string, responseNo: string, car: Car, person: Person, insurerCode: string, coverageList: Coverage[], options?: Option): Promise<any>;
+export declare function getAccuratePrice(thpBizID: string, cityCode: string, responseNo: string, biBeginDate: string, ciBeginDate: string, car: Car, person: Person, insurerCode: string, coverageList: Coverage[], options?: Option): Promise<any>;
 export declare function applyPolicyCheck(insurerCode: string, bizID: string, channelCode: string, applicantName: string, applicantIdNo: string, applicantMobile: string, addresseeName: string, addresseeMobile: string, addresseeDetails: string, addresseeCounty: string, addresseeCity: string, addresseeProvince: string, policyEmail: string, applicantUrl: string, options?: Option): Promise<any>;
 export declare function getPaylink(bizID: string, options?: Option): Promise<any>;
-export declare function getUndInfo(bizID: string, verificationCode: string, options?: Option): Promise<any>;
+export declare function getUnd(bizID: string, verificationCode: string, options?: Option): Promise<any>;
