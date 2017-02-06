@@ -15,12 +15,12 @@ let ztyqhost = process.env["WX_ENV"] === "test" ? "139.198.1.73" : "api.ztwltech
 let isTestHost = process.env["WX_ENV"] === "test" ? true : false;
 let hostport = process.env["WX_ENV"] === "test" ? 8081 : 80;
 // 查询车辆信息(根据车牌号查询)
-function getVehicleInfoByLicense(licenseNo, // 车牌号码
+function getVehicleByLicense(licenseNo, // 车牌号码
     options // 可选参数
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
+        logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("licenseNo", licenseNo)
         ], (errors) => {
@@ -31,7 +31,7 @@ function getVehicleInfoByLicense(licenseNo, // 车牌号码
         })) {
         }
         return new Promise((resolve, reject) => {
-            const getVehicleInfoByLicenseTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+            const getVehicleByLicenseTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "licenseNo": licenseNo
@@ -39,34 +39,34 @@ function getVehicleInfoByLicense(licenseNo, // 车牌号码
             const req = {
                 "operType": "BDB",
                 "msg": "",
-                "sendTime": getVehicleInfoByLicenseTimeString,
+                "sendTime": getVehicleByLicenseTimeString,
                 "sign": null,
                 "data": requestData
             };
-            const getVehicleInfoByLicensePostData = JSON.stringify(req);
-            logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => getVehicleInfoByLicensePostData: ${getVehicleInfoByLicensePostData}`);
+            const getVehicleByLicensePostData = JSON.stringify(req);
+            logInfo(options, `sn: ${sn}, getVehicleByLicense => getVehicleByLicensePostData: ${getVehicleByLicensePostData}`);
             let hostpath = isTestHost ? "/zkyq-web/prerelease/ifmEntry" : "/zkyq-web/pottingApi/information";
-            const getVehicleInfoByLicenseOptions = {
+            const getVehicleByLicenseOptions = {
                 "hostname": ztyqhost,
                 "port": hostport,
                 "method": "POST",
                 "path": hostpath,
                 "headers": {
                     "Content-Type": "application/json",
-                    "Content-Length": Buffer.byteLength(getVehicleInfoByLicensePostData)
+                    "Content-Length": Buffer.byteLength(getVehicleByLicensePostData)
                 }
             };
-            const getVehicleInfoByLicenseReq = http.request(getVehicleInfoByLicenseOptions, function (res) {
-                logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => getVehicleInfoByLicenseReq status: ${res.statusCode}`);
+            const getVehicleByLicenseReq = http.request(getVehicleByLicenseOptions, function (res) {
+                logInfo(options, `sn: ${sn}, getVehicleByLicense => getVehicleByLicenseReq status: ${res.statusCode}`);
                 res.setEncoding("utf8");
-                let getVehicleInfoByLicenseResult = "";
+                let getVehicleByLicenseResult = "";
                 res.on("data", (body) => {
-                    getVehicleInfoByLicenseResult += body;
+                    getVehicleByLicenseResult += body;
                 });
                 res.on("end", () => {
-                    logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => End of getVehicleInfoByLicenseReq`);
-                    const repData = JSON.parse(getVehicleInfoByLicenseResult);
-                    logInfo(options, `sn: ${sn}, getVehicleInfoByLicense => ReplyTime: ${new Date()} , getVehicleInfoByLicenseResult: ${JSON.stringify(getVehicleInfoByLicenseResult)}`);
+                    logInfo(options, `sn: ${sn}, getVehicleByLicense => End of getVehicleByLicenseReq`);
+                    const repData = JSON.parse(getVehicleByLicenseResult);
+                    logInfo(options, `sn: ${sn}, getVehicleByLicense => ReplyTime: ${new Date()} , getVehicleByLicenseResult: ${JSON.stringify(getVehicleByLicenseResult)}`);
                     if (repData["state"] === "1") {
                         let replyData = {
                             responseNo: repData["data"]["responseNo"],
@@ -85,25 +85,25 @@ function getVehicleInfoByLicense(licenseNo, // 车牌号码
                     }
                 });
                 res.on("error", (err) => {
-                    logError(options, `sn: ${sn}, Error on getVehicleInfoByLicense: ${err}`);
+                    logError(options, `sn: ${sn}, Error on getVehicleByLicense: ${err}`);
                     reject({
                         code: 500,
                         msg: err
                     });
                 });
             });
-            getVehicleInfoByLicenseReq.end(getVehicleInfoByLicensePostData);
+            getVehicleByLicenseReq.end(getVehicleByLicensePostData);
         });
     });
 }
-exports.getVehicleInfoByLicense = getVehicleInfoByLicense;
+exports.getVehicleByLicense = getVehicleByLicense;
 // 查询车辆信息(根据车架号据查询)
-function getVehicleInfoByFrameNo(frameNo, // 车架号
+function getVehicleByFrameNo(frameNo, // 车架号
     options // 可选参数
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
+        logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("frameNo", frameNo)
         ], (errors) => {
@@ -114,7 +114,7 @@ function getVehicleInfoByFrameNo(frameNo, // 车架号
         })) {
         }
         return new Promise((resolve, reject) => {
-            const getVehicleInfoByFrameNoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+            const getVehicleByFrameNoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "frameNo": frameNo
@@ -122,34 +122,34 @@ function getVehicleInfoByFrameNo(frameNo, // 车架号
             const req = {
                 "operType": "BDB_VIN",
                 "msg": "",
-                "sendTime": getVehicleInfoByFrameNoTimeString,
+                "sendTime": getVehicleByFrameNoTimeString,
                 "sign": null,
                 "data": requestData
             };
-            const getVehicleInfoByFrameNoPostData = JSON.stringify(req);
-            logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => getVehicleInfoByFrameNoPostData: ${getVehicleInfoByFrameNoPostData}`);
+            const getVehicleByFrameNoPostData = JSON.stringify(req);
+            logInfo(options, `sn: ${sn}, getVehicleByFrameNo => getVehicleByFrameNoPostData: ${getVehicleByFrameNoPostData}`);
             let hostpath = isTestHost ? "/zkyq-web/prerelease/ifmEntry" : "/zkyq-web/pottingApi/queryCarinfoByVin";
-            const getVehicleInfoByFrameNoOptions = {
+            const getVehicleByFrameNoOptions = {
                 "hostname": ztyqhost,
                 "port": hostport,
                 "method": "POST",
                 "path": hostpath,
                 "headers": {
                     "Content-Type": "application/json",
-                    "Content-Length": Buffer.byteLength(getVehicleInfoByFrameNoPostData)
+                    "Content-Length": Buffer.byteLength(getVehicleByFrameNoPostData)
                 }
             };
-            const getVehicleInfoByFrameNoReq = http.request(getVehicleInfoByFrameNoOptions, function (res) {
-                logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => getVehicleInfoByFrameNoReq status: ${res.statusCode}`);
+            const getVehicleByFrameNoReq = http.request(getVehicleByFrameNoOptions, function (res) {
+                logInfo(options, `sn: ${sn}, getVehicleByFrameNo => getVehicleByFrameNoReq status: ${res.statusCode}`);
                 res.setEncoding("utf8");
-                let getVehicleInfoByFrameNoResult = "";
+                let getVehicleByFrameNoResult = "";
                 res.on("data", (body) => {
-                    getVehicleInfoByFrameNoResult += body;
+                    getVehicleByFrameNoResult += body;
                 });
                 res.on("end", () => {
-                    logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => End of getVehicleInfoByFrameNoReq`);
-                    const repData = JSON.parse(getVehicleInfoByFrameNoResult);
-                    logInfo(options, `sn: ${sn}, getVehicleInfoByFrameNo => ReplyTime: ${new Date()} , getVehicleInfoByFrameNoResult: ${JSON.stringify(getVehicleInfoByFrameNoResult)}`);
+                    logInfo(options, `sn: ${sn}, getVehicleByFrameNo => End of getVehicleByFrameNoReq`);
+                    const repData = JSON.parse(getVehicleByFrameNoResult);
+                    logInfo(options, `sn: ${sn}, getVehicleByFrameNo => ReplyTime: ${new Date()} , getVehicleByFrameNoResult: ${JSON.stringify(getVehicleByFrameNoResult)}`);
                     if (repData["state"] === "1") {
                         let replyData = {
                             responseNo: repData["data"]["responseNo"],
@@ -168,18 +168,18 @@ function getVehicleInfoByFrameNo(frameNo, // 车架号
                     }
                 });
                 res.on("error", (err) => {
-                    logError(options, `sn: ${sn}, Error on getVehicleInfoByFrameNo: ${err}`);
+                    logError(options, `sn: ${sn}, Error on getVehicleByFrameNo: ${err}`);
                     reject({
                         code: 500,
                         msg: err
                     });
                 });
             });
-            getVehicleInfoByFrameNoReq.end(getVehicleInfoByFrameNoPostData);
+            getVehicleByFrameNoReq.end(getVehicleByFrameNoPostData);
         });
     });
 }
-exports.getVehicleInfoByFrameNo = getVehicleInfoByFrameNo;
+exports.getVehicleByFrameNo = getVehicleByFrameNo;
 // 查询车型信息
 function getCarModel(frameNo, // 车架号
     licenseNo, // 车牌信息
@@ -280,14 +280,14 @@ function getCarModel(frameNo, // 车架号
 }
 exports.getCarModel = getCarModel;
 // 模糊匹配车型
-function getFuzzyVehicleInfo(brandName, // 品牌型号名称
+function getFuzzyVehicle(brandName, // 品牌型号名称
     row, // 行数
     page, // 当前页
     options // 可选参数
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
+        logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("brandName", brandName),
             hive_verify_1.stringVerifier("row", row),
@@ -300,7 +300,7 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
         })) {
         }
         return new Promise((resolve, reject) => {
-            const getFuzzyVehicleInfoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+            const getFuzzyVehicleTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "brandName": brandName,
@@ -310,40 +310,40 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
             const req = {
                 "operType": "JYK_LIKE",
                 "msg": "模糊匹配车型信息",
-                "sendTime": getFuzzyVehicleInfoTimeString,
+                "sendTime": getFuzzyVehicleTimeString,
                 "sign": null,
                 "data": requestData
             };
-            const getFuzzyVehicleInfoPostData = JSON.stringify(req);
-            logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => getFuzzyVehicleInfoPostData: ${getFuzzyVehicleInfoPostData}`);
+            const getFuzzyVehiclePostData = JSON.stringify(req);
+            logInfo(options, `sn: ${sn}, getFuzzyVehicle => getFuzzyVehiclePostData: ${getFuzzyVehiclePostData}`);
             let hostpath = isTestHost ? "/zkyq-web/prerelease/ifmEntry" : "/zkyq-web/pottingApi/information";
-            const getFuzzyVehicleInfoOptions = {
+            const getFuzzyVehicleOptions = {
                 "hostname": ztyqhost,
                 "port": hostport,
                 "method": "POST",
                 "path": hostpath,
                 "headers": {
                     "Content-Type": "application/json",
-                    "Content-Length": Buffer.byteLength(getFuzzyVehicleInfoPostData)
+                    "Content-Length": Buffer.byteLength(getFuzzyVehiclePostData)
                 }
             };
-            const getFuzzyVehicleInfoReq = http.request(getFuzzyVehicleInfoOptions, function (res) {
-                logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => getFuzzyVehicleInfoReq status: ${res.statusCode}`);
+            const getFuzzyVehicleReq = http.request(getFuzzyVehicleOptions, function (res) {
+                logInfo(options, `sn: ${sn}, getFuzzyVehicle => getFuzzyVehicleReq status: ${res.statusCode}`);
                 res.setEncoding("utf8");
-                let getFuzzyVehicleInfoResult = "";
+                let getFuzzyVehicleResult = "";
                 res.on("data", (body) => {
-                    getFuzzyVehicleInfoResult += body;
+                    getFuzzyVehicleResult += body;
                 });
                 res.on("end", () => {
-                    logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => End of getFuzzyVehicleInfoReq`);
-                    const repData = JSON.parse(getFuzzyVehicleInfoResult);
-                    logInfo(options, `sn: ${sn}, getFuzzyVehicleInfo => ReplyTime: ${new Date()} , getFuzzyVehicleInfoResult: ${JSON.stringify(getFuzzyVehicleInfoResult)}`);
+                    logInfo(options, `sn: ${sn}, getFuzzyVehicle => End of getFuzzyVehicleReq`);
+                    const repData = JSON.parse(getFuzzyVehicleResult);
+                    logInfo(options, `sn: ${sn}, getFuzzyVehicle => ReplyTime: ${new Date()} , getFuzzyVehicleResult: ${JSON.stringify(getFuzzyVehicleResult)}`);
                     if (repData["state"] === "1") {
                         let replyData = [];
                         if (repData["data"] && repData["data"].length > 0) {
                             const dataSet = repData["data"];
                             for (let data of dataSet) {
-                                let vehicleInfo = {
+                                let vehicle = {
                                     vehicleFgwCode: data["vehicleFgwCode"],
                                     vehicleFgwName: data["vehicleFgwName"],
                                     parentVehName: data["parentVehName"],
@@ -360,7 +360,7 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
                                     seatCount: data["seat"],
                                     standardName: data["standardName"]
                                 };
-                                replyData.push(vehicleInfo);
+                                replyData.push(vehicle);
                             }
                         }
                         resolve({
@@ -373,18 +373,18 @@ function getFuzzyVehicleInfo(brandName, // 品牌型号名称
                     }
                 });
                 res.on("error", (err) => {
-                    logError(options, `sn: ${sn}, Error on getFuzzyVehicleInfo: ${err}`);
+                    logError(options, `sn: ${sn}, Error on getFuzzyVehicle: ${err}`);
                     reject({
                         code: 500,
                         msg: err
                     });
                 });
             });
-            getFuzzyVehicleInfoReq.end(getFuzzyVehicleInfoPostData);
+            getFuzzyVehicleReq.end(getFuzzyVehiclePostData);
         });
     });
 }
-exports.getFuzzyVehicleInfo = getFuzzyVehicleInfo;
+exports.getFuzzyVehicle = getFuzzyVehicle;
 // 获取下期投保起期
 function getNextPolicyDate(responseNo, // 响应码
     licenseNo, // 车牌号码
@@ -507,15 +507,15 @@ exports.getNextPolicyDate = getNextPolicyDate;
 // 参考报价
 function getReferrencePrice(cityCode, // 行驶城市代码
     responseNo, // 响应码
-    carInfo, // 车辆信息
-    personInfo, // 人员信息
+    car, // 车辆信息
+    person, // 人员信息
     insurerCode, // 保险人代码
     coverageList, // 险别列表
     options // 可选参数
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+        logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, car: ${JSON.stringify(car)}, person: ${JSON.stringify(person)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("cityCode", cityCode),
             hive_verify_1.stringVerifier("responseNo", responseNo),
@@ -533,8 +533,8 @@ function getReferrencePrice(cityCode, // 行驶城市代码
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "cityCode": cityCode,
                 "responseNo": responseNo,
-                "carInfo": carInfo,
-                "personInfo": personInfo,
+                "carInfo": car,
+                "personInfo": person,
                 "insurerCode": insurerCode,
                 "coverageList": coverageList
             };
@@ -547,6 +547,7 @@ function getReferrencePrice(cityCode, // 行驶城市代码
             };
             const getReferrencePricePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
+            console.log(`sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
             let hostpath = isTestHost ? "/zkyq-web/calculate/entrance" : "/zkyq-web/calculate/entrance";
             const getReferrencePriceOptions = {
                 "hostname": ztyqhost,
@@ -608,15 +609,15 @@ function getAccuratePrice(thpBizID, // 请求方业务号
     responseNo, // 响应码
     biBeginDate, // 商业险起期
     ciBeginDate, // 交强险去起期
-    carInfo, // 车辆信息
-    personInfo, // 人员信息
+    car, // 车辆信息
+    person, // 人员信息
     insurerCode, // 保险人代码
     coverageList, // 险别列表
     options // 可选参数
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, carInfo: ${JSON.stringify(carInfo)}, personInfo: ${JSON.stringify(personInfo)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+        logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, car: ${JSON.stringify(car)}, person: ${JSON.stringify(person)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("thpBizID", thpBizID),
             hive_verify_1.stringVerifier("cityCode", cityCode),
@@ -640,8 +641,8 @@ function getAccuratePrice(thpBizID, // 请求方业务号
                 "responseNo": responseNo,
                 "biBeginDate": biBeginDate,
                 "ciBeginDate": ciBeginDate,
-                "carInfo": carInfo,
-                "personInfo": personInfo,
+                "carInfo": car,
+                "personInfo": person,
                 "channelCode": null,
                 "insurerCode": insurerCode,
                 "coverageList": coverageList
@@ -920,13 +921,13 @@ function getPaylink(bizID, // 业务号
 }
 exports.getPaylink = getPaylink;
 // 手机号验证码接口
-function getUndInfo(bizID, // 业务号
+function getUnd(bizID, // 业务号
     verificationCode, // 手机号验证码
     options // 可选参数
     ) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getUndInfo => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
+        logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("bizID", bizID),
             hive_verify_1.stringVerifier("verificationCode", verificationCode)
@@ -938,7 +939,7 @@ function getUndInfo(bizID, // 业务号
         })) {
         }
         return new Promise((resolve, reject) => {
-            const getUndInfoSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+            const getUndSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "bizID": bizID,
@@ -946,33 +947,33 @@ function getUndInfo(bizID, // 业务号
             };
             const req = {
                 "msg": "手机号验证码",
-                "sendTime": getUndInfoSendTimeString,
+                "sendTime": getUndSendTimeString,
                 "data": requestData
             };
-            const getUndInfoPostData = JSON.stringify(req);
-            logInfo(options, `sn: ${sn}, getUndInfo => ReplyTime: ${new Date()} , getUndInfoPostData: ${getUndInfoPostData}`);
+            const getUndPostData = JSON.stringify(req);
+            logInfo(options, `sn: ${sn}, getUnd => ReplyTime: ${new Date()} , getUndPostData: ${getUndPostData}`);
             let hostpath = isTestHost ? "/zkyq-web/preRelesePay/getUndInfo" : "/zkyq-web/pottingApi/getUndInfo";
-            const getUndInfoOptions = {
+            const getUndOptions = {
                 "hostname": ztyqhost,
                 "port": hostport,
                 "method": "POST",
                 "path": hostpath,
                 "headers": {
                     "Content-Type": "application/json",
-                    "Content-Length": Buffer.byteLength(getUndInfoPostData)
+                    "Content-Length": Buffer.byteLength(getUndPostData)
                 }
             };
-            const getUndInfoReq = http.request(getUndInfoOptions, function (res) {
-                logInfo(options, `sn: ${sn}, getUndInfo => getUndInfoReq status: ${res.statusCode}`);
+            const getUndReq = http.request(getUndOptions, function (res) {
+                logInfo(options, `sn: ${sn}, getUnd => getUndReq status: ${res.statusCode}`);
                 res.setEncoding("utf8");
-                let getUndInfoResult = "";
+                let getUndResult = "";
                 res.on("data", (body) => {
-                    getUndInfoResult += body;
+                    getUndResult += body;
                 });
                 res.on("end", () => {
-                    logInfo(options, `sn: ${sn}, getUndInfo => End of getUndInfoReq`);
-                    const repData = JSON.parse(getUndInfoResult);
-                    logInfo(options, `sn: ${sn}, getUndInfo => getUndInfoResult: ${getUndInfoResult}`);
+                    logInfo(options, `sn: ${sn}, getUnd => End of getUndReq`);
+                    const repData = JSON.parse(getUndResult);
+                    logInfo(options, `sn: ${sn}, getUnd => getUndResult: ${getUndResult}`);
                     if (repData["state"] === "1") {
                         let replyData = {
                             biProposalNo: repData["data"]["biProposalNo"],
@@ -993,18 +994,18 @@ function getUndInfo(bizID, // 业务号
                     }
                 });
                 res.on("error", (err) => {
-                    logError(options, `sn: ${sn}, Error on getUndInfo: ${err}`);
+                    logError(options, `sn: ${sn}, Error on getUnd: ${err}`);
                     reject({
                         code: 500,
                         msg: err
                     });
                 });
             });
-            getUndInfoReq.end(getUndInfoPostData);
+            getUndReq.end(getUndPostData);
         });
     });
 }
-exports.getUndInfo = getUndInfo;
+exports.getUnd = getUnd;
 // 输出日志
 function logInfo(options, msg) {
     if (options && options.log) {
