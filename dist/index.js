@@ -691,7 +691,7 @@ function getAccuratePrice(thpBizID, // 请求方业务号
                             ciBeginDate: repData["data"][0]["ciBeginDate"],
                             ciPremium: repData["data"][0]["ciPremium"],
                             carshipTax: repData["data"][0]["carshipTax"],
-                            spAgreement: repData["data"][0][""],
+                            spAgreement: repData["data"][0]["spAgreement"],
                             cIntegral: repData["data"][0]["cIntegral"],
                             bIntegral: repData["data"][0]["bIntegral"],
                             showCiCost: repData["data"][0]["showCiCost"],
