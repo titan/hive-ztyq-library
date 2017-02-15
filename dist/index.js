@@ -10,10 +10,109 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const http = require("http");
 const hive_verify_1 = require("hive-verify");
 const crypto = require("crypto");
-// 判断智通引擎库在测试服务器运行，还是正式服务器
-let ztyqhost = process.env["WX_ENV"] === "test" ? "139.198.1.73" : "api.ztwltech.com";
-let isTestHost = process.env["WX_ENV"] === "test" ? true : false;
-let hostport = process.env["WX_ENV"] === "test" ? 8081 : 80;
+// 查询城市
+function getCity(provinceCode, // 省国标码
+    options // 可选参数
+    ) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const sn = crypto.randomBytes(64).toString("base64");
+        logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
+        if (!hive_verify_1.verify([
+            hive_verify_1.stringVerifier("provinceCode", provinceCode)
+        ], (errors) => {
+            return Promise.reject({
+                code: 403,
+                msg: errors.join("\n")
+            });
+        })) {
+        }
+        return new Promise((resolve, reject) => {
+            const getCityTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+            const requestData = {
+                "applicationID": "FENGCHAOHUZHU_SERVICE",
+                "provinceCode": provinceCode
+            };
+            const req = {
+                "operType": "QCC",
+                "msg": "",
+                "sendTime": getCityTimeString,
+                "sign": null,
+                "data": requestData
+            };
+            const getCityPostData = JSON.stringify(req);
+            logInfo(options, `sn: ${sn}, getCity => getCityPostData: ${getCityPostData}`);
+            let hostpath = "/zkyq-web/city/queryCity";
+            const getCityOptions = {
+                "hostname": "api.ztwltech.com",
+                "port": 80,
+                "method": "POST",
+                "path": "/zkyq-web/city/queryCity",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Content-Length": Buffer.byteLength(getCityPostData)
+                }
+            };
+            const getCityReq = http.request(getCityOptions, function (res) {
+                logInfo(options, `sn: ${sn}, getCity => getCityReq status: ${res.statusCode}`);
+                res.setEncoding("utf8");
+                let getCityResult = "";
+                res.on("data", (body) => {
+                    getCityResult += body;
+                });
+                res.on("end", () => {
+                    logInfo(options, `sn: ${sn}, getCity => End of getCityReq`);
+                    const repData = JSON.parse(getCityResult);
+                    logInfo(options, `sn: ${sn}, getCity => ReplyTime: ${new Date()} , getCityResult: ${JSON.stringify(getCityResult)}`);
+                    if (repData["state"] === "1") {
+                        if (repData["data"] && repData["data"].length > 0) {
+                            let replyData = [];
+                            let cityList = repData["data"];
+                            for (let ct of cityList) {
+                                const city = {
+                                    cityCode: ct["cityCode"],
+                                    cityName: ct["cityName"],
+                                    cityPlate: ct["cityPlate"]
+                                };
+                                replyData.push(city);
+                            }
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
+                    }
+                    else {
+                        reject({
+                            code: 400,
+                            msg: repData["msg"] + ": " + repData["msgCode"]
+                        });
+                    }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
+                });
+                res.on("error", (err) => {
+                    logError(options, `sn: ${sn}, Error on getCity: ${err}`);
+                    reject({
+                        code: 500,
+                        msg: err
+                    });
+                });
+            });
+            getCityReq.end(getCityPostData);
+        });
+    });
+}
+exports.getCity = getCity;
 // 查询车辆信息(根据车牌号查询)
 function getVehicleByLicense(licenseNo, // 车牌号码
     options // 可选参数
@@ -45,12 +144,11 @@ function getVehicleByLicense(licenseNo, // 车牌号码
             };
             const getVehicleByLicensePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getVehicleByLicense => getVehicleByLicensePostData: ${getVehicleByLicensePostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/prerelease/ifmEntry" : "/zkyq-web/pottingApi/information";
             const getVehicleByLicenseOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/pottingApi/information",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getVehicleByLicensePostData)
@@ -68,21 +166,38 @@ function getVehicleByLicense(licenseNo, // 车牌号码
                     const repData = JSON.parse(getVehicleByLicenseResult);
                     logInfo(options, `sn: ${sn}, getVehicleByLicense => ReplyTime: ${new Date()} , getVehicleByLicenseResult: ${JSON.stringify(getVehicleByLicenseResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            responseNo: repData["data"]["responseNo"],
-                            engineNo: repData["data"]["engineNo"],
-                            licenseNo: repData["data"]["licenseNo"],
-                            frameNo: repData["data"]["frameNo"],
-                            registerDate: repData["data"]["firstRegisterDate"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"]) {
+                            let replyData = {
+                                responseNo: repData["data"]["responseNo"],
+                                engineNo: repData["data"]["engineNo"],
+                                licenseNo: repData["data"]["licenseNo"],
+                                frameNo: repData["data"]["frameNo"],
+                                registerDate: repData["data"]["firstRegisterDate"]
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({
+                            code: 400,
+                            msg: repData["msg"] + ": " + repData["msgCode"]
+                        });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getVehicleByLicense: ${err}`);
@@ -128,12 +243,11 @@ function getVehicleByFrameNo(frameNo, // 车架号
             };
             const getVehicleByFrameNoPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getVehicleByFrameNo => getVehicleByFrameNoPostData: ${getVehicleByFrameNoPostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/prerelease/ifmEntry" : "/zkyq-web/pottingApi/queryCarinfoByVin";
             const getVehicleByFrameNoOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/pottingApi/queryCarinfoByVin",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getVehicleByFrameNoPostData)
@@ -151,21 +265,35 @@ function getVehicleByFrameNo(frameNo, // 车架号
                     const repData = JSON.parse(getVehicleByFrameNoResult);
                     logInfo(options, `sn: ${sn}, getVehicleByFrameNo => ReplyTime: ${new Date()} , getVehicleByFrameNoResult: ${JSON.stringify(getVehicleByFrameNoResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            responseNo: repData["data"]["responseNo"],
-                            engineNo: repData["data"]["engineNo"],
-                            licenseNo: repData["data"]["licenseNo"],
-                            frameNo: repData["data"]["frameNo"],
-                            registerDate: repData["data"]["firstRegisterDate"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"]) {
+                            let replyData = {
+                                responseNo: repData["data"]["responseNo"],
+                                engineNo: repData["data"]["engineNo"],
+                                licenseNo: repData["data"]["licenseNo"],
+                                frameNo: repData["data"]["frameNo"],
+                                registerDate: repData["data"]["firstRegisterDate"]
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getVehicleByFrameNo: ${err}`);
@@ -217,12 +345,11 @@ function getCarModel(frameNo, // 车架号
             };
             const getCarModelPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getCarModel => getCarModelPostData: ${getCarModelPostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/prerelease/ifmEntry" : "/zkyq-web/pottingApi/information";
             const getCarModelOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/pottingApi/information",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getCarModelPostData)
@@ -240,31 +367,50 @@ function getCarModel(frameNo, // 车架号
                     const repData = JSON.parse(getCarModelResult);
                     logInfo(options, `sn: ${sn}, getCarModel => ReplyTime: ${new Date()} , getCarModelResult: ${JSON.stringify(getCarModelResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            vehicleFgwCode: repData["data"][0]["vehicleFgwCode"],
-                            vehicleFgwName: repData["data"][0]["vehicleFgwName"],
-                            parentVehName: repData["data"][0]["parentVehName"],
-                            modelCode: repData["data"][0]["brandCode"],
-                            brandName: repData["data"][0]["brandName"],
-                            engineDesc: repData["data"][0]["engineDesc"],
-                            familyName: repData["data"][0]["familyName"],
-                            gearboxType: repData["data"][0]["gearboxType"],
-                            remark: repData["data"][0]["remark"],
-                            newCarPrice: repData["data"][0]["newCarPrice"],
-                            purchasePriceTax: repData["data"][0]["purchasePriceTax"],
-                            importFlag: repData["data"][0]["importFlag"],
-                            purchasePrice: repData["data"][0]["purchasePrice"],
-                            seatCount: repData["data"][0]["seat"],
-                            standardName: repData["data"][0]["standardName"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"] && repData["data"].length > 0) {
+                            let replyData = [];
+                            const dataSet = repData["data"];
+                            for (let data of dataSet) {
+                                let vehicle = {
+                                    vehicleFgwCode: data["vehicleFgwCode"],
+                                    vehicleFgwName: data["vehicleFgwName"],
+                                    parentVehName: data["parentVehName"],
+                                    modelCode: data["brandCode"],
+                                    brandName: data["brandName"],
+                                    engineDesc: data["engineDesc"],
+                                    familyName: data["familyName"],
+                                    gearboxType: data["gearboxType"],
+                                    remark: data["remark"],
+                                    newCarPrice: data["newCarPrice"],
+                                    purchasePriceTax: data["purchasePriceTax"],
+                                    importFlag: data["importFlag"],
+                                    purchasePrice: data["purchasePrice"],
+                                    seatCount: data["seat"],
+                                    standardName: data["standardName"]
+                                };
+                                replyData.push(vehicle);
+                            }
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getCarModel: ${err}`);
@@ -316,12 +462,11 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
             };
             const getFuzzyVehiclePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getFuzzyVehicle => getFuzzyVehiclePostData: ${getFuzzyVehiclePostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/prerelease/ifmEntry" : "/zkyq-web/pottingApi/information";
             const getFuzzyVehicleOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/pottingApi/information",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getFuzzyVehiclePostData)
@@ -339,8 +484,8 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
                     const repData = JSON.parse(getFuzzyVehicleResult);
                     logInfo(options, `sn: ${sn}, getFuzzyVehicle => ReplyTime: ${new Date()} , getFuzzyVehicleResult: ${JSON.stringify(getFuzzyVehicleResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = [];
                         if (repData["data"] && repData["data"].length > 0) {
+                            let replyData = [];
                             const dataSet = repData["data"];
                             for (let data of dataSet) {
                                 let vehicle = {
@@ -362,15 +507,27 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
                                 };
                                 replyData.push(vehicle);
                             }
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
                         }
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getFuzzyVehicle: ${err}`);
@@ -455,12 +612,11 @@ function getNextPolicyDate(responseNo, // 响应码
             };
             const getNextPolicyDatePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getNextPolicyDate => getNextPolicyDatePostData: ${getNextPolicyDatePostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/preRelcalculate/fuzzy" : "/zkyq-web/calculate/fuzzy";
             const getNextPolicyDateOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/calculate/fuzzy",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getNextPolicyDatePostData)
@@ -478,18 +634,32 @@ function getNextPolicyDate(responseNo, // 响应码
                     const repData = JSON.parse(getNextPolicyDateResult);
                     logInfo(options, `sn: ${sn}, getNextPolicyDate => ReplyTime: ${new Date()} , getNextPolicyDateResult: ${JSON.stringify(getNextPolicyDateResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            ciLastEffectiveDate: repData["data"]["ciLastEffectiveDate"],
-                            biLastEffectiveDate: repData["data"]["biLastEffectiveDate"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"]) {
+                            let replyData = {
+                                ciLastEffectiveDate: repData["data"]["ciLastEffectiveDate"],
+                                biLastEffectiveDate: repData["data"]["biLastEffectiveDate"]
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getNextPolicyDate: ${err}`);
@@ -548,12 +718,11 @@ function getReferrencePrice(cityCode, // 行驶城市代码
             const getReferrencePricePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
             console.log(`sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/calculate/entrance" : "/zkyq-web/calculate/entrance";
             const getReferrencePriceOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/calculate/entrance",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getReferrencePricePostData)
@@ -571,24 +740,38 @@ function getReferrencePrice(cityCode, // 行驶城市代码
                     const repData = JSON.parse(getReferrencePriceResult);
                     logInfo(options, `sn: ${sn}, getReferrencePrice => ReplyTime: ${new Date()} , getReferrencePriceResult: ${JSON.stringify(getReferrencePriceResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            insurerCode: repData["data"][0]["insurerCode"],
-                            biBeginDate: repData["data"][0]["biBeginDate"],
-                            biPremium: repData["data"][0]["biPremium"],
-                            coverageList: repData["data"][0]["coverageList"],
-                            integral: repData["data"][0]["integral"],
-                            ciBeginDate: repData["data"][0]["ciBeginDate"],
-                            ciPremium: repData["data"][0]["ciPremium"],
-                            carshipTax: repData["data"][0]["carshipTax"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"] && repData["data"].length > 0) {
+                            let replyData = {
+                                insurerCode: repData["data"][0]["insurerCode"],
+                                biBeginDate: repData["data"][0]["biBeginDate"],
+                                biPremium: repData["data"][0]["biPremium"],
+                                coverageList: repData["data"][0]["coverageList"],
+                                integral: repData["data"][0]["integral"],
+                                ciBeginDate: repData["data"][0]["ciBeginDate"],
+                                ciPremium: repData["data"][0]["ciPremium"],
+                                carshipTax: repData["data"][0]["carshipTax"]
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getReferrencePrice: ${err}`);
@@ -656,12 +839,11 @@ function getAccuratePrice(thpBizID, // 请求方业务号
             };
             const getAccuratePricePostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getAccuratePrice => getAccuratePricePostData: ${getAccuratePricePostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/preRelcalculate/CalculateApi" : "/zkyq-web/pottingApi/CalculateApi";
             const getAccuratePriceOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/pottingApi/CalculateApi",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getAccuratePricePostData)
@@ -679,33 +861,47 @@ function getAccuratePrice(thpBizID, // 请求方业务号
                     const repData = JSON.parse(getAccuratePriceResult);
                     logInfo(options, `sn: ${sn}, getAccuratePrice => ReplyTime: ${new Date()} , getAccuratePriceResult: ${JSON.stringify(getAccuratePriceResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            insurerCode: repData["data"][0]["insurerCode"],
-                            channelCode: repData["data"][0]["channelCode"],
-                            thpBizID: repData["data"][0]["thpBizID"],
-                            bizID: repData["data"][0]["bizID"],
-                            biBeginDate: repData["data"][0]["biBeginDate"],
-                            biPremium: repData["data"][0]["biPremium"],
-                            coverageList: repData["data"][0]["coverageList"],
-                            integral: repData["data"][0]["integral"],
-                            ciBeginDate: repData["data"][0]["ciBeginDate"],
-                            ciPremium: repData["data"][0]["ciPremium"],
-                            carshipTax: repData["data"][0]["carshipTax"],
-                            spAgreement: repData["data"][0]["spAgreement"],
-                            cIntegral: repData["data"][0]["cIntegral"],
-                            bIntegral: repData["data"][0]["bIntegral"],
-                            showCiCost: repData["data"][0]["showCiCost"],
-                            showBiCost: repData["data"][0]["showBiCost"],
-                            showSumIntegral: repData["data"][0]["showSumIntegral"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"] && repData["data"].length > 0) {
+                            let replyData = {
+                                insurerCode: repData["data"][0]["insurerCode"],
+                                channelCode: repData["data"][0]["channelCode"],
+                                thpBizID: repData["data"][0]["thpBizID"],
+                                bizID: repData["data"][0]["bizID"],
+                                biBeginDate: repData["data"][0]["biBeginDate"],
+                                biPremium: repData["data"][0]["biPremium"],
+                                coverageList: repData["data"][0]["coverageList"],
+                                integral: repData["data"][0]["integral"],
+                                ciBeginDate: repData["data"][0]["ciBeginDate"],
+                                ciPremium: repData["data"][0]["ciPremium"],
+                                carshipTax: repData["data"][0]["carshipTax"],
+                                spAgreement: repData["data"][0]["spAgreement"],
+                                cIntegral: repData["data"][0]["cIntegral"],
+                                bIntegral: repData["data"][0]["bIntegral"],
+                                showCiCost: repData["data"][0]["showCiCost"],
+                                showBiCost: repData["data"][0]["showBiCost"],
+                                showSumIntegral: repData["data"][0]["showSumIntegral"]
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getAccuratePrice: ${err}`);
@@ -786,12 +982,11 @@ function applyPolicyCheck(insurerCode, // 保险人代码
             };
             const applyPolicyCheckPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/preRelesePay/reqRes" : "/zkyq-web/apiPay/reqRes";
             const applyPolicyCheckOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/apiPay/reqRes",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(applyPolicyCheckPostData)
@@ -809,20 +1004,34 @@ function applyPolicyCheck(insurerCode, // 保险人代码
                     const repData = JSON.parse(applyPolicyCheckResult);
                     logInfo(options, `sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${JSON.stringify(applyPolicyCheckResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            biProposalNo: repData["data"]["biProposalNo"],
-                            ciProposalNo: repData["data"]["ciProposalNo"],
-                            payLink: repData["data"]["payLink"],
-                            synchFlag: repData["data"]["synchFlag"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"]) {
+                            let replyData = {
+                                biProposalNo: repData["data"]["biProposalNo"],
+                                ciProposalNo: repData["data"]["ciProposalNo"],
+                                payLink: repData["data"]["payLink"],
+                                synchFlag: repData["data"]["synchFlag"]
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on applyPolicyCheck: ${err}`);
@@ -866,12 +1075,11 @@ function getPaylink(bizID, // 业务号
             };
             const paylinkPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getPayLink => paylinkPostData: ${paylinkPostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/preRelesePay/reGetPayLink" : "/zkyq-web/pottingApi/reGetPayLink";
             const paylinkOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/pottingApi/reGetPayLink",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(paylinkPostData)
@@ -889,16 +1097,24 @@ function getPaylink(bizID, // 业务号
                     const repData = JSON.parse(paylinkResult);
                     logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${JSON.stringify(paylinkResult)}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            biProposalNo: repData["data"]["biProposalNo"],
-                            ciProposalNo: repData["data"]["ciProposalNo"],
-                            payLink: repData["data"]["payLink"],
-                            bizID: repData["data"]["bizID"]
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"]) {
+                            let replyData = {
+                                biProposalNo: repData["data"]["biProposalNo"],
+                                ciProposalNo: repData["data"]["ciProposalNo"],
+                                payLink: repData["data"]["payLink"],
+                                bizID: repData["data"]["bizID"]
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({
@@ -906,6 +1122,12 @@ function getPaylink(bizID, // 业务号
                             msg: repData["msg"] + ": " + repData["msgCode"]
                         });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getPayLink: ${err}`);
@@ -952,12 +1174,11 @@ function getUnd(bizID, // 业务号
             };
             const getUndPostData = JSON.stringify(req);
             logInfo(options, `sn: ${sn}, getUnd => ReplyTime: ${new Date()} , getUndPostData: ${getUndPostData}`);
-            let hostpath = isTestHost ? "/zkyq-web/preRelesePay/getUndInfo" : "/zkyq-web/pottingApi/getUndInfo";
             const getUndOptions = {
-                "hostname": ztyqhost,
-                "port": hostport,
+                "hostname": "api.ztwltech.com",
+                "port": 80,
                 "method": "POST",
-                "path": hostpath,
+                "path": "/zkyq-web/pottingApi/getUndInfo",
                 "headers": {
                     "Content-Type": "application/json",
                     "Content-Length": Buffer.byteLength(getUndPostData)
@@ -975,16 +1196,24 @@ function getUnd(bizID, // 业务号
                     const repData = JSON.parse(getUndResult);
                     logInfo(options, `sn: ${sn}, getUnd => getUndResult: ${getUndResult}`);
                     if (repData["state"] === "1") {
-                        let replyData = {
-                            biProposalNo: repData["data"]["biProposalNo"],
-                            ciProposalNo: repData["data"]["ciProposalNo"],
-                            synchFlag: repData["data"]["synchFlag"],
-                            payLink: repData["data"]["payLink"],
-                        };
-                        resolve({
-                            code: 200,
-                            data: replyData
-                        });
+                        if (repData["data"]) {
+                            let replyData = {
+                                biProposalNo: repData["data"]["biProposalNo"],
+                                ciProposalNo: repData["data"]["ciProposalNo"],
+                                synchFlag: repData["data"]["synchFlag"],
+                                payLink: repData["data"]["payLink"],
+                            };
+                            resolve({
+                                code: 200,
+                                data: replyData
+                            });
+                        }
+                        else {
+                            resolve({
+                                code: 404,
+                                data: "Not found!"
+                            });
+                        }
                     }
                     else {
                         reject({
@@ -992,6 +1221,12 @@ function getUnd(bizID, // 业务号
                             msg: repData["msg"] + ": " + repData["msgCode"]
                         });
                     }
+                });
+                res.setTimeout(6000, () => {
+                    reject({
+                        code: 408,
+                        msg: "智通接口超时"
+                    });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getUnd: ${err}`);

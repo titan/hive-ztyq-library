@@ -1,4 +1,9 @@
 import { Logger } from "bunyan";
+export interface City {
+    cityCode: string;
+    cityName: string;
+    cityPlate: string;
+}
 export interface Vehicle {
     responseNo: string;
     engineNo: string;
@@ -15,8 +20,8 @@ export interface CarModel {
     engineDesc: string;
     familyName: string;
     gearboxType: string;
-    remark: string;
     newCarPrice: string;
+    remark: string;
     purchasePriceTax: string;
     importFlag: string;
     purchasePrice: string;
@@ -86,6 +91,7 @@ export interface Paylink {
 export interface Option {
     log: Logger;
 }
+export declare function getCity(provinceCode: string, options: Option): Promise<any>;
 export declare function getVehicleByLicense(licenseNo: string, options?: Option): Promise<any>;
 export declare function getVehicleByFrameNo(frameNo: string, options?: Option): Promise<any>;
 export declare function getCarModel(frameNo: string, licenseNo: string, responseNo: string, options?: Option): Promise<any>;
