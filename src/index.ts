@@ -46,26 +46,6 @@ export interface NextPolicyDate {
   biLastEffectiveDate: string; // 下期商业险起期
 }
 
-// 车辆信息
-export interface Car {
-  licenseNo: string; // 车牌号码
-  frameNo?: string; // 车架号(VIN码)
-  modelCode: string; // 品牌型号代码
-  engineNo: string; // 发动机号码
-  isTrans?: string; // 是否过户
-  transDate?: string; // 过户日期
-  registerDate: string; // 初登日期
-}
-
-// 人员信息
-export interface Person {
-  ownerName?: string; // 车主姓名
-  ownerID?: string; // 车主身份证号
-  ownerMobile?: string; // 车主手机号
-  insuredName?: string; // 被保人姓名
-  insuredID?: string; // 被保人身份证号
-  insuredMobile?: string; // 被保人手机号
-}
 // 险别信息
 export interface Coverage {
   coverageCode: string; // 险别代码
@@ -773,14 +753,22 @@ export async function getNextPolicyDate(
 export async function getReferrencePrice(
   cityCode: string, // 行驶城市代码
   responseNo: string, // 响应码
-  car: Car, // 车辆信息
-  person: Person, // 人员信息
+  licenseNo: string, // 车牌号码
+  frameNo: string, // 车架号(VIN码)
+  modelCode: string, // 品牌型号代码
+  engineNo: string, // 发动机号
+  isTrans: string, // 是否过户车
+  transDate: string, // 过户日期
+  registerDate: string, // 初登日期
+  ownerName: string, // 车主姓名
+  ownerID: string, // 车主身份证号
+  ownerMobile: string, // 车主手机号
   insurerCode: string, // 保险人代码
   coverageList: Coverage[], // 险别列表
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
-  logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, car: ${JSON.stringify(car)}, person: ${JSON.stringify(person)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+  logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("cityCode", cityCode),
     stringVerifier("responseNo", responseNo),
@@ -795,12 +783,26 @@ export async function getReferrencePrice(
   }
   return new Promise((resolve, reject) => {
     const getReferrencePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+    const carInfo = {
+      "licenseNo": licenseNo,
+      "frameNo": frameNo,
+      "modelCode": modelCode,
+      "engineNo": engineNo,
+      "isTrans": isTrans,
+      "transDate": transDate,
+      "registerDate": registerDate
+    };
+    const personInfo = {
+      "ownerName": ownerName,
+      "ownerID": ownerID,
+      "ownerMobile": ownerMobile
+    };
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
       "cityCode": cityCode,
       "responseNo": responseNo,
-      "carInfo": car,
-      "personInfo": person,
+      "carInfo": carInfo,
+      "personInfo": personInfo,
       "insurerCode": insurerCode,
       "coverageList": coverageList
     };
@@ -887,14 +889,25 @@ export async function getAccuratePrice(
   responseNo: string, // 响应码
   biBeginDate: string, // 商业险起期
   ciBeginDate: string, // 交强险去起期
-  car: Car, // 车辆信息
-  person: Person, // 人员信息
+  licenseNo: string, // 车牌号码
+  frameNo: string, // 车架号(VIN码)
+  modelCode: string, // 品牌型号代码
+  engineNo: string, // 发动机号
+  isTrans: string, // 是否过户车
+  transDate: string, // 过户日期
+  registerDate: string, // 初登日期
+  ownerName: string, // 车主姓名
+  ownerID: string, // 车主身份证号
+  ownerMobile: string, // 车主手机号
+  insuredName: string, // 被保人姓名
+  insuredID: string, // 被保人身份证号
+  insuredMobile: string, // 被保人手机号
   insurerCode: string, // 保险人代码
   coverageList: Coverage[], // 险别列表
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = crypto.randomBytes(64).toString("base64");
-  logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, car: ${JSON.stringify(car)}, person: ${JSON.stringify(person)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+  logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("thpBizID", thpBizID),
     stringVerifier("cityCode", cityCode),
@@ -912,6 +925,23 @@ export async function getAccuratePrice(
   }
   return new Promise((resolve, reject) => {
     const getAccuratePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+    const carInfo = {
+      "licenseNo": licenseNo,
+      "frameNo": frameNo,
+      "modelCode": modelCode,
+      "engineNo": engineNo,
+      "isTrans": isTrans,
+      "transDate": transDate,
+      "registerDate": registerDate
+    };
+    const personInfo = {
+      "ownerName": ownerName,
+      "ownerID": ownerID,
+      "ownerMobile": ownerMobile,
+      "insuredName": insuredName,
+      "insuredID": insuredID,
+      "insuredMobile": insuredMobile
+    };
     const requestData = {
       "applicationID": "FENGCHAOHUZHU_SERVICE",
       "thpBizID": thpBizID,
@@ -919,8 +949,8 @@ export async function getAccuratePrice(
       "responseNo": responseNo,
       "biBeginDate": biBeginDate,
       "ciBeginDate": ciBeginDate,
-      "carInfo": car,
-      "personInfo": person,
+      "carInfo": carInfo,
+      "personInfo": personInfo,
       "channelCode": null, // 根据智通文档,暂时为 null
       "insurerCode": insurerCode,
       "coverageList": coverageList

@@ -2,9 +2,9 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
         function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments)).next());
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 const http = require("http");
@@ -13,7 +13,7 @@ const crypto = require("crypto");
 // 查询城市
 function getCity(provinceCode, // 省国标码
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
@@ -116,7 +116,7 @@ exports.getCity = getCity;
 // 查询车辆信息(根据车牌号查询)
 function getVehicleByLicense(licenseNo, // 车牌号码
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
@@ -215,7 +215,7 @@ exports.getVehicleByLicense = getVehicleByLicense;
 // 查询车辆信息(根据车架号据查询)
 function getVehicleByFrameNo(frameNo, // 车架号
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
@@ -313,7 +313,7 @@ function getCarModel(frameNo, // 车架号
     licenseNo, // 车牌信息
     responseNo, // 响应码
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
@@ -430,7 +430,7 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
     row, // 行数
     page, // 当前页
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
@@ -558,7 +558,7 @@ function getNextPolicyDate(responseNo, // 响应码
     ownerIdNo, // 车主身份证号
     registerDate, // 初登日期
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
@@ -677,15 +677,23 @@ exports.getNextPolicyDate = getNextPolicyDate;
 // 参考报价
 function getReferrencePrice(cityCode, // 行驶城市代码
     responseNo, // 响应码
-    car, // 车辆信息
-    person, // 人员信息
+    licenseNo, // 车牌号码
+    frameNo, // 车架号(VIN码)
+    modelCode, // 品牌型号代码
+    engineNo, // 发动机号
+    isTrans, // 是否过户车
+    transDate, // 过户日期
+    registerDate, // 初登日期
+    ownerName, // 车主姓名
+    ownerID, // 车主身份证号
+    ownerMobile, // 车主手机号
     insurerCode, // 保险人代码
     coverageList, // 险别列表
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, car: ${JSON.stringify(car)}, person: ${JSON.stringify(person)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+        logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("cityCode", cityCode),
             hive_verify_1.stringVerifier("responseNo", responseNo),
@@ -699,12 +707,26 @@ function getReferrencePrice(cityCode, // 行驶城市代码
         }
         return new Promise((resolve, reject) => {
             const getReferrencePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+            const carInfo = {
+                "licenseNo": licenseNo,
+                "frameNo": frameNo,
+                "modelCode": modelCode,
+                "engineNo": engineNo,
+                "isTrans": isTrans,
+                "transDate": transDate,
+                "registerDate": registerDate
+            };
+            const personInfo = {
+                "ownerName": ownerName,
+                "ownerID": ownerID,
+                "ownerMobile": ownerMobile
+            };
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "cityCode": cityCode,
                 "responseNo": responseNo,
-                "carInfo": car,
-                "personInfo": person,
+                "carInfo": carInfo,
+                "personInfo": personInfo,
                 "insurerCode": insurerCode,
                 "coverageList": coverageList
             };
@@ -792,15 +814,26 @@ function getAccuratePrice(thpBizID, // 请求方业务号
     responseNo, // 响应码
     biBeginDate, // 商业险起期
     ciBeginDate, // 交强险去起期
-    car, // 车辆信息
-    person, // 人员信息
+    licenseNo, // 车牌号码
+    frameNo, // 车架号(VIN码)
+    modelCode, // 品牌型号代码
+    engineNo, // 发动机号
+    isTrans, // 是否过户车
+    transDate, // 过户日期
+    registerDate, // 初登日期
+    ownerName, // 车主姓名
+    ownerID, // 车主身份证号
+    ownerMobile, // 车主手机号
+    insuredName, // 被保人姓名
+    insuredID, // 被保人身份证号
+    insuredMobile, // 被保人手机号
     insurerCode, // 保险人代码
     coverageList, // 险别列表
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
-        logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, car: ${JSON.stringify(car)}, person: ${JSON.stringify(person)}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+        logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("thpBizID", thpBizID),
             hive_verify_1.stringVerifier("cityCode", cityCode),
@@ -817,6 +850,23 @@ function getAccuratePrice(thpBizID, // 请求方业务号
         }
         return new Promise((resolve, reject) => {
             const getAccuratePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+            const carInfo = {
+                "licenseNo": licenseNo,
+                "frameNo": frameNo,
+                "modelCode": modelCode,
+                "engineNo": engineNo,
+                "isTrans": isTrans,
+                "transDate": transDate,
+                "registerDate": registerDate
+            };
+            const personInfo = {
+                "ownerName": ownerName,
+                "ownerID": ownerID,
+                "ownerMobile": ownerMobile,
+                "insuredName": insuredName,
+                "insuredID": insuredID,
+                "insuredMobile": insuredMobile
+            };
             const requestData = {
                 "applicationID": "FENGCHAOHUZHU_SERVICE",
                 "thpBizID": thpBizID,
@@ -824,8 +874,8 @@ function getAccuratePrice(thpBizID, // 请求方业务号
                 "responseNo": responseNo,
                 "biBeginDate": biBeginDate,
                 "ciBeginDate": ciBeginDate,
-                "carInfo": car,
-                "personInfo": person,
+                "carInfo": carInfo,
+                "personInfo": personInfo,
                 "channelCode": null,
                 "insurerCode": insurerCode,
                 "coverageList": coverageList
@@ -932,7 +982,7 @@ function applyPolicyCheck(insurerCode, // 保险人代码
     policyEmail, // 保单邮箱
     applicantUrl, // 支付成功后跳转地址, 后端和前段协定
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
@@ -1049,7 +1099,7 @@ exports.applyPolicyCheck = applyPolicyCheck;
 // 获取支付链接
 function getPaylink(bizID, // 业务号
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
@@ -1146,7 +1196,7 @@ exports.getPaylink = getPaylink;
 function getUnd(bizID, // 业务号
     verificationCode, // 手机号验证码
     options // 可选参数
-    ) {
+) {
     return __awaiter(this, void 0, void 0, function* () {
         const sn = crypto.randomBytes(64).toString("base64");
         logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
