@@ -22,7 +22,7 @@ function getCity(provinceCode, // 省国标码
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -83,28 +83,28 @@ function getCity(provinceCode, // 省国标码
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
                         reject({
                             code: 400,
-                            msg: repData["msg"] + ": " + repData["msgCode"]
+                            message: repData["msg"] + ": " + repData["msgCode"]
                         });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getCity: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -125,7 +125,7 @@ function getVehicleByLicense(licenseNo, // 车牌号码
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -182,28 +182,28 @@ function getVehicleByLicense(licenseNo, // 车牌号码
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
                         reject({
                             code: 400,
-                            msg: repData["msg"] + ": " + repData["msgCode"]
+                            message: repData["msg"] + ": " + repData["msgCode"]
                         });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getVehicleByLicense: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -224,7 +224,7 @@ function getVehicleByFrameNo(frameNo, // 车架号
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -281,25 +281,25 @@ function getVehicleByFrameNo(frameNo, // 车架号
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getVehicleByFrameNo: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -324,7 +324,7 @@ function getCarModel(frameNo, // 车架号
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -398,25 +398,25 @@ function getCarModel(frameNo, // 车架号
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getCarModel: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -441,7 +441,7 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -515,25 +515,25 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getFuzzyVehicle: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -580,7 +580,7 @@ function getNextPolicyDate(responseNo, // 响应码
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -647,25 +647,25 @@ function getNextPolicyDate(responseNo, // 响应码
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getNextPolicyDate: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -701,7 +701,7 @@ function getReferrencePrice(cityCode, // 行驶城市代码
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -781,25 +781,25 @@ function getReferrencePrice(cityCode, // 行驶城市代码
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getReferrencePrice: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -844,7 +844,7 @@ function getAccuratePrice(thpBizID, // 请求方业务号
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -939,25 +939,25 @@ function getAccuratePrice(thpBizID, // 请求方业务号
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getAccuratePrice: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -1001,7 +1001,7 @@ function applyPolicyCheck(insurerCode, // 保险人代码
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -1069,25 +1069,25 @@ function applyPolicyCheck(insurerCode, // 保险人代码
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
-                        reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+                        reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on applyPolicyCheck: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -1108,7 +1108,7 @@ function getPaylink(bizID, // 业务号
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -1162,28 +1162,28 @@ function getPaylink(bizID, // 业务号
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
                         reject({
                             code: 400,
-                            msg: repData["msg"] + ": " + repData["msgCode"]
+                            message: repData["msg"] + ": " + repData["msgCode"]
                         });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getPayLink: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
@@ -1206,7 +1206,7 @@ function getUnd(bizID, // 业务号
         ], (errors) => {
             return Promise.reject({
                 code: 403,
-                msg: errors.join("\n")
+                message: errors.join("\n")
             });
         })) {
         }
@@ -1261,28 +1261,28 @@ function getUnd(bizID, // 业务号
                         else {
                             resolve({
                                 code: 404,
-                                data: "Not found!"
+                                message: "Not found!"
                             });
                         }
                     }
                     else {
                         reject({
                             code: 400,
-                            msg: repData["msg"] + ": " + repData["msgCode"]
+                            message: repData["msg"] + ": " + repData["msgCode"]
                         });
                     }
                 });
                 res.setTimeout(6000, () => {
                     reject({
                         code: 408,
-                        msg: "智通接口超时"
+                        message: "智通接口超时"
                     });
                 });
                 res.on("error", (err) => {
                     logError(options, `sn: ${sn}, Error on getUnd: ${err}`);
                     reject({
                         code: 500,
-                        msg: err
+                        message: err
                     });
                 });
             });
