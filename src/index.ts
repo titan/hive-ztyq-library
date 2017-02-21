@@ -110,7 +110,7 @@ export async function getCity(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -171,27 +171,27 @@ export async function getCity(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
           reject({
             code: 400,
-            msg: repData["msg"] + ": " + repData["msgCode"]
+            message: repData["msg"] + ": " + repData["msgCode"]
           });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getCity: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -210,7 +210,7 @@ export async function getVehicleByLicense(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -267,27 +267,27 @@ export async function getVehicleByLicense(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
           reject({
             code: 400,
-            msg: repData["msg"] + ": " + repData["msgCode"]
+            message: repData["msg"] + ": " + repData["msgCode"]
           });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getVehicleByLicense: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -307,7 +307,7 @@ export async function getVehicleByFrameNo(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -364,24 +364,24 @@ export async function getVehicleByFrameNo(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
-          reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getVehicleByFrameNo: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -405,7 +405,7 @@ export async function getCarModel(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -479,24 +479,24 @@ export async function getCarModel(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
-          reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getCarModel: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -520,7 +520,7 @@ export async function getFuzzyVehicle(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -594,24 +594,24 @@ export async function getFuzzyVehicle(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
-          reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getFuzzyVehicle: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -657,7 +657,7 @@ export async function getNextPolicyDate(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -724,24 +724,24 @@ export async function getNextPolicyDate(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
-          reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getNextPolicyDate: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -776,7 +776,7 @@ export async function getReferrencePrice(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -856,24 +856,24 @@ export async function getReferrencePrice(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
-          reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getReferrencePrice: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -918,7 +918,7 @@ export async function getAccuratePrice(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -1013,24 +1013,24 @@ export async function getAccuratePrice(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
-          reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getAccuratePrice: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -1073,7 +1073,7 @@ export async function applyPolicyCheck(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -1141,24 +1141,24 @@ export async function applyPolicyCheck(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
-          reject({ code: 400, msg: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on applyPolicyCheck: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -1178,7 +1178,7 @@ export async function getPaylink(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -1232,27 +1232,27 @@ export async function getPaylink(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
           reject({
             code: 400,
-            msg: repData["msg"] + ": " + repData["msgCode"]
+            message: repData["msg"] + ": " + repData["msgCode"]
           });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getPayLink: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
@@ -1274,7 +1274,7 @@ export async function getUnd(
   ], (errors: string[]) => {
     return Promise.reject({
       code: 403,
-      msg: errors.join("\n")
+      message: errors.join("\n")
     });
   })) {
     // return;
@@ -1329,27 +1329,27 @@ export async function getUnd(
           } else {
             resolve({
               code: 404,
-              data: "Not found!"
+              message: "Not found!"
             });
           }
         } else {
           reject({
             code: 400,
-            msg: repData["msg"] + ": " + repData["msgCode"]
+            message: repData["msg"] + ": " + repData["msgCode"]
           });
         }
       });
       res.setTimeout(6000, () => {
         reject({
           code: 408,
-          msg: "智通接口超时"
+          message: "智通接口超时"
         });
       });
       res.on("error", (err) => {
         logError(options, `sn: ${sn}, Error on getUnd: ${err}`);
         reject({
           code: 500,
-          msg: err
+          message: err
         });
       });
     });
