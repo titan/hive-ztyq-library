@@ -649,7 +649,7 @@ async function getNextPolicyDate(responseNo, // 响应码
 }
 exports.getNextPolicyDate = getNextPolicyDate;
 // 参考报价
-async function getReferrencePrice(cityCode, // 行驶城市代码
+async function getReferencePrice(cityCode, // 行驶城市代码
     responseNo, // 响应码
     licenseNo, // 车牌号码
     frameNo, // 车架号(VIN码)
@@ -666,7 +666,7 @@ async function getReferrencePrice(cityCode, // 行驶城市代码
     options // 可选参数
 ) {
     const sn = options.sn;
-    logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+    logInfo(options, `sn: ${sn}, getReferencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
     if (!hive_verify_1.verify([
         hive_verify_1.stringVerifier("cityCode", cityCode),
         hive_verify_1.stringVerifier("responseNo", responseNo),
@@ -680,7 +680,7 @@ async function getReferrencePrice(cityCode, // 行驶城市代码
         // return;
     }
     return new Promise((resolve, reject) => {
-        const getReferrencePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+        const getReferencePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
         const carInfo = {
             "licenseNo": licenseNo,
             "frameNo": frameNo,
@@ -707,32 +707,32 @@ async function getReferrencePrice(cityCode, // 行驶城市代码
         const req = {
             "operType": "REF",
             "msg": "",
-            "sendTime": getReferrencePriceTimeString,
+            "sendTime": getReferencePriceTimeString,
             "sign": null,
             "data": requestData
         };
-        const getReferrencePricePostData = JSON.stringify(req);
-        logInfo(options, `sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
-        console.log(`sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
-        const getReferrencePriceOptions = {
+        const getReferencePricePostData = JSON.stringify(req);
+        logInfo(options, `sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
+        console.log(`sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
+        const getReferencePriceOptions = {
             "hostname": "api.ztwltech.com",
             "port": 80,
             "method": "POST",
             "path": "/zkyq-web/calculate/entrance",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getReferrencePricePostData)
+                "Content-Length": Buffer.byteLength(getReferencePricePostData)
             }
         };
-        const getReferrencePriceReq = http.request(getReferrencePriceOptions, function (res) {
+        const getReferencePriceReq = http.request(getReferencePriceOptions, function (res) {
             res.setEncoding("utf8");
-            let getReferrencePriceResult = "";
+            let getReferencePriceResult = "";
             res.on("data", (body) => {
-                getReferrencePriceResult += body;
+                getReferencePriceResult += body;
             });
             res.on("end", () => {
-                const repData = JSON.parse(getReferrencePriceResult);
-                logInfo(options, `sn: ${sn}, getReferrencePrice => ReplyTime: ${new Date()} , getReferrencePriceResult: ${getReferrencePriceResult}`);
+                const repData = JSON.parse(getReferencePriceResult);
+                logInfo(options, `sn: ${sn}, getReferencePrice => ReplyTime: ${new Date()} , getReferencePriceResult: ${getReferencePriceResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"] && repData["data"].length > 0) {
                         let replyData = {
@@ -768,17 +768,17 @@ async function getReferrencePrice(cityCode, // 行驶城市代码
                 });
             });
             res.on("error", (err) => {
-                logError(options, `sn: ${sn}, Error on getReferrencePrice: ${err}`);
+                logError(options, `sn: ${sn}, Error on getReferencePrice: ${err}`);
                 reject({
                     code: 500,
                     message: err
                 });
             });
         });
-        getReferrencePriceReq.end(getReferrencePricePostData);
+        getReferencePriceReq.end(getReferencePricePostData);
     });
 }
-exports.getReferrencePrice = getReferrencePrice;
+exports.getReferencePrice = getReferencePrice;
 // 精准报价
 async function getAccuratePrice(thpBizID, // 请求方业务号
     cityCode, // 行驶城市代码
