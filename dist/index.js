@@ -7,15 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
 const hive_verify_1 = require("hive-verify");
-const crypto = require("crypto");
 // 查询城市
 function getCity(provinceCode, // 省国标码
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("provinceCode", provinceCode)
@@ -25,6 +25,7 @@ function getCity(provinceCode, // 省国标码
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getCityTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -118,7 +119,7 @@ function getVehicleByLicense(licenseNo, // 车牌号码
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("licenseNo", licenseNo)
@@ -128,6 +129,7 @@ function getVehicleByLicense(licenseNo, // 车牌号码
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getVehicleByLicenseTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -217,7 +219,7 @@ function getVehicleByFrameNo(frameNo, // 车架号
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("frameNo", frameNo)
@@ -227,6 +229,7 @@ function getVehicleByFrameNo(frameNo, // 车架号
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getVehicleByFrameNoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -315,7 +318,7 @@ function getCarModel(frameNo, // 车架号
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("frameNo", frameNo),
@@ -327,6 +330,7 @@ function getCarModel(frameNo, // 车架号
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getCarModelTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -432,7 +436,7 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("brandName", brandName),
@@ -444,6 +448,7 @@ function getFuzzyVehicle(brandName, // 品牌型号名称
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getFuzzyVehicleTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -560,7 +565,7 @@ function getNextPolicyDate(responseNo, // 响应码
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("responseNo", responseNo),
@@ -583,6 +588,7 @@ function getNextPolicyDate(responseNo, // 响应码
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getNextPolicyDateTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -692,7 +698,7 @@ function getReferrencePrice(cityCode, // 行驶城市代码
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("cityCode", cityCode),
@@ -704,6 +710,7 @@ function getReferrencePrice(cityCode, // 行驶城市代码
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getReferrencePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -832,7 +839,7 @@ function getAccuratePrice(thpBizID, // 请求方业务号
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("thpBizID", thpBizID),
@@ -847,6 +854,7 @@ function getAccuratePrice(thpBizID, // 请求方业务号
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getAccuratePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -984,7 +992,7 @@ function applyPolicyCheck(insurerCode, // 保险人代码
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("insurerCode", insurerCode),
@@ -1004,6 +1012,7 @@ function applyPolicyCheck(insurerCode, // 保险人代码
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const applyPolicyCheckTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -1101,7 +1110,7 @@ function getPaylink(bizID, // 业务号
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("bizID", bizID)
@@ -1111,6 +1120,7 @@ function getPaylink(bizID, // 业务号
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const paylinkSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -1198,7 +1208,7 @@ function getUnd(bizID, // 业务号
     options // 可选参数
 ) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sn = crypto.randomBytes(64).toString("base64");
+        const sn = options.sn;
         logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
         if (!hive_verify_1.verify([
             hive_verify_1.stringVerifier("bizID", bizID),
@@ -1209,6 +1219,7 @@ function getUnd(bizID, // 业务号
                 message: errors.join("\n")
             });
         })) {
+            // return;
         }
         return new Promise((resolve, reject) => {
             const getUndSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");

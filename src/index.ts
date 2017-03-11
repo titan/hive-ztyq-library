@@ -95,7 +95,8 @@ export interface Paylink {
 
 // options
 export interface Option {
-  log: Logger; // 日志输出
+  log?: Logger; // 日志输出
+  sn?: string;  // sn 码
 }
 
 // 查询城市
@@ -103,7 +104,7 @@ export async function getCity(
   provinceCode: string, // 省国标码
   options: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
   if (!verify([
     stringVerifier("provinceCode", provinceCode)
@@ -203,7 +204,7 @@ export async function getVehicleByLicense(
   licenseNo: string, // 车牌号码
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
   if (!verify([
     stringVerifier("licenseNo", licenseNo)
@@ -300,7 +301,7 @@ export async function getVehicleByFrameNo(
   frameNo: string, // 车架号
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
   if (!verify([
     stringVerifier("frameNo", frameNo)
@@ -396,7 +397,7 @@ export async function getCarModel(
   responseNo: string, // 响应码
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
   if (!verify([
     stringVerifier("frameNo", frameNo),
@@ -511,7 +512,7 @@ export async function getFuzzyVehicle(
   page: string, // 当前页
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
   if (!verify([
     stringVerifier("brandName", brandName),
@@ -637,7 +638,7 @@ export async function getNextPolicyDate(
   registerDate: string, // 初登日期
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
   if (!verify([
     stringVerifier("responseNo", responseNo),
@@ -767,7 +768,7 @@ export async function getReferrencePrice(
   coverageList: Coverage[], // 险别列表
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("cityCode", cityCode),
@@ -906,7 +907,7 @@ export async function getAccuratePrice(
   coverageList: Coverage[], // 险别列表
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("thpBizID", thpBizID),
@@ -1056,7 +1057,7 @@ export async function applyPolicyCheck(
   applicantUrl: string, // 支付成功后跳转地址, 后端和前段协定
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
   if (!verify([
     stringVerifier("insurerCode", insurerCode),
@@ -1171,7 +1172,7 @@ export async function getPaylink(
   bizID: string, // 业务号
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
   if (!verify([
     stringVerifier("bizID", bizID)
@@ -1266,7 +1267,7 @@ export async function getUnd(
   verificationCode: string, // 手机号验证码
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
   if (!verify([
     stringVerifier("bizID", bizID),
