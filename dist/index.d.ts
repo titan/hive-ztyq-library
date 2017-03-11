@@ -72,7 +72,8 @@ export interface Paylink {
     synchFlag?: string;
 }
 export interface Option {
-    log: Logger;
+    log?: Logger;
+    sn?: string;
 }
 export declare function getCity(provinceCode: string, options: Option): Promise<any>;
 export declare function getVehicleByLicense(licenseNo: string, options?: Option): Promise<any>;

@@ -95,7 +95,8 @@ export interface Paylink {
 
 // options
 export interface Option {
-  log: Logger; // 日志输出
+  log?: Logger; // 日志输出
+  sn?: string;  // sn 码
 }
 
 // 查询城市
@@ -103,7 +104,7 @@ export async function getCity(
   provinceCode: string, // 省国标码
   options: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
   if (!verify([
     stringVerifier("provinceCode", provinceCode)
@@ -142,16 +143,14 @@ export async function getCity(
       }
     };
     const getCityReq = http.request(getCityOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getCity => getCityReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getCityResult: string = "";
       res.on("data", (body) => {
         getCityResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getCity => End of getCityReq`);
         const repData = JSON.parse(getCityResult);
-        logInfo(options, `sn: ${sn}, getCity => ReplyTime: ${new Date()} , getCityResult: ${JSON.stringify(getCityResult)}`);
+        logInfo(options, `sn: ${sn}, getCity => ReplyTime: ${new Date()} , getCityResult: ${getCityResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
             let replyData: City[] = [];
@@ -203,7 +202,7 @@ export async function getVehicleByLicense(
   licenseNo: string, // 车牌号码
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
   if (!verify([
     stringVerifier("licenseNo", licenseNo)
@@ -241,16 +240,14 @@ export async function getVehicleByLicense(
       }
     };
     const getVehicleByLicenseReq = http.request(getVehicleByLicenseOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getVehicleByLicense => getVehicleByLicenseReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getVehicleByLicenseResult: string = "";
       res.on("data", (body) => {
         getVehicleByLicenseResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getVehicleByLicense => End of getVehicleByLicenseReq`);
         const repData = JSON.parse(getVehicleByLicenseResult);
-        logInfo(options, `sn: ${sn}, getVehicleByLicense => ReplyTime: ${new Date()} , getVehicleByLicenseResult: ${JSON.stringify(getVehicleByLicenseResult)}`);
+        logInfo(options, `sn: ${sn}, getVehicleByLicense => ReplyTime: ${new Date()} , getVehicleByLicenseResult: ${getVehicleByLicenseResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
             let replyData: Vehicle = {
@@ -300,7 +297,7 @@ export async function getVehicleByFrameNo(
   frameNo: string, // 车架号
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
   if (!verify([
     stringVerifier("frameNo", frameNo)
@@ -338,16 +335,14 @@ export async function getVehicleByFrameNo(
       }
     };
     const getVehicleByFrameNoReq = http.request(getVehicleByFrameNoOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getVehicleByFrameNo => getVehicleByFrameNoReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getVehicleByFrameNoResult: string = "";
       res.on("data", (body) => {
         getVehicleByFrameNoResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getVehicleByFrameNo => End of getVehicleByFrameNoReq`);
         const repData = JSON.parse(getVehicleByFrameNoResult);
-        logInfo(options, `sn: ${sn}, getVehicleByFrameNo => ReplyTime: ${new Date()} , getVehicleByFrameNoResult: ${JSON.stringify(getVehicleByFrameNoResult)}`);
+        logInfo(options, `sn: ${sn}, getVehicleByFrameNo => ReplyTime: ${new Date()} , getVehicleByFrameNoResult: ${getVehicleByFrameNoResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
             let replyData: Vehicle = {
@@ -396,7 +391,7 @@ export async function getCarModel(
   responseNo: string, // 响应码
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
   if (!verify([
     stringVerifier("frameNo", frameNo),
@@ -438,16 +433,14 @@ export async function getCarModel(
       }
     };
     const getCarModelReq = http.request(getCarModelOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getCarModel => getCarModelReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getCarModelResult: string = "";
       res.on("data", (body) => {
         getCarModelResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getCarModel => End of getCarModelReq`);
         const repData = JSON.parse(getCarModelResult);
-        logInfo(options, `sn: ${sn}, getCarModel => ReplyTime: ${new Date()} , getCarModelResult: ${JSON.stringify(getCarModelResult)}`);
+        logInfo(options, `sn: ${sn}, getCarModel => ReplyTime: ${new Date()} , getCarModelResult: ${getCarModelResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
             let replyData: CarModel[] = [];
@@ -511,7 +504,7 @@ export async function getFuzzyVehicle(
   page: string, // 当前页
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
   if (!verify([
     stringVerifier("brandName", brandName),
@@ -553,16 +546,14 @@ export async function getFuzzyVehicle(
       }
     };
     const getFuzzyVehicleReq = http.request(getFuzzyVehicleOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getFuzzyVehicle => getFuzzyVehicleReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getFuzzyVehicleResult: string = "";
       res.on("data", (body) => {
         getFuzzyVehicleResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getFuzzyVehicle => End of getFuzzyVehicleReq`);
         const repData = JSON.parse(getFuzzyVehicleResult);
-        logInfo(options, `sn: ${sn}, getFuzzyVehicle => ReplyTime: ${new Date()} , getFuzzyVehicleResult: ${JSON.stringify(getFuzzyVehicleResult)}`);
+        logInfo(options, `sn: ${sn}, getFuzzyVehicle => ReplyTime: ${new Date()} , getFuzzyVehicleResult: ${getFuzzyVehicleResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
             let replyData: CarModel[] = [];
@@ -637,7 +628,7 @@ export async function getNextPolicyDate(
   registerDate: string, // 初登日期
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
   if (!verify([
     stringVerifier("responseNo", responseNo),
@@ -701,16 +692,14 @@ export async function getNextPolicyDate(
       }
     };
     const getNextPolicyDateReq = http.request(getNextPolicyDateOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getNextPolicyDate => getNextPolicyDateReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getNextPolicyDateResult: string = "";
       res.on("data", (body) => {
         getNextPolicyDateResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getNextPolicyDate => End of getNextPolicyDateReq`);
         const repData = JSON.parse(getNextPolicyDateResult);
-        logInfo(options, `sn: ${sn}, getNextPolicyDate => ReplyTime: ${new Date()} , getNextPolicyDateResult: ${JSON.stringify(getNextPolicyDateResult)}`);
+        logInfo(options, `sn: ${sn}, getNextPolicyDate => ReplyTime: ${new Date()} , getNextPolicyDateResult: ${getNextPolicyDateResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
             let replyData: NextPolicyDate = {
@@ -767,7 +756,7 @@ export async function getReferrencePrice(
   coverageList: Coverage[], // 险别列表
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("cityCode", cityCode),
@@ -827,16 +816,14 @@ export async function getReferrencePrice(
       }
     };
     const getReferrencePriceReq = http.request(getReferrencePriceOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getReferrencePrice => getReferrencePriceReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getReferrencePriceResult: string = "";
       res.on("data", (body) => {
         getReferrencePriceResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getReferrencePrice => End of getReferrencePriceReq`);
         const repData = JSON.parse(getReferrencePriceResult);
-        logInfo(options, `sn: ${sn}, getReferrencePrice => ReplyTime: ${new Date()} , getReferrencePriceResult: ${JSON.stringify(getReferrencePriceResult)}`);
+        logInfo(options, `sn: ${sn}, getReferrencePrice => ReplyTime: ${new Date()} , getReferrencePriceResult: ${getReferrencePriceResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
             let replyData: QuotePrice = {
@@ -906,7 +893,7 @@ export async function getAccuratePrice(
   coverageList: Coverage[], // 险别列表
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("thpBizID", thpBizID),
@@ -975,16 +962,14 @@ export async function getAccuratePrice(
       }
     };
     const getAccuratePriceReq = http.request(getAccuratePriceOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getAccuratePrice => getAccuratePriceReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getAccuratePriceResult: string = "";
       res.on("data", (body) => {
         getAccuratePriceResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getAccuratePrice => End of getAccuratePriceReq`);
         const repData = JSON.parse(getAccuratePriceResult);
-        logInfo(options, `sn: ${sn}, getAccuratePrice => ReplyTime: ${new Date()} , getAccuratePriceResult: ${JSON.stringify(getAccuratePriceResult)}`);
+        logInfo(options, `sn: ${sn}, getAccuratePrice => ReplyTime: ${new Date()} , getAccuratePriceResult: ${getAccuratePriceResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
             let replyData: QuotePrice = {
@@ -1056,7 +1041,7 @@ export async function applyPolicyCheck(
   applicantUrl: string, // 支付成功后跳转地址, 后端和前段协定
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
   if (!verify([
     stringVerifier("insurerCode", insurerCode),
@@ -1116,16 +1101,14 @@ export async function applyPolicyCheck(
       }
     };
     const applyPolicyCheckReq = http.request(applyPolicyCheckOptions, function (res) {
-      logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let applyPolicyCheckResult: string = "";
       res.on("data", (body) => {
         applyPolicyCheckResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getPayLink => End of paylinkReq`);
         const repData = JSON.parse(applyPolicyCheckResult);
-        logInfo(options, `sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${JSON.stringify(applyPolicyCheckResult)}`);
+        logInfo(options, `sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${applyPolicyCheckResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
             let replyData: Paylink = {
@@ -1171,7 +1154,7 @@ export async function getPaylink(
   bizID: string, // 业务号
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
   if (!verify([
     stringVerifier("bizID", bizID)
@@ -1207,16 +1190,14 @@ export async function getPaylink(
       }
     };
     const paylinkReq = http.request(paylinkOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getPayLink => paylinkReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let paylinkResult: string = "";
       res.on("data", (body) => {
         paylinkResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getPayLink => End of paylinkReq`);
         const repData = JSON.parse(paylinkResult);
-        logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${JSON.stringify(paylinkResult)}`);
+        logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${paylinkResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
             let replyData: Paylink = {
@@ -1266,7 +1247,7 @@ export async function getUnd(
   verificationCode: string, // 手机号验证码
   options?: Option // 可选参数
 ): Promise<any> {
-  const sn = crypto.randomBytes(64).toString("base64");
+  const sn = options.sn;
   logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
   if (!verify([
     stringVerifier("bizID", bizID),
@@ -1292,7 +1273,7 @@ export async function getUnd(
       "data": requestData
     };
     const getUndPostData: string = JSON.stringify(req);
-    logInfo(options, `sn: ${sn}, getUnd => ReplyTime: ${new Date()} , getUndPostData: ${getUndPostData}`);
+    logInfo(options, `sn: ${sn}, getUnd => getUndPostData: ${getUndPostData}`);
     const getUndOptions = {
       "hostname": "api.ztwltech.com",
       "port": 80,
@@ -1304,16 +1285,14 @@ export async function getUnd(
       }
     };
     const getUndReq = http.request(getUndOptions, function (res) {
-      logInfo(options, `sn: ${sn}, getUnd => getUndReq status: ${res.statusCode}`);
       res.setEncoding("utf8");
       let getUndResult: string = "";
       res.on("data", (body) => {
         getUndResult += body;
       });
       res.on("end", () => {
-        logInfo(options, `sn: ${sn}, getUnd => End of getUndReq`);
         const repData = JSON.parse(getUndResult);
-        logInfo(options, `sn: ${sn}, getUnd => getUndResult: ${getUndResult}`);
+        logInfo(options, `sn: ${sn}, getUnd =>  ReplyTime: ${new Date()}, getUndResult: ${getUndResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
             let replyData: Paylink = {
