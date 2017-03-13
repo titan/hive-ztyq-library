@@ -739,7 +739,7 @@ export async function getNextPolicyDate(
 }
 
 // 参考报价
-export async function getReferrencePrice(
+export async function getReferencePrice(
   cityCode: string, // 行驶城市代码
   responseNo: string, // 响应码
   licenseNo: string, // 车牌号码
@@ -757,7 +757,7 @@ export async function getReferrencePrice(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
-  logInfo(options, `sn: ${sn}, getReferrencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
+  logInfo(options, `sn: ${sn}, getReferencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   if (!verify([
     stringVerifier("cityCode", cityCode),
     stringVerifier("responseNo", responseNo),
@@ -771,7 +771,7 @@ export async function getReferrencePrice(
     // return;
   }
   return new Promise((resolve, reject) => {
-    const getReferrencePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+    const getReferencePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const carInfo = {
       "licenseNo": licenseNo,
       "frameNo": frameNo,
@@ -798,32 +798,32 @@ export async function getReferrencePrice(
     const req = {
       "operType": "REF",
       "msg": "",
-      "sendTime": getReferrencePriceTimeString,
+      "sendTime": getReferencePriceTimeString,
       "sign": null,
       "data": requestData
     };
-    const getReferrencePricePostData: string = JSON.stringify(req);
-    logInfo(options, `sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
-    console.log(`sn: ${sn}, getReferrencePrice => getReferrencePricePostData: ${getReferrencePricePostData}`);
-    const getReferrencePriceOptions = {
+    const getReferencePricePostData: string = JSON.stringify(req);
+    logInfo(options, `sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
+    console.log(`sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
+    const getReferencePriceOptions = {
       "hostname": "api.ztwltech.com",
       "port": 80,
       "method": "POST",
       "path": "/zkyq-web/calculate/entrance",
       "headers": {
         "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(getReferrencePricePostData)
+        "Content-Length": Buffer.byteLength(getReferencePricePostData)
       }
     };
-    const getReferrencePriceReq = http.request(getReferrencePriceOptions, function (res) {
+    const getReferencePriceReq = http.request(getReferencePriceOptions, function (res) {
       res.setEncoding("utf8");
-      let getReferrencePriceResult: string = "";
+      let getReferencePriceResult: string = "";
       res.on("data", (body) => {
-        getReferrencePriceResult += body;
+        getReferencePriceResult += body;
       });
       res.on("end", () => {
-        const repData = JSON.parse(getReferrencePriceResult);
-        logInfo(options, `sn: ${sn}, getReferrencePrice => ReplyTime: ${new Date()} , getReferrencePriceResult: ${getReferrencePriceResult}`);
+        const repData = JSON.parse(getReferencePriceResult);
+        logInfo(options, `sn: ${sn}, getReferencePrice => ReplyTime: ${new Date()} , getReferencePriceResult: ${getReferencePriceResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
             let replyData: QuotePrice = {
@@ -857,14 +857,14 @@ export async function getReferrencePrice(
         });
       });
       res.on("error", (err) => {
-        logError(options, `sn: ${sn}, Error on getReferrencePrice: ${err}`);
+        logError(options, `sn: ${sn}, Error on getReferencePrice: ${err}`);
         reject({
           code: 500,
           message: err
         });
       });
     });
-    getReferrencePriceReq.end(getReferrencePricePostData);
+    getReferencePriceReq.end(getReferencePricePostData);
   });
 }
 
