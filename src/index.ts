@@ -176,7 +176,7 @@ export async function getCity(
         } else {
           reject({
             code: 400,
-            message: repData["msg"] + ": " + repData["msgCode"]
+            message: getCityResult
           });
         }
       });
@@ -270,7 +270,7 @@ export async function getVehicleByLicense(
         } else {
           reject({
             code: 400,
-            message: repData["msg"] + ": " + repData["msgCode"]
+            message: getVehicleByLicenseResult
           });
         }
       });
@@ -363,7 +363,7 @@ export async function getVehicleByFrameNo(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: getVehicleByFrameNoResult });
         }
       });
       res.setTimeout(6000, () => {
@@ -476,7 +476,7 @@ export async function getCarModel(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: getCarModelResult });
         }
       });
       res.setTimeout(6000, () => {
@@ -589,7 +589,7 @@ export async function getFuzzyVehicle(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: getFuzzyVehicleResult });
         }
       });
       res.setTimeout(6000, () => {
@@ -717,7 +717,7 @@ export async function getNextPolicyDate(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: getNextPolicyDateResult });
         }
       });
       res.setTimeout(6000, () => {
@@ -847,7 +847,7 @@ export async function getReferencePrice(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] ? repData["msg"] : repData["data"][0]["msg"] + ": " + repData["msgCode"] ? repData["msgCode"] : repData["data"][0]["msgCode"] });
+          reject({ code: 400, message: getReferencePriceResult });
         }
       });
       res.setTimeout(6000, () => {
@@ -1002,7 +1002,7 @@ export async function getAccuratePrice(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: getAccuratePriceResult });
         }
       });
       res.setTimeout(6000, () => {
@@ -1128,7 +1128,7 @@ export async function applyPolicyCheck(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: applyPolicyCheckResult });
         }
       });
       res.setTimeout(6000, () => {
@@ -1219,7 +1219,7 @@ export async function getPaylink(
         } else {
           reject({
             code: 400,
-            message: repData["msg"] + ": " + repData["msgCode"]
+            message: paylinkResult
           });
         }
       });
@@ -1314,7 +1314,7 @@ export async function getUnd(
         } else {
           reject({
             code: 400,
-            message: repData["msg"] + ": " + repData["msgCode"]
+            message: getUndResult
           });
         }
       });
