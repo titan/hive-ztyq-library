@@ -847,7 +847,7 @@ export async function getReferencePrice(
             });
           }
         } else {
-          reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+          reject({ code: 400, message: repData["msg"] ? repData["msg"] : repData["data"][0]["msg"] + ": " + repData["msgCode"] ? repData["msgCode"] : repData["data"][0]["msgCode"] });
         }
       });
       res.setTimeout(6000, () => {

@@ -758,7 +758,7 @@ async function getReferencePrice(cityCode, // 行驶城市代码
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+                    reject({ code: 400, message: repData["msg"] ? repData["msg"] : repData["data"][0]["msg"] + ": " + repData["msgCode"] ? repData["msgCode"] : repData["data"][0]["msgCode"] });
                 }
             });
             res.setTimeout(6000, () => {
