@@ -80,7 +80,7 @@ async function getCity(provinceCode, // 省国标码
                 else {
                     reject({
                         code: 400,
-                        message: repData["msg"] + ": " + repData["msgCode"]
+                        message: getCityResult
                     });
                 }
             });
@@ -176,7 +176,7 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
                 else {
                     reject({
                         code: 400,
-                        message: repData["msg"] + ": " + repData["msgCode"]
+                        message: getVehicleByLicenseResult
                     });
                 }
             });
@@ -270,7 +270,7 @@ async function getVehicleByFrameNo(frameNo, // 车架号
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+                    reject({ code: 400, message: getVehicleByFrameNoResult });
                 }
             });
             res.setTimeout(6000, () => {
@@ -384,7 +384,7 @@ async function getCarModel(frameNo, // 车架号
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+                    reject({ code: 400, message: getCarModelResult });
                 }
             });
             res.setTimeout(6000, () => {
@@ -498,7 +498,7 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+                    reject({ code: 400, message: getFuzzyVehicleResult });
                 }
             });
             res.setTimeout(6000, () => {
@@ -627,7 +627,7 @@ async function getNextPolicyDate(responseNo, // 响应码
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+                    reject({ code: 400, message: getNextPolicyDateResult });
                 }
             });
             res.setTimeout(6000, () => {
@@ -758,7 +758,7 @@ async function getReferencePrice(cityCode, // 行驶城市代码
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] ? repData["msg"] : repData["data"][0]["msg"] + ": " + repData["msgCode"] ? repData["msgCode"] : repData["data"][0]["msgCode"] });
+                    reject({ code: 400, message: getReferencePriceResult });
                 }
             });
             res.setTimeout(6000, () => {
@@ -913,7 +913,7 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+                    reject({ code: 400, message: getAccuratePriceResult });
                 }
             });
             res.setTimeout(6000, () => {
@@ -1040,7 +1040,7 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
                     }
                 }
                 else {
-                    reject({ code: 400, message: repData["msg"] + ": " + repData["msgCode"] });
+                    reject({ code: 400, message: applyPolicyCheckResult });
                 }
             });
             res.setTimeout(6000, () => {
@@ -1132,7 +1132,7 @@ async function getPaylink(bizID, // 业务号
                 else {
                     reject({
                         code: 400,
-                        message: repData["msg"] + ": " + repData["msgCode"]
+                        message: paylinkResult
                     });
                 }
             });
@@ -1228,7 +1228,7 @@ async function getUnd(bizID, // 业务号
                 else {
                     reject({
                         code: 400,
-                        message: repData["msg"] + ": " + repData["msgCode"]
+                        message: getUndResult
                     });
                 }
             });
