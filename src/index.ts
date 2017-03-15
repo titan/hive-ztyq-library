@@ -171,7 +171,7 @@ export async function getCity(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getCityResult
             });
           }
         } else {
@@ -266,7 +266,7 @@ export async function getVehicleByLicense(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getVehicleByLicenseResult
             });
           }
         } else {
@@ -362,7 +362,7 @@ export async function getVehicleByFrameNo(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getVehicleByFrameNoResult
             });
           }
         } else {
@@ -476,7 +476,7 @@ export async function getCarModel(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getCarModelResult
             });
           }
         } else {
@@ -590,7 +590,7 @@ export async function getFuzzyVehicle(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getFuzzyVehicleResult
             });
           }
         } else {
@@ -719,7 +719,7 @@ export async function getNextPolicyDate(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getNextPolicyDateResult
             });
           }
         } else {
@@ -850,7 +850,7 @@ export async function getReferencePrice(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getReferencePriceResult
             });
           }
         } else {
@@ -1006,7 +1006,7 @@ export async function getAccuratePrice(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getAccuratePriceResult
             });
           }
         } else {
@@ -1133,7 +1133,7 @@ export async function applyPolicyCheck(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: applyPolicyCheckResult
             });
           }
         } else {
@@ -1223,7 +1223,7 @@ export async function getPaylink(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: paylinkResult
             });
           }
         } else {
@@ -1319,7 +1319,7 @@ export async function getUnd(
             // 从响应报文看,此情况从未出现
             reject({
               code: 404,
-              message: "Not found!"
+              message: getUndResult
             });
           }
         } else {
