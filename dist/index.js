@@ -71,9 +71,10 @@ async function getCity(provinceCode, // 省国标码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getCityResult
                         });
                     }
                 }
@@ -167,9 +168,10 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getVehicleByLicenseResult
                         });
                     }
                 }
@@ -263,9 +265,10 @@ async function getVehicleByFrameNo(frameNo, // 车架号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getVehicleByFrameNoResult
                         });
                     }
                 }
@@ -377,9 +380,10 @@ async function getCarModel(frameNo, // 车架号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getCarModelResult
                         });
                     }
                 }
@@ -491,9 +495,10 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getFuzzyVehicleResult
                         });
                     }
                 }
@@ -620,9 +625,10 @@ async function getNextPolicyDate(responseNo, // 响应码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getNextPolicyDateResult
                         });
                     }
                 }
@@ -751,9 +757,10 @@ async function getReferencePrice(cityCode, // 行驶城市代码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getReferencePriceResult
                         });
                     }
                 }
@@ -906,9 +913,10 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getAccuratePriceResult
                         });
                     }
                 }
@@ -1033,9 +1041,10 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: applyPolicyCheckResult
                         });
                     }
                 }
@@ -1123,9 +1132,10 @@ async function getPaylink(bizID, // 业务号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: paylinkResult
                         });
                     }
                 }
@@ -1219,9 +1229,10 @@ async function getUnd(bizID, // 业务号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
-                            message: "Not found!"
+                            message: getUndResult
                         });
                     }
                 }
