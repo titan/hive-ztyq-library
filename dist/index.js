@@ -71,7 +71,8 @@ async function getCity(provinceCode, // 省国标码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -167,7 +168,8 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -263,7 +265,8 @@ async function getVehicleByFrameNo(frameNo, // 车架号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -377,7 +380,8 @@ async function getCarModel(frameNo, // 车架号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -491,7 +495,8 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -620,7 +625,8 @@ async function getNextPolicyDate(responseNo, // 响应码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -751,7 +757,8 @@ async function getReferencePrice(cityCode, // 行驶城市代码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -906,7 +913,8 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -1033,7 +1041,8 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -1123,7 +1132,8 @@ async function getPaylink(bizID, // 业务号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });
@@ -1219,7 +1229,8 @@ async function getUnd(bizID, // 业务号
                         });
                     }
                     else {
-                        resolve({
+                        // 从响应报文看,此情况从未出现
+                        reject({
                             code: 404,
                             message: "Not found!"
                         });

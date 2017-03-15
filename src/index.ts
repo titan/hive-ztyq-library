@@ -168,7 +168,8 @@ export async function getCity(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -262,7 +263,8 @@ export async function getVehicleByLicense(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -357,7 +359,8 @@ export async function getVehicleByFrameNo(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -470,7 +473,8 @@ export async function getCarModel(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -583,7 +587,8 @@ export async function getFuzzyVehicle(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -711,7 +716,8 @@ export async function getNextPolicyDate(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -841,7 +847,8 @@ export async function getReferencePrice(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -996,7 +1003,8 @@ export async function getAccuratePrice(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -1122,7 +1130,8 @@ export async function applyPolicyCheck(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -1211,7 +1220,8 @@ export async function getPaylink(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
@@ -1306,7 +1316,8 @@ export async function getUnd(
               data: replyData
             });
           } else {
-            resolve({
+            // 从响应报文看,此情况从未出现
+            reject({
               code: 404,
               message: "Not found!"
             });
