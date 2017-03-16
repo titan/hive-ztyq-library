@@ -106,15 +106,15 @@ export async function getCity(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
-  if (!verify([
-    stringVerifier("provinceCode", provinceCode)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("provinceCode", provinceCode)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getCityTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -205,15 +205,15 @@ export async function getVehicleByLicense(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
-  if (!verify([
-    stringVerifier("licenseNo", licenseNo)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("licenseNo", licenseNo)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getVehicleByLicenseTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -301,15 +301,15 @@ export async function getVehicleByFrameNo(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
-  if (!verify([
-    stringVerifier("frameNo", frameNo)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("frameNo", frameNo)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getVehicleByFrameNoTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -396,17 +396,17 @@ export async function getCarModel(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
-  if (!verify([
-    stringVerifier("frameNo", frameNo),
-    stringVerifier("licenseNo", licenseNo),
-    stringVerifier("responseNo", responseNo)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("frameNo", frameNo),
+      stringVerifier("licenseNo", licenseNo),
+      stringVerifier("responseNo", responseNo)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getCarModelTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -510,17 +510,17 @@ export async function getFuzzyVehicle(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
-  if (!verify([
-    stringVerifier("brandName", brandName),
-    stringVerifier("row", row),
-    stringVerifier("page", page)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("brandName", brandName),
+      stringVerifier("row", row),
+      stringVerifier("page", page)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getFuzzyVehicleTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -635,28 +635,28 @@ export async function getNextPolicyDate(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
-  if (!verify([
-    stringVerifier("responseNo", responseNo),
-    stringVerifier("licenseNo", licenseNo),
-    stringVerifier("frameNo", frameNo),
-    stringVerifier("modelCode", modelCode),
-    stringVerifier("engineNo", engineNo),
-    stringVerifier("isTrans", isTrans),
-    stringVerifier("transDate", transDate),
-    stringVerifier("seatCount", seatCount),
-    stringVerifier("isLoanCar", isLoanCar),
-    stringVerifier("cityCode", cityCode),
-    stringVerifier("ownerName", ownerName),
-    stringVerifier("ownerMobile", ownerMobile),
-    stringVerifier("ownerIdNo", ownerIdNo),
-    stringVerifier("registerDate", registerDate)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("responseNo", responseNo),
+      stringVerifier("licenseNo", licenseNo),
+      stringVerifier("frameNo", frameNo),
+      stringVerifier("modelCode", modelCode),
+      stringVerifier("engineNo", engineNo),
+      stringVerifier("isTrans", isTrans),
+      stringVerifier("transDate", transDate),
+      stringVerifier("seatCount", seatCount),
+      stringVerifier("isLoanCar", isLoanCar),
+      stringVerifier("cityCode", cityCode),
+      stringVerifier("ownerName", ownerName),
+      stringVerifier("ownerMobile", ownerMobile),
+      stringVerifier("ownerIdNo", ownerIdNo),
+      stringVerifier("registerDate", registerDate)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getNextPolicyDateTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -764,17 +764,17 @@ export async function getReferencePrice(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getReferencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
-  if (!verify([
-    stringVerifier("cityCode", cityCode),
-    stringVerifier("responseNo", responseNo),
-    stringVerifier("insurerCode", insurerCode)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("cityCode", cityCode),
+      stringVerifier("responseNo", responseNo),
+      stringVerifier("insurerCode", insurerCode)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getReferencePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -902,20 +902,20 @@ export async function getAccuratePrice(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
-  if (!verify([
-    stringVerifier("thpBizID", thpBizID),
-    stringVerifier("cityCode", cityCode),
-    stringVerifier("responseNo", responseNo),
-    stringVerifier("biBeginDate", biBeginDate),
-    stringVerifier("ciBeginDate", ciBeginDate),
-    stringVerifier("insurerCode", insurerCode)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("thpBizID", thpBizID),
+      stringVerifier("cityCode", cityCode),
+      stringVerifier("responseNo", responseNo),
+      stringVerifier("biBeginDate", biBeginDate),
+      stringVerifier("ciBeginDate", ciBeginDate),
+      stringVerifier("insurerCode", insurerCode)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getAccuratePriceTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -1051,25 +1051,25 @@ export async function applyPolicyCheck(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
-  if (!verify([
-    stringVerifier("insurerCode", insurerCode),
-    stringVerifier("bizID", bizID),
-    stringVerifier("channelCode", channelCode),
-    stringVerifier("applicantName", applicantName),
-    stringVerifier("applicantIdNo", applicantIdNo),
-    stringVerifier("applicantMobile", applicantMobile),
-    stringVerifier("addresseeName", addresseeName),
-    stringVerifier("addresseeDetails", addresseeDetails),
-    stringVerifier("addresseeCounty", addresseeCounty),
-    stringVerifier("addresseeCity", addresseeCity),
-    stringVerifier("policyEmail", policyEmail)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("insurerCode", insurerCode),
+      stringVerifier("bizID", bizID),
+      stringVerifier("channelCode", channelCode),
+      stringVerifier("applicantName", applicantName),
+      stringVerifier("applicantIdNo", applicantIdNo),
+      stringVerifier("applicantMobile", applicantMobile),
+      stringVerifier("addresseeName", addresseeName),
+      stringVerifier("addresseeDetails", addresseeDetails),
+      stringVerifier("addresseeCounty", addresseeCounty),
+      stringVerifier("addresseeCity", addresseeCity),
+      stringVerifier("policyEmail", policyEmail)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const applyPolicyCheckTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -1165,15 +1165,15 @@ export async function getPaylink(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
-  if (!verify([
-    stringVerifier("bizID", bizID)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("bizID", bizID)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const paylinkSendTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -1259,16 +1259,16 @@ export async function getUnd(
 ): Promise<any> {
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
-  if (!verify([
-    stringVerifier("bizID", bizID),
-    stringVerifier("verificationCode", verificationCode)
-  ], (errors: string[]) => {
-    return Promise.reject({
-      code: 403,
-      message: errors.join("\n")
-    });
-  })) {
-    // return;
+  try {
+    verify([
+      stringVerifier("bizID", bizID),
+      stringVerifier("verificationCode", verificationCode)
+    ]);
+  } catch (err) {
+    return {
+      code: 410,
+      message: err.message
+    };
   }
   return new Promise((resolve, reject) => {
     const getUndSendTimeString: string = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
