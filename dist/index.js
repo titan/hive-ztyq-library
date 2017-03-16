@@ -8,15 +8,16 @@ async function getCity(provinceCode, // 省国标码
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("provinceCode", provinceCode)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("provinceCode", provinceCode)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getCityTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -109,15 +110,16 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("licenseNo", licenseNo)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("licenseNo", licenseNo)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getVehicleByLicenseTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -206,15 +208,16 @@ async function getVehicleByFrameNo(frameNo, // 车架号
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("frameNo", frameNo)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("frameNo", frameNo)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getVehicleByFrameNoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -302,17 +305,18 @@ async function getCarModel(frameNo, // 车架号
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("frameNo", frameNo),
-        hive_verify_1.stringVerifier("licenseNo", licenseNo),
-        hive_verify_1.stringVerifier("responseNo", responseNo)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("frameNo", frameNo),
+            hive_verify_1.stringVerifier("licenseNo", licenseNo),
+            hive_verify_1.stringVerifier("responseNo", responseNo)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getCarModelTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -417,17 +421,18 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("brandName", brandName),
-        hive_verify_1.stringVerifier("row", row),
-        hive_verify_1.stringVerifier("page", page)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("brandName", brandName),
+            hive_verify_1.stringVerifier("row", row),
+            hive_verify_1.stringVerifier("page", page)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getFuzzyVehicleTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -543,28 +548,29 @@ async function getNextPolicyDate(responseNo, // 响应码
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("responseNo", responseNo),
-        hive_verify_1.stringVerifier("licenseNo", licenseNo),
-        hive_verify_1.stringVerifier("frameNo", frameNo),
-        hive_verify_1.stringVerifier("modelCode", modelCode),
-        hive_verify_1.stringVerifier("engineNo", engineNo),
-        hive_verify_1.stringVerifier("isTrans", isTrans),
-        hive_verify_1.stringVerifier("transDate", transDate),
-        hive_verify_1.stringVerifier("seatCount", seatCount),
-        hive_verify_1.stringVerifier("isLoanCar", isLoanCar),
-        hive_verify_1.stringVerifier("cityCode", cityCode),
-        hive_verify_1.stringVerifier("ownerName", ownerName),
-        hive_verify_1.stringVerifier("ownerMobile", ownerMobile),
-        hive_verify_1.stringVerifier("ownerIdNo", ownerIdNo),
-        hive_verify_1.stringVerifier("registerDate", registerDate)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("responseNo", responseNo),
+            hive_verify_1.stringVerifier("licenseNo", licenseNo),
+            hive_verify_1.stringVerifier("frameNo", frameNo),
+            hive_verify_1.stringVerifier("modelCode", modelCode),
+            hive_verify_1.stringVerifier("engineNo", engineNo),
+            hive_verify_1.stringVerifier("isTrans", isTrans),
+            hive_verify_1.stringVerifier("transDate", transDate),
+            hive_verify_1.stringVerifier("seatCount", seatCount),
+            hive_verify_1.stringVerifier("isLoanCar", isLoanCar),
+            hive_verify_1.stringVerifier("cityCode", cityCode),
+            hive_verify_1.stringVerifier("ownerName", ownerName),
+            hive_verify_1.stringVerifier("ownerMobile", ownerMobile),
+            hive_verify_1.stringVerifier("ownerIdNo", ownerIdNo),
+            hive_verify_1.stringVerifier("registerDate", registerDate)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getNextPolicyDateTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -673,17 +679,18 @@ async function getReferencePrice(cityCode, // 行驶城市代码
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getReferencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("cityCode", cityCode),
-        hive_verify_1.stringVerifier("responseNo", responseNo),
-        hive_verify_1.stringVerifier("insurerCode", insurerCode)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("cityCode", cityCode),
+            hive_verify_1.stringVerifier("responseNo", responseNo),
+            hive_verify_1.stringVerifier("insurerCode", insurerCode)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getReferencePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -811,20 +818,21 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("thpBizID", thpBizID),
-        hive_verify_1.stringVerifier("cityCode", cityCode),
-        hive_verify_1.stringVerifier("responseNo", responseNo),
-        hive_verify_1.stringVerifier("biBeginDate", biBeginDate),
-        hive_verify_1.stringVerifier("ciBeginDate", ciBeginDate),
-        hive_verify_1.stringVerifier("insurerCode", insurerCode)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("thpBizID", thpBizID),
+            hive_verify_1.stringVerifier("cityCode", cityCode),
+            hive_verify_1.stringVerifier("responseNo", responseNo),
+            hive_verify_1.stringVerifier("biBeginDate", biBeginDate),
+            hive_verify_1.stringVerifier("ciBeginDate", ciBeginDate),
+            hive_verify_1.stringVerifier("insurerCode", insurerCode)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getAccuratePriceTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -961,25 +969,26 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("insurerCode", insurerCode),
-        hive_verify_1.stringVerifier("bizID", bizID),
-        hive_verify_1.stringVerifier("channelCode", channelCode),
-        hive_verify_1.stringVerifier("applicantName", applicantName),
-        hive_verify_1.stringVerifier("applicantIdNo", applicantIdNo),
-        hive_verify_1.stringVerifier("applicantMobile", applicantMobile),
-        hive_verify_1.stringVerifier("addresseeName", addresseeName),
-        hive_verify_1.stringVerifier("addresseeDetails", addresseeDetails),
-        hive_verify_1.stringVerifier("addresseeCounty", addresseeCounty),
-        hive_verify_1.stringVerifier("addresseeCity", addresseeCity),
-        hive_verify_1.stringVerifier("policyEmail", policyEmail)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("insurerCode", insurerCode),
+            hive_verify_1.stringVerifier("bizID", bizID),
+            hive_verify_1.stringVerifier("channelCode", channelCode),
+            hive_verify_1.stringVerifier("applicantName", applicantName),
+            hive_verify_1.stringVerifier("applicantIdNo", applicantIdNo),
+            hive_verify_1.stringVerifier("applicantMobile", applicantMobile),
+            hive_verify_1.stringVerifier("addresseeName", addresseeName),
+            hive_verify_1.stringVerifier("addresseeDetails", addresseeDetails),
+            hive_verify_1.stringVerifier("addresseeCounty", addresseeCounty),
+            hive_verify_1.stringVerifier("addresseeCity", addresseeCity),
+            hive_verify_1.stringVerifier("policyEmail", policyEmail)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const applyPolicyCheckTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -1076,15 +1085,16 @@ async function getPaylink(bizID, // 业务号
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("bizID", bizID)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("bizID", bizID)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const paylinkSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
@@ -1171,16 +1181,17 @@ async function getUnd(bizID, // 业务号
 ) {
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
-    if (!hive_verify_1.verify([
-        hive_verify_1.stringVerifier("bizID", bizID),
-        hive_verify_1.stringVerifier("verificationCode", verificationCode)
-    ], (errors) => {
-        return Promise.reject({
-            code: 403,
-            message: errors.join("\n")
-        });
-    })) {
-        // return;
+    try {
+        hive_verify_1.verify([
+            hive_verify_1.stringVerifier("bizID", bizID),
+            hive_verify_1.stringVerifier("verificationCode", verificationCode)
+        ]);
+    }
+    catch (err) {
+        return {
+            code: 410,
+            message: err.message
+        };
     }
     return new Promise((resolve, reject) => {
         const getUndSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
