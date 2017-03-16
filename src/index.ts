@@ -107,7 +107,7 @@ export async function getCity(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("provinceCode", provinceCode)
     ]);
   } catch (err) {
@@ -206,7 +206,7 @@ export async function getVehicleByLicense(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("licenseNo", licenseNo)
     ]);
   } catch (err) {
@@ -302,7 +302,7 @@ export async function getVehicleByFrameNo(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("frameNo", frameNo)
     ]);
   } catch (err) {
@@ -397,7 +397,7 @@ export async function getCarModel(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("frameNo", frameNo),
       stringVerifier("licenseNo", licenseNo),
       stringVerifier("responseNo", responseNo)
@@ -511,7 +511,7 @@ export async function getFuzzyVehicle(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("brandName", brandName),
       stringVerifier("row", row),
       stringVerifier("page", page)
@@ -636,7 +636,7 @@ export async function getNextPolicyDate(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("responseNo", responseNo),
       stringVerifier("licenseNo", licenseNo),
       stringVerifier("frameNo", frameNo),
@@ -765,7 +765,7 @@ export async function getReferencePrice(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getReferencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("cityCode", cityCode),
       stringVerifier("responseNo", responseNo),
       stringVerifier("insurerCode", insurerCode)
@@ -903,7 +903,7 @@ export async function getAccuratePrice(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("thpBizID", thpBizID),
       stringVerifier("cityCode", cityCode),
       stringVerifier("responseNo", responseNo),
@@ -1052,7 +1052,7 @@ export async function applyPolicyCheck(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("insurerCode", insurerCode),
       stringVerifier("bizID", bizID),
       stringVerifier("channelCode", channelCode),
@@ -1166,7 +1166,7 @@ export async function getPaylink(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("bizID", bizID)
     ]);
   } catch (err) {
@@ -1260,7 +1260,7 @@ export async function getUnd(
   const sn = options.sn;
   logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
   try {
-    verify([
+    await verify([
       stringVerifier("bizID", bizID),
       stringVerifier("verificationCode", verificationCode)
     ]);
