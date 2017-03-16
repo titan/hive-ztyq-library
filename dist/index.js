@@ -9,7 +9,7 @@ async function getCity(provinceCode, // 省国标码
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("provinceCode", provinceCode)
         ]);
     }
@@ -111,7 +111,7 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("licenseNo", licenseNo)
         ]);
     }
@@ -209,7 +209,7 @@ async function getVehicleByFrameNo(frameNo, // 车架号
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("frameNo", frameNo)
         ]);
     }
@@ -306,7 +306,7 @@ async function getCarModel(frameNo, // 车架号
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("frameNo", frameNo),
             hive_verify_1.stringVerifier("licenseNo", licenseNo),
             hive_verify_1.stringVerifier("responseNo", responseNo)
@@ -422,7 +422,7 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("brandName", brandName),
             hive_verify_1.stringVerifier("row", row),
             hive_verify_1.stringVerifier("page", page)
@@ -549,7 +549,7 @@ async function getNextPolicyDate(responseNo, // 响应码
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("responseNo", responseNo),
             hive_verify_1.stringVerifier("licenseNo", licenseNo),
             hive_verify_1.stringVerifier("frameNo", frameNo),
@@ -680,7 +680,7 @@ async function getReferencePrice(cityCode, // 行驶城市代码
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getReferencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("cityCode", cityCode),
             hive_verify_1.stringVerifier("responseNo", responseNo),
             hive_verify_1.stringVerifier("insurerCode", insurerCode)
@@ -819,7 +819,7 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("thpBizID", thpBizID),
             hive_verify_1.stringVerifier("cityCode", cityCode),
             hive_verify_1.stringVerifier("responseNo", responseNo),
@@ -970,7 +970,7 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("insurerCode", insurerCode),
             hive_verify_1.stringVerifier("bizID", bizID),
             hive_verify_1.stringVerifier("channelCode", channelCode),
@@ -1086,7 +1086,7 @@ async function getPaylink(bizID, // 业务号
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("bizID", bizID)
         ]);
     }
@@ -1182,7 +1182,7 @@ async function getUnd(bizID, // 业务号
     const sn = options.sn;
     logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
     try {
-        hive_verify_1.verify([
+        await hive_verify_1.verify([
             hive_verify_1.stringVerifier("bizID", bizID),
             hive_verify_1.stringVerifier("verificationCode", verificationCode)
         ]);
