@@ -13,8 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/bunyan": "0.0.34",
-    "hive-verify": "git+ssh://git@git.fengchaohuzhu.com:10022/server/hive-verify.git",
-    "bluebird": "^3.4.1"
+    "hive-verify": "git+ssh://git@git.fengchaohuzhu.com:10022/server/hive-verify.git"
+  },
+  "devDependencies": {
+    "@types/bunyan": "0.0.34"
   }
 }
