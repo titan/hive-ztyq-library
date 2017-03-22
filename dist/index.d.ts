@@ -1,4 +1,5 @@
 import { Logger } from "bunyan";
+import { Disq } from "hive-disque";
 export interface City {
     cityCode: string;
     cityName: string;
@@ -74,6 +75,8 @@ export interface Paylink {
 export interface Option {
     log?: Logger;
     sn?: string;
+    disque?: Disq;
+    queue?: string;
 }
 export declare function getCity(provinceCode: string, options: Option): Promise<any>;
 export declare function getVehicleByLicense(licenseNo: string, options?: Option): Promise<any>;

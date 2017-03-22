@@ -4,6 +4,8 @@ import * as bunyan from "bunyan";
 import { Logger } from "bunyan";
 import * as crypto from "crypto";
 import * as bulebird from "bluebird";
+import { Disq } from "hive-disque";
+import * as msgpack from "msgpack-lite";
 
 // 城市信息
 export interface City {
@@ -97,6 +99,8 @@ export interface Paylink {
 export interface Option {
   log?: Logger; // 日志输出
   sn?: string;  // sn 码
+  disque?: Disq;
+  queue?: string;
 }
 
 // 查询城市
@@ -130,6 +134,8 @@ export async function getCity(
       "data": requestData
     };
     const getCityPostData: string = JSON.stringify(req);
+    const disque: Disq = options.disque;
+    sendMessage(options, getCityPostData, "request");
     logInfo(options, `sn: ${sn}, getCity => getCityPostData: ${getCityPostData}`);
     let hostpath: string = "/zkyq-web/city/queryCity";
     const getCityOptions = {
@@ -150,6 +156,7 @@ export async function getCity(
       });
       res.on("end", () => {
         const repData = JSON.parse(getCityResult);
+        sendMessage(options, getCityResult, "response");
         logInfo(options, `sn: ${sn}, getCity => ReplyTime: ${new Date()} , getCityResult: ${getCityResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -229,6 +236,7 @@ export async function getVehicleByLicense(
       "data": requestData
     };
     const getVehicleByLicensePostData: string = JSON.stringify(req);
+    sendMessage(options, getVehicleByLicensePostData, "request");
     logInfo(options, `sn: ${sn}, getVehicleByLicense => getVehicleByLicensePostData: ${getVehicleByLicensePostData}`);
     const getVehicleByLicenseOptions = {
       "hostname": "api.ztwltech.com",
@@ -248,6 +256,7 @@ export async function getVehicleByLicense(
       });
       res.on("end", () => {
         const repData = JSON.parse(getVehicleByLicenseResult);
+        sendMessage(options, getVehicleByLicenseResult, "response");
         logInfo(options, `sn: ${sn}, getVehicleByLicense => ReplyTime: ${new Date()} , getVehicleByLicenseResult: ${getVehicleByLicenseResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -325,6 +334,7 @@ export async function getVehicleByFrameNo(
       "data": requestData
     };
     const getVehicleByFrameNoPostData: string = JSON.stringify(req);
+    sendMessage(options, getVehicleByFrameNoPostData, "request");
     logInfo(options, `sn: ${sn}, getVehicleByFrameNo => getVehicleByFrameNoPostData: ${getVehicleByFrameNoPostData}`);
     const getVehicleByFrameNoOptions = {
       "hostname": "api.ztwltech.com",
@@ -344,6 +354,7 @@ export async function getVehicleByFrameNo(
       });
       res.on("end", () => {
         const repData = JSON.parse(getVehicleByFrameNoResult);
+        sendMessage(options, getVehicleByFrameNoResult, "response");
         logInfo(options, `sn: ${sn}, getVehicleByFrameNo => ReplyTime: ${new Date()} , getVehicleByFrameNoResult: ${getVehicleByFrameNoResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -424,6 +435,7 @@ export async function getCarModel(
       "data": requestData
     };
     const getCarModelPostData: string = JSON.stringify(req);
+    sendMessage(options, getCarModelPostData, "request");
     logInfo(options, `sn: ${sn}, getCarModel => getCarModelPostData: ${getCarModelPostData}`);
     const getCarModelOptions = {
       "hostname": "api.ztwltech.com",
@@ -443,6 +455,7 @@ export async function getCarModel(
       });
       res.on("end", () => {
         const repData = JSON.parse(getCarModelResult);
+        sendMessage(options, getCarModelResult, "response");
         logInfo(options, `sn: ${sn}, getCarModel => ReplyTime: ${new Date()} , getCarModelResult: ${getCarModelResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -538,6 +551,7 @@ export async function getFuzzyVehicle(
       "data": requestData
     };
     const getFuzzyVehiclePostData: string = JSON.stringify(req);
+    sendMessage(options, getFuzzyVehiclePostData, "request");
     logInfo(options, `sn: ${sn}, getFuzzyVehicle => getFuzzyVehiclePostData: ${getFuzzyVehiclePostData}`);
     const getFuzzyVehicleOptions = {
       "hostname": "api.ztwltech.com",
@@ -557,6 +571,7 @@ export async function getFuzzyVehicle(
       });
       res.on("end", () => {
         const repData = JSON.parse(getFuzzyVehicleResult);
+        sendMessage(options, getFuzzyVehicleResult, "response");
         logInfo(options, `sn: ${sn}, getFuzzyVehicle => ReplyTime: ${new Date()} , getFuzzyVehicleResult: ${getFuzzyVehicleResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -685,6 +700,7 @@ export async function getNextPolicyDate(
       "data": requestData
     };
     const getNextPolicyDatePostData: string = JSON.stringify(req);
+    sendMessage(options, getNextPolicyDatePostData, "request");
     logInfo(options, `sn: ${sn}, getNextPolicyDate => getNextPolicyDatePostData: ${getNextPolicyDatePostData}`);
     const getNextPolicyDateOptions = {
       "hostname": "api.ztwltech.com",
@@ -704,6 +720,7 @@ export async function getNextPolicyDate(
       });
       res.on("end", () => {
         const repData = JSON.parse(getNextPolicyDateResult);
+        sendMessage(options, getNextPolicyDateResult, "response");
         logInfo(options, `sn: ${sn}, getNextPolicyDate => ReplyTime: ${new Date()} , getNextPolicyDateResult: ${getNextPolicyDateResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -809,8 +826,8 @@ export async function getReferencePrice(
       "data": requestData
     };
     const getReferencePricePostData: string = JSON.stringify(req);
+    sendMessage(options, getReferencePricePostData, "request");
     logInfo(options, `sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
-    console.log(`sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
     const getReferencePriceOptions = {
       "hostname": "api.ztwltech.com",
       "port": 80,
@@ -829,6 +846,7 @@ export async function getReferencePrice(
       });
       res.on("end", () => {
         const repData = JSON.parse(getReferencePriceResult);
+        sendMessage(options, getReferencePriceResult, "response");
         logInfo(options, `sn: ${sn}, getReferencePrice => ReplyTime: ${new Date()} , getReferencePriceResult: ${getReferencePriceResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -957,6 +975,7 @@ export async function getAccuratePrice(
       "data": requestData
     };
     const getAccuratePricePostData: string = JSON.stringify(req);
+    sendMessage(options, getAccuratePricePostData, "request");
     logInfo(options, `sn: ${sn}, getAccuratePrice => getAccuratePricePostData: ${getAccuratePricePostData}`);
     const getAccuratePriceOptions = {
       "hostname": "api.ztwltech.com",
@@ -976,6 +995,7 @@ export async function getAccuratePrice(
       });
       res.on("end", () => {
         const repData = JSON.parse(getAccuratePriceResult);
+        sendMessage(options, getAccuratePriceResult, "response");
         logInfo(options, `sn: ${sn}, getAccuratePrice => ReplyTime: ${new Date()} , getAccuratePriceResult: ${getAccuratePriceResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -1097,6 +1117,7 @@ export async function applyPolicyCheck(
       "data": requestData
     };
     const applyPolicyCheckPostData: string = JSON.stringify(req);
+    sendMessage(options, applyPolicyCheckPostData, "request");
     logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
     const applyPolicyCheckOptions = {
       "hostname": "api.ztwltech.com",
@@ -1116,6 +1137,7 @@ export async function applyPolicyCheck(
       });
       res.on("end", () => {
         const repData = JSON.parse(applyPolicyCheckResult);
+        sendMessage(options, applyPolicyCheckResult, "response");
         logInfo(options, `sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${applyPolicyCheckResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -1187,6 +1209,7 @@ export async function getPaylink(
       "data": requestData
     };
     const paylinkPostData: string = JSON.stringify(req);
+    sendMessage(options, paylinkPostData, "request");
     logInfo(options, `sn: ${sn}, getPayLink => paylinkPostData: ${paylinkPostData}`);
     const paylinkOptions = {
       "hostname": "api.ztwltech.com",
@@ -1206,6 +1229,7 @@ export async function getPaylink(
       });
       res.on("end", () => {
         const repData = JSON.parse(paylinkResult);
+        sendMessage(options, paylinkResult, "response");
         logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${paylinkResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -1283,6 +1307,7 @@ export async function getUnd(
       "data": requestData
     };
     const getUndPostData: string = JSON.stringify(req);
+    sendMessage(options, getUndPostData, "request");
     logInfo(options, `sn: ${sn}, getUnd => getUndPostData: ${getUndPostData}`);
     const getUndOptions = {
       "hostname": "api.ztwltech.com",
@@ -1302,6 +1327,7 @@ export async function getUnd(
       });
       res.on("end", () => {
         const repData = JSON.parse(getUndResult);
+        sendMessage(options, getUndResult, "response");
         logInfo(options, `sn: ${sn}, getUnd =>  ReplyTime: ${new Date()}, getUndResult: ${getUndResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -1360,5 +1386,23 @@ function logError(options: Option, msg: string): void {
   if (options && options.log) {
     let log: Logger = options.log;
     log.error(msg);
+  }
+}
+
+// 请求响应记录分析
+function sendMessage(options: Option, msg: string, type: string): void {
+  if (options && options.disque && options.queue) {
+    const sn: string = options.sn;
+    const disque: Disq = options.disque;
+    const queue: string = options.queue;
+    const job = {
+      "sn": sn,
+      "type": type,
+      "body": JSON.parse(msg),
+      "src": "智通",
+      "timestamp": new Date()
+    };
+    const job_buff: Buffer = msgpack.encode(job);
+    disque.addjob(queue, job_buff);
   }
 }
