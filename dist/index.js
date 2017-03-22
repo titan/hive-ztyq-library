@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
 const hive_verify_1 = require("hive-verify");
+const msgpack = require("msgpack-lite");
 // 查询城市
 async function getCity(provinceCode, // 省国标码
     options // 可选参数
@@ -33,6 +34,8 @@ async function getCity(provinceCode, // 省国标码
             "data": requestData
         };
         const getCityPostData = JSON.stringify(req);
+        const disque = options.disque;
+        sendMessage(options, getCityPostData, "request");
         logInfo(options, `sn: ${sn}, getCity => getCityPostData: ${getCityPostData}`);
         let hostpath = "/zkyq-web/city/queryCity";
         const getCityOptions = {
@@ -53,6 +56,7 @@ async function getCity(provinceCode, // 省国标码
             });
             res.on("end", () => {
                 const repData = JSON.parse(getCityResult);
+                sendMessage(options, getCityResult, "response");
                 logInfo(options, `sn: ${sn}, getCity => ReplyTime: ${new Date()} , getCityResult: ${getCityResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"] && repData["data"].length > 0) {
@@ -135,6 +139,7 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
             "data": requestData
         };
         const getVehicleByLicensePostData = JSON.stringify(req);
+        sendMessage(options, getVehicleByLicensePostData, "request");
         logInfo(options, `sn: ${sn}, getVehicleByLicense => getVehicleByLicensePostData: ${getVehicleByLicensePostData}`);
         const getVehicleByLicenseOptions = {
             "hostname": "api.ztwltech.com",
@@ -154,6 +159,7 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
             });
             res.on("end", () => {
                 const repData = JSON.parse(getVehicleByLicenseResult);
+                sendMessage(options, getVehicleByLicenseResult, "response");
                 logInfo(options, `sn: ${sn}, getVehicleByLicense => ReplyTime: ${new Date()} , getVehicleByLicenseResult: ${getVehicleByLicenseResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"]) {
@@ -233,6 +239,7 @@ async function getVehicleByFrameNo(frameNo, // 车架号
             "data": requestData
         };
         const getVehicleByFrameNoPostData = JSON.stringify(req);
+        sendMessage(options, getVehicleByFrameNoPostData, "request");
         logInfo(options, `sn: ${sn}, getVehicleByFrameNo => getVehicleByFrameNoPostData: ${getVehicleByFrameNoPostData}`);
         const getVehicleByFrameNoOptions = {
             "hostname": "api.ztwltech.com",
@@ -252,6 +259,7 @@ async function getVehicleByFrameNo(frameNo, // 车架号
             });
             res.on("end", () => {
                 const repData = JSON.parse(getVehicleByFrameNoResult);
+                sendMessage(options, getVehicleByFrameNoResult, "response");
                 logInfo(options, `sn: ${sn}, getVehicleByFrameNo => ReplyTime: ${new Date()} , getVehicleByFrameNoResult: ${getVehicleByFrameNoResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"]) {
@@ -334,6 +342,7 @@ async function getCarModel(frameNo, // 车架号
             "data": requestData
         };
         const getCarModelPostData = JSON.stringify(req);
+        sendMessage(options, getCarModelPostData, "request");
         logInfo(options, `sn: ${sn}, getCarModel => getCarModelPostData: ${getCarModelPostData}`);
         const getCarModelOptions = {
             "hostname": "api.ztwltech.com",
@@ -353,6 +362,7 @@ async function getCarModel(frameNo, // 车架号
             });
             res.on("end", () => {
                 const repData = JSON.parse(getCarModelResult);
+                sendMessage(options, getCarModelResult, "response");
                 logInfo(options, `sn: ${sn}, getCarModel => ReplyTime: ${new Date()} , getCarModelResult: ${getCarModelResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"] && repData["data"].length > 0) {
@@ -450,6 +460,7 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
             "data": requestData
         };
         const getFuzzyVehiclePostData = JSON.stringify(req);
+        sendMessage(options, getFuzzyVehiclePostData, "request");
         logInfo(options, `sn: ${sn}, getFuzzyVehicle => getFuzzyVehiclePostData: ${getFuzzyVehiclePostData}`);
         const getFuzzyVehicleOptions = {
             "hostname": "api.ztwltech.com",
@@ -469,6 +480,7 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
             });
             res.on("end", () => {
                 const repData = JSON.parse(getFuzzyVehicleResult);
+                sendMessage(options, getFuzzyVehicleResult, "response");
                 logInfo(options, `sn: ${sn}, getFuzzyVehicle => ReplyTime: ${new Date()} , getFuzzyVehicleResult: ${getFuzzyVehicleResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"] && repData["data"].length > 0) {
@@ -599,6 +611,7 @@ async function getNextPolicyDate(responseNo, // 响应码
             "data": requestData
         };
         const getNextPolicyDatePostData = JSON.stringify(req);
+        sendMessage(options, getNextPolicyDatePostData, "request");
         logInfo(options, `sn: ${sn}, getNextPolicyDate => getNextPolicyDatePostData: ${getNextPolicyDatePostData}`);
         const getNextPolicyDateOptions = {
             "hostname": "api.ztwltech.com",
@@ -618,6 +631,7 @@ async function getNextPolicyDate(responseNo, // 响应码
             });
             res.on("end", () => {
                 const repData = JSON.parse(getNextPolicyDateResult);
+                sendMessage(options, getNextPolicyDateResult, "response");
                 logInfo(options, `sn: ${sn}, getNextPolicyDate => ReplyTime: ${new Date()} , getNextPolicyDateResult: ${getNextPolicyDateResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"]) {
@@ -725,8 +739,8 @@ async function getReferencePrice(cityCode, // 行驶城市代码
             "data": requestData
         };
         const getReferencePricePostData = JSON.stringify(req);
+        sendMessage(options, getReferencePricePostData, "request");
         logInfo(options, `sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
-        console.log(`sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
         const getReferencePriceOptions = {
             "hostname": "api.ztwltech.com",
             "port": 80,
@@ -745,6 +759,7 @@ async function getReferencePrice(cityCode, // 行驶城市代码
             });
             res.on("end", () => {
                 const repData = JSON.parse(getReferencePriceResult);
+                sendMessage(options, getReferencePriceResult, "response");
                 logInfo(options, `sn: ${sn}, getReferencePrice => ReplyTime: ${new Date()} , getReferencePriceResult: ${getReferencePriceResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"] && repData["data"].length > 0) {
@@ -874,6 +889,7 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             "data": requestData
         };
         const getAccuratePricePostData = JSON.stringify(req);
+        sendMessage(options, getAccuratePricePostData, "request");
         logInfo(options, `sn: ${sn}, getAccuratePrice => getAccuratePricePostData: ${getAccuratePricePostData}`);
         const getAccuratePriceOptions = {
             "hostname": "api.ztwltech.com",
@@ -893,6 +909,7 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             });
             res.on("end", () => {
                 const repData = JSON.parse(getAccuratePriceResult);
+                sendMessage(options, getAccuratePriceResult, "response");
                 logInfo(options, `sn: ${sn}, getAccuratePrice => ReplyTime: ${new Date()} , getAccuratePriceResult: ${getAccuratePriceResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"] && repData["data"].length > 0) {
@@ -1016,6 +1033,7 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
             "data": requestData
         };
         const applyPolicyCheckPostData = JSON.stringify(req);
+        sendMessage(options, applyPolicyCheckPostData, "request");
         logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
         const applyPolicyCheckOptions = {
             "hostname": "api.ztwltech.com",
@@ -1035,6 +1053,7 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
             });
             res.on("end", () => {
                 const repData = JSON.parse(applyPolicyCheckResult);
+                sendMessage(options, applyPolicyCheckResult, "response");
                 logInfo(options, `sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${applyPolicyCheckResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"]) {
@@ -1108,6 +1127,7 @@ async function getPaylink(bizID, // 业务号
             "data": requestData
         };
         const paylinkPostData = JSON.stringify(req);
+        sendMessage(options, paylinkPostData, "request");
         logInfo(options, `sn: ${sn}, getPayLink => paylinkPostData: ${paylinkPostData}`);
         const paylinkOptions = {
             "hostname": "api.ztwltech.com",
@@ -1127,6 +1147,7 @@ async function getPaylink(bizID, // 业务号
             });
             res.on("end", () => {
                 const repData = JSON.parse(paylinkResult);
+                sendMessage(options, paylinkResult, "response");
                 logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${paylinkResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"]) {
@@ -1206,6 +1227,7 @@ async function getUnd(bizID, // 业务号
             "data": requestData
         };
         const getUndPostData = JSON.stringify(req);
+        sendMessage(options, getUndPostData, "request");
         logInfo(options, `sn: ${sn}, getUnd => getUndPostData: ${getUndPostData}`);
         const getUndOptions = {
             "hostname": "api.ztwltech.com",
@@ -1225,6 +1247,7 @@ async function getUnd(bizID, // 业务号
             });
             res.on("end", () => {
                 const repData = JSON.parse(getUndResult);
+                sendMessage(options, getUndResult, "response");
                 logInfo(options, `sn: ${sn}, getUnd =>  ReplyTime: ${new Date()}, getUndResult: ${getUndResult}`);
                 if (repData["state"] === "1") {
                     if (repData["data"]) {
@@ -1284,5 +1307,22 @@ function logError(options, msg) {
     if (options && options.log) {
         let log = options.log;
         log.error(msg);
+    }
+}
+// 请求响应记录分析
+function sendMessage(options, msg, type) {
+    if (options && options.disque && options.queue) {
+        const sn = options.sn;
+        const disque = options.disque;
+        const queue = options.queue;
+        const job = {
+            "sn": sn,
+            "type": type,
+            "body": JSON.parse(msg),
+            "src": "智通",
+            "timestamp": new Date()
+        };
+        const job_buff = msgpack.encode(job);
+        disque.addjob(queue, job_buff);
     }
 }
