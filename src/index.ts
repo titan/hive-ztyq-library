@@ -3,7 +3,6 @@ import { verify, uuidVerifier, stringVerifier, numberVerifier } from "hive-verif
 import * as bunyan from "bunyan";
 import { Logger } from "bunyan";
 import * as crypto from "crypto";
-import * as bulebird from "bluebird";
 import { Disq } from "hive-disque";
 import * as msgpack from "msgpack-lite";
 
@@ -109,6 +108,7 @@ export async function getCity(
   options: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
   try {
     await verify([
@@ -135,7 +135,7 @@ export async function getCity(
     };
     const getCityPostData: string = JSON.stringify(req);
     const disque: Disq = options.disque;
-    sendMessage(options, getCityPostData, "request");
+    sendMessage(options, getCityPostData, "request", unity);
     logInfo(options, `sn: ${sn}, getCity => getCityPostData: ${getCityPostData}`);
     let hostpath: string = "/zkyq-web/city/queryCity";
     const getCityOptions = {
@@ -156,7 +156,7 @@ export async function getCity(
       });
       res.on("end", () => {
         const repData = JSON.parse(getCityResult);
-        sendMessage(options, getCityResult, "response");
+        sendMessage(options, getCityResult, "response", unity);
         logInfo(options, `sn: ${sn}, getCity => ReplyTime: ${new Date()} , getCityResult: ${getCityResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -211,6 +211,7 @@ export async function getVehicleByLicense(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
   try {
     await verify([
@@ -236,7 +237,7 @@ export async function getVehicleByLicense(
       "data": requestData
     };
     const getVehicleByLicensePostData: string = JSON.stringify(req);
-    sendMessage(options, getVehicleByLicensePostData, "request");
+    sendMessage(options, getVehicleByLicensePostData, "request", unity);
     logInfo(options, `sn: ${sn}, getVehicleByLicense => getVehicleByLicensePostData: ${getVehicleByLicensePostData}`);
     const getVehicleByLicenseOptions = {
       "hostname": "api.ztwltech.com",
@@ -256,7 +257,7 @@ export async function getVehicleByLicense(
       });
       res.on("end", () => {
         const repData = JSON.parse(getVehicleByLicenseResult);
-        sendMessage(options, getVehicleByLicenseResult, "response");
+        sendMessage(options, getVehicleByLicenseResult, "response", unity);
         logInfo(options, `sn: ${sn}, getVehicleByLicense => ReplyTime: ${new Date()} , getVehicleByLicenseResult: ${getVehicleByLicenseResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -309,6 +310,7 @@ export async function getVehicleByFrameNo(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
   try {
     await verify([
@@ -334,7 +336,7 @@ export async function getVehicleByFrameNo(
       "data": requestData
     };
     const getVehicleByFrameNoPostData: string = JSON.stringify(req);
-    sendMessage(options, getVehicleByFrameNoPostData, "request");
+    sendMessage(options, getVehicleByFrameNoPostData, "request", unity);
     logInfo(options, `sn: ${sn}, getVehicleByFrameNo => getVehicleByFrameNoPostData: ${getVehicleByFrameNoPostData}`);
     const getVehicleByFrameNoOptions = {
       "hostname": "api.ztwltech.com",
@@ -354,7 +356,7 @@ export async function getVehicleByFrameNo(
       });
       res.on("end", () => {
         const repData = JSON.parse(getVehicleByFrameNoResult);
-        sendMessage(options, getVehicleByFrameNoResult, "response");
+        sendMessage(options, getVehicleByFrameNoResult, "response", unity);
         logInfo(options, `sn: ${sn}, getVehicleByFrameNo => ReplyTime: ${new Date()} , getVehicleByFrameNoResult: ${getVehicleByFrameNoResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -406,6 +408,7 @@ export async function getCarModel(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getCarModel => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo}, licenseNo: ${licenseNo}, responseNo: ${responseNo} }`);
   try {
     await verify([
@@ -435,7 +438,7 @@ export async function getCarModel(
       "data": requestData
     };
     const getCarModelPostData: string = JSON.stringify(req);
-    sendMessage(options, getCarModelPostData, "request");
+    sendMessage(options, getCarModelPostData, "request", unity);
     logInfo(options, `sn: ${sn}, getCarModel => getCarModelPostData: ${getCarModelPostData}`);
     const getCarModelOptions = {
       "hostname": "api.ztwltech.com",
@@ -455,7 +458,7 @@ export async function getCarModel(
       });
       res.on("end", () => {
         const repData = JSON.parse(getCarModelResult);
-        sendMessage(options, getCarModelResult, "response");
+        sendMessage(options, getCarModelResult, "response", unity);
         logInfo(options, `sn: ${sn}, getCarModel => ReplyTime: ${new Date()} , getCarModelResult: ${getCarModelResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -522,6 +525,7 @@ export async function getFuzzyVehicle(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getFuzzyVehicle => RequestTime: ${new Date()}, requestData: { brandName: ${brandName}, row: ${row}, page: ${page} }`);
   try {
     await verify([
@@ -551,7 +555,7 @@ export async function getFuzzyVehicle(
       "data": requestData
     };
     const getFuzzyVehiclePostData: string = JSON.stringify(req);
-    sendMessage(options, getFuzzyVehiclePostData, "request");
+    sendMessage(options, getFuzzyVehiclePostData, "request", unity);
     logInfo(options, `sn: ${sn}, getFuzzyVehicle => getFuzzyVehiclePostData: ${getFuzzyVehiclePostData}`);
     const getFuzzyVehicleOptions = {
       "hostname": "api.ztwltech.com",
@@ -571,7 +575,7 @@ export async function getFuzzyVehicle(
       });
       res.on("end", () => {
         const repData = JSON.parse(getFuzzyVehicleResult);
-        sendMessage(options, getFuzzyVehicleResult, "response");
+        sendMessage(options, getFuzzyVehicleResult, "response", unity);
         logInfo(options, `sn: ${sn}, getFuzzyVehicle => ReplyTime: ${new Date()} , getFuzzyVehicleResult: ${getFuzzyVehicleResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -649,6 +653,7 @@ export async function getNextPolicyDate(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getNextPolicyDate => RequestTime: ${new Date()}, requestData: { responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, seatCount: ${seatCount}, isLoanCar: ${isLoanCar}, cityCode: ${cityCode}, ownerName: ${ownerName}, ownerMobile: ${ownerMobile}, ownerIdNo: ${ownerIdNo}, registerDate: ${registerDate} }`);
   try {
     await verify([
@@ -700,7 +705,7 @@ export async function getNextPolicyDate(
       "data": requestData
     };
     const getNextPolicyDatePostData: string = JSON.stringify(req);
-    sendMessage(options, getNextPolicyDatePostData, "request");
+    sendMessage(options, getNextPolicyDatePostData, "request", unity);
     logInfo(options, `sn: ${sn}, getNextPolicyDate => getNextPolicyDatePostData: ${getNextPolicyDatePostData}`);
     const getNextPolicyDateOptions = {
       "hostname": "api.ztwltech.com",
@@ -720,7 +725,7 @@ export async function getNextPolicyDate(
       });
       res.on("end", () => {
         const repData = JSON.parse(getNextPolicyDateResult);
-        sendMessage(options, getNextPolicyDateResult, "response");
+        sendMessage(options, getNextPolicyDateResult, "response", unity);
         logInfo(options, `sn: ${sn}, getNextPolicyDate => ReplyTime: ${new Date()} , getNextPolicyDateResult: ${getNextPolicyDateResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -780,6 +785,7 @@ export async function getReferencePrice(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getReferencePrice => RequestTime: ${new Date()}, requestData: { cityCode: ${cityCode}, responseNo: ${responseNo}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   try {
     await verify([
@@ -826,7 +832,7 @@ export async function getReferencePrice(
       "data": requestData
     };
     const getReferencePricePostData: string = JSON.stringify(req);
-    sendMessage(options, getReferencePricePostData, "request");
+    sendMessage(options, getReferencePricePostData, "request", unity);
     logInfo(options, `sn: ${sn}, getReferencePrice => getReferencePricePostData: ${getReferencePricePostData}`);
     const getReferencePriceOptions = {
       "hostname": "api.ztwltech.com",
@@ -846,7 +852,7 @@ export async function getReferencePrice(
       });
       res.on("end", () => {
         const repData = JSON.parse(getReferencePriceResult);
-        sendMessage(options, getReferencePriceResult, "response");
+        sendMessage(options, getReferencePriceResult, "response", unity);
         logInfo(options, `sn: ${sn}, getReferencePrice => ReplyTime: ${new Date()} , getReferencePriceResult: ${getReferencePriceResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -919,6 +925,7 @@ export async function getAccuratePrice(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getAccuratePrice => RequestTime: ${new Date()}, requestData: { thpBizID: ${thpBizID}, cityCode: ${cityCode}, responseNo: ${responseNo}, biBeginDate: ${biBeginDate}, ciBeginDate: ${ciBeginDate}, licenseNo: ${licenseNo}, frameNo: ${frameNo}, modelCode: ${modelCode}, engineNo: ${engineNo}, isTrans: ${isTrans}, transDate: ${transDate}, registerDate: ${registerDate}, ownerName: ${ownerName}, ownerID: ${ownerID}, ownerMobile: ${ownerMobile}, insuredName: ${insuredName}, insuredID: ${insuredID}, insuredMobile: ${insuredMobile}, insurerCode: ${insurerCode}, coverageList: ${JSON.stringify(coverageList)} }`);
   try {
     await verify([
@@ -975,7 +982,7 @@ export async function getAccuratePrice(
       "data": requestData
     };
     const getAccuratePricePostData: string = JSON.stringify(req);
-    sendMessage(options, getAccuratePricePostData, "request");
+    sendMessage(options, getAccuratePricePostData, "request", unity);
     logInfo(options, `sn: ${sn}, getAccuratePrice => getAccuratePricePostData: ${getAccuratePricePostData}`);
     const getAccuratePriceOptions = {
       "hostname": "api.ztwltech.com",
@@ -995,7 +1002,7 @@ export async function getAccuratePrice(
       });
       res.on("end", () => {
         const repData = JSON.parse(getAccuratePriceResult);
-        sendMessage(options, getAccuratePriceResult, "response");
+        sendMessage(options, getAccuratePriceResult, "response", unity);
         logInfo(options, `sn: ${sn}, getAccuratePrice => ReplyTime: ${new Date()} , getAccuratePriceResult: ${getAccuratePriceResult}`);
         if (repData["state"] === "1") {
           if (repData["data"] && repData["data"].length > 0) {
@@ -1070,6 +1077,7 @@ export async function applyPolicyCheck(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, applyPolicyCheck => RequestTime: ${new Date()}, requestData: { insurerCode: ${insurerCode}, bizID: ${bizID}，　channelCode: ${channelCode}, applicantName: ${applicantName}, applicantIdNo: ${applicantIdNo}, applicantMobile: ${applicantMobile}, addresseeDetails: ${addresseeDetails}, addresseeCounty: ${addresseeCounty}, addresseeCity: ${addresseeCity}, addresseeProvince: ${addresseeProvince}, policyEmail: ${policyEmail} }`);
   try {
     await verify([
@@ -1117,7 +1125,7 @@ export async function applyPolicyCheck(
       "data": requestData
     };
     const applyPolicyCheckPostData: string = JSON.stringify(req);
-    sendMessage(options, applyPolicyCheckPostData, "request");
+    sendMessage(options, applyPolicyCheckPostData, "request", unity);
     logInfo(options, `sn: ${sn}, applyPolicyCheck => applyPolicyCheckPostData: ${applyPolicyCheckPostData}`);
     const applyPolicyCheckOptions = {
       "hostname": "api.ztwltech.com",
@@ -1137,7 +1145,7 @@ export async function applyPolicyCheck(
       });
       res.on("end", () => {
         const repData = JSON.parse(applyPolicyCheckResult);
-        sendMessage(options, applyPolicyCheckResult, "response");
+        sendMessage(options, applyPolicyCheckResult, "response", unity);
         logInfo(options, `sn: ${sn}, applyPolicyCheck => ReplyTime: ${new Date()} , applyPolicyCheckResult: ${applyPolicyCheckResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -1186,6 +1194,7 @@ export async function getPaylink(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
   try {
     await verify([
@@ -1209,7 +1218,7 @@ export async function getPaylink(
       "data": requestData
     };
     const paylinkPostData: string = JSON.stringify(req);
-    sendMessage(options, paylinkPostData, "request");
+    sendMessage(options, paylinkPostData, "request", unity);
     logInfo(options, `sn: ${sn}, getPayLink => paylinkPostData: ${paylinkPostData}`);
     const paylinkOptions = {
       "hostname": "api.ztwltech.com",
@@ -1229,7 +1238,7 @@ export async function getPaylink(
       });
       res.on("end", () => {
         const repData = JSON.parse(paylinkResult);
-        sendMessage(options, paylinkResult, "response");
+        sendMessage(options, paylinkResult, "response", unity);
         logInfo(options, `sn: ${sn}, getPayLink => ReplyTime: ${new Date()}, paylinkResult: ${paylinkResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -1282,6 +1291,7 @@ export async function getUnd(
   options?: Option // 可选参数
 ): Promise<any> {
   const sn = options.sn;
+  const unity: string = crypto.randomBytes(64).toString("base64");
   logInfo(options, `sn: ${sn}, getUnd => RequestTime: ${new Date()}, requestData: { bizID: ${bizID}, verificationCode: ${verificationCode} }`);
   try {
     await verify([
@@ -1307,7 +1317,7 @@ export async function getUnd(
       "data": requestData
     };
     const getUndPostData: string = JSON.stringify(req);
-    sendMessage(options, getUndPostData, "request");
+    sendMessage(options, getUndPostData, "request", unity);
     logInfo(options, `sn: ${sn}, getUnd => getUndPostData: ${getUndPostData}`);
     const getUndOptions = {
       "hostname": "api.ztwltech.com",
@@ -1327,7 +1337,7 @@ export async function getUnd(
       });
       res.on("end", () => {
         const repData = JSON.parse(getUndResult);
-        sendMessage(options, getUndResult, "response");
+        sendMessage(options, getUndResult, "response", unity);
         logInfo(options, `sn: ${sn}, getUnd =>  ReplyTime: ${new Date()}, getUndResult: ${getUndResult}`);
         if (repData["state"] === "1") {
           if (repData["data"]) {
@@ -1390,19 +1400,23 @@ function logError(options: Option, msg: string): void {
 }
 
 // 请求响应记录分析
-function sendMessage(options: Option, msg: string, type: string): void {
+function sendMessage(options: Option, msg: string, type: string, unity: string): void {
   if (options && options.disque && options.queue) {
     const sn: string = options.sn;
     const disque: Disq = options.disque;
     const queue: string = options.queue;
     const job = {
       "sn": sn,
+      "unity": unity,
       "type": type,
       "body": JSON.parse(msg),
       "src": "智通",
       "timestamp": new Date()
     };
     const job_buff: Buffer = msgpack.encode(job);
-    disque.addjob(queue, job_buff);
+    disque.addjob(queue, job_buff, () => {},
+                  (e: Error) => {
+      logError(options, e.message);
+    });
   }
 }
