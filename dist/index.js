@@ -13,27 +13,27 @@ async function getCity(provinceCode, // 省国标码
     logInfo(options, `sn: ${sn}, getCity => RequestTime: ${new Date()}, requestData: { provinceCode: ${provinceCode} }`);
     try {
         await hive_verify_1.verify([
-            hive_verify_1.stringVerifier("provinceCode", provinceCode)
+            hive_verify_1.stringVerifier("provinceCode", provinceCode),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
         const getCityTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
         const requestData = {
             "applicationID": "FENGCHAOHUZHU_SERVICE",
-            "provinceCode": provinceCode
+            "provinceCode": provinceCode,
         };
         const req = {
             "operType": "QCC",
             "msg": "",
             "sendTime": getCityTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getCityPostData = JSON.stringify(req);
         const disque = options.disque;
@@ -47,7 +47,7 @@ async function getCity(provinceCode, // 省国标码
             "path": "/zkyq-web/city/queryCity",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getCityPostData)
+                "Content-Length": Buffer.byteLength(getCityPostData),
             }
         };
         const getCityReq = http.request(getCityOptions, function (res) {
@@ -68,41 +68,41 @@ async function getCity(provinceCode, // 省国标码
                             const city = {
                                 cityCode: ct["cityCode"],
                                 cityName: ct["cityName"],
-                                cityPlate: ct["cityPlate"]
+                                cityPlate: ct["cityPlate"],
                             };
                             replyData.push(city);
                         }
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getCityResult
+                            message: getCityResult,
                         });
                     }
                 }
                 else {
                     reject({
                         code: 400,
-                        message: getCityResult
+                        message: getCityResult,
                     });
                 }
             });
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getCity: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -119,27 +119,27 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
     logInfo(options, `sn: ${sn}, getVehicleByLicense => RequestTime: ${new Date()}, requestData: { licenseNo: ${licenseNo} }`);
     try {
         await hive_verify_1.verify([
-            hive_verify_1.stringVerifier("licenseNo", licenseNo)
+            hive_verify_1.stringVerifier("licenseNo", licenseNo),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
         const getVehicleByLicenseTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
         const requestData = {
             "applicationID": "FENGCHAOHUZHU_SERVICE",
-            "licenseNo": licenseNo
+            "licenseNo": licenseNo,
         };
         const req = {
             "operType": "BDB",
             "msg": "",
             "sendTime": getVehicleByLicenseTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getVehicleByLicensePostData = JSON.stringify(req);
         sendMessage(options, getVehicleByLicensePostData, "request", unity, licenseNo);
@@ -151,7 +151,7 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
             "path": "/zkyq-web/pottingApi/information",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getVehicleByLicensePostData)
+                "Content-Length": Buffer.byteLength(getVehicleByLicensePostData),
             }
         };
         const getVehicleByLicenseReq = http.request(getVehicleByLicenseOptions, function (res) {
@@ -171,39 +171,39 @@ async function getVehicleByLicense(licenseNo, // 车牌号码
                             engineNo: repData["data"]["engineNo"],
                             licenseNo: repData["data"]["licenseNo"],
                             frameNo: repData["data"]["frameNo"],
-                            registerDate: repData["data"]["firstRegisterDate"]
+                            registerDate: repData["data"]["firstRegisterDate"],
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getVehicleByLicenseResult
+                            message: getVehicleByLicenseResult,
                         });
                     }
                 }
                 else {
                     reject({
                         code: 400,
-                        message: getVehicleByLicenseResult
+                        message: getVehicleByLicenseResult,
                     });
                 }
             });
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getVehicleByLicense: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -220,27 +220,27 @@ async function getVehicleByFrameNo(frameNo, // 车架号
     logInfo(options, `sn: ${sn}, getVehicleByFrameNo => RequestTime: ${new Date()}, requestData: { frameNo: ${frameNo} }`);
     try {
         await hive_verify_1.verify([
-            hive_verify_1.stringVerifier("frameNo", frameNo)
+            hive_verify_1.stringVerifier("frameNo", frameNo),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
         const getVehicleByFrameNoTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
         const requestData = {
             "applicationID": "FENGCHAOHUZHU_SERVICE",
-            "frameNo": frameNo
+            "frameNo": frameNo,
         };
         const req = {
             "operType": "BDB_VIN",
             "msg": "",
             "sendTime": getVehicleByFrameNoTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getVehicleByFrameNoPostData = JSON.stringify(req);
         sendMessage(options, getVehicleByFrameNoPostData, "request", unity, frameNo);
@@ -252,7 +252,7 @@ async function getVehicleByFrameNo(frameNo, // 车架号
             "path": "/zkyq-web/pottingApi/queryCarinfoByVin",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getVehicleByFrameNoPostData)
+                "Content-Length": Buffer.byteLength(getVehicleByFrameNoPostData),
             }
         };
         const getVehicleByFrameNoReq = http.request(getVehicleByFrameNoOptions, function (res) {
@@ -272,18 +272,18 @@ async function getVehicleByFrameNo(frameNo, // 车架号
                             engineNo: repData["data"]["engineNo"],
                             licenseNo: repData["data"]["licenseNo"],
                             frameNo: repData["data"]["frameNo"],
-                            registerDate: repData["data"]["firstRegisterDate"]
+                            registerDate: repData["data"]["firstRegisterDate"],
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getVehicleByFrameNoResult
+                            message: getVehicleByFrameNoResult,
                         });
                     }
                 }
@@ -294,14 +294,14 @@ async function getVehicleByFrameNo(frameNo, // 车架号
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getVehicleByFrameNo: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -337,14 +337,14 @@ async function getCarModel(frameNo, // 车架号
             "applicationID": "FENGCHAOHUZHU_SERVICE",
             "frameNo": frameNo,
             "licenseNo": licenseNo,
-            "responseNo": responseNo
+            "responseNo": responseNo,
         };
         const req = {
             "operType": "JYK",
             "msg": "",
             "sendTime": getCarModelTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getCarModelPostData = JSON.stringify(req);
         sendMessage(options, getCarModelPostData, "request", unity, licenseNo);
@@ -356,7 +356,7 @@ async function getCarModel(frameNo, // 车架号
             "path": "/zkyq-web/pottingApi/information",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getCarModelPostData)
+                "Content-Length": Buffer.byteLength(getCarModelPostData),
             }
         };
         const getCarModelReq = http.request(getCarModelOptions, function (res) {
@@ -389,20 +389,20 @@ async function getCarModel(frameNo, // 车架号
                                 importFlag: data["importFlag"],
                                 purchasePrice: data["purchasePrice"],
                                 seatCount: data["seat"],
-                                standardName: data["standardName"]
+                                standardName: data["standardName"],
                             };
                             replyData.push(vehicle);
                         }
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getCarModelResult
+                            message: getCarModelResult,
                         });
                     }
                 }
@@ -413,14 +413,14 @@ async function getCarModel(frameNo, // 车架号
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getCarModel: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -441,7 +441,7 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
         await hive_verify_1.verify([
             hive_verify_1.stringVerifier("brandName", brandName),
             hive_verify_1.stringVerifier("row", row),
-            hive_verify_1.stringVerifier("page", page)
+            hive_verify_1.stringVerifier("page", page),
         ]);
     }
     catch (err) {
@@ -456,14 +456,14 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
             "applicationID": "FENGCHAOHUZHU_SERVICE",
             "brandName": brandName,
             "row": row,
-            "page": page
+            "page": page,
         };
         const req = {
             "operType": "JYK_LIKE",
             "msg": "模糊匹配车型信息",
             "sendTime": getFuzzyVehicleTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getFuzzyVehiclePostData = JSON.stringify(req);
         sendMessage(options, getFuzzyVehiclePostData, "request", unity, brandName);
@@ -475,7 +475,7 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
             "path": "/zkyq-web/pottingApi/information",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getFuzzyVehiclePostData)
+                "Content-Length": Buffer.byteLength(getFuzzyVehiclePostData),
             }
         };
         const getFuzzyVehicleReq = http.request(getFuzzyVehicleOptions, function (res) {
@@ -508,20 +508,20 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
                                 importFlag: data["importFlag"],
                                 purchasePrice: data["price"],
                                 seatCount: data["seat"],
-                                standardName: data["standardName"]
+                                standardName: data["standardName"],
                             };
                             replyData.push(vehicle);
                         }
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getFuzzyVehicleResult
+                            message: getFuzzyVehicleResult,
                         });
                     }
                 }
@@ -532,14 +532,14 @@ async function getFuzzyVehicle(brandName, // 品牌型号名称
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getFuzzyVehicle: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -582,13 +582,13 @@ async function getNextPolicyDate(responseNo, // 响应码
             hive_verify_1.stringVerifier("ownerName", ownerName),
             hive_verify_1.stringVerifier("ownerMobile", ownerMobile),
             hive_verify_1.stringVerifier("ownerIdNo", ownerIdNo),
-            hive_verify_1.stringVerifier("registerDate", registerDate)
+            hive_verify_1.stringVerifier("registerDate", registerDate),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
@@ -608,14 +608,14 @@ async function getNextPolicyDate(responseNo, // 响应码
             "ownerName": ownerName,
             "ownerMobile": ownerMobile,
             "ownerIdNo": ownerIdNo,
-            "registerDate": registerDate
+            "registerDate": registerDate,
         };
         const req = {
             "operType": "RDM",
             "msg": "",
             "sendTime": getNextPolicyDateTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getNextPolicyDatePostData = JSON.stringify(req);
         sendMessage(options, getNextPolicyDatePostData, "request", unity, licenseNo);
@@ -627,7 +627,7 @@ async function getNextPolicyDate(responseNo, // 响应码
             "path": "/zkyq-web/calculate/fuzzy",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getNextPolicyDatePostData)
+                "Content-Length": Buffer.byteLength(getNextPolicyDatePostData),
             }
         };
         const getNextPolicyDateReq = http.request(getNextPolicyDateOptions, function (res) {
@@ -644,18 +644,18 @@ async function getNextPolicyDate(responseNo, // 响应码
                     if (repData["data"]) {
                         let replyData = {
                             ciLastEffectiveDate: repData["data"]["ciLastEffectiveDate"],
-                            biLastEffectiveDate: repData["data"]["biLastEffectiveDate"]
+                            biLastEffectiveDate: repData["data"]["biLastEffectiveDate"],
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getNextPolicyDateResult
+                            message: getNextPolicyDateResult,
                         });
                     }
                 }
@@ -666,14 +666,14 @@ async function getNextPolicyDate(responseNo, // 响应码
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getNextPolicyDate: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -705,13 +705,13 @@ async function getReferencePrice(cityCode, // 行驶城市代码
         await hive_verify_1.verify([
             hive_verify_1.stringVerifier("cityCode", cityCode),
             hive_verify_1.stringVerifier("responseNo", responseNo),
-            hive_verify_1.stringVerifier("insurerCode", insurerCode)
+            hive_verify_1.stringVerifier("insurerCode", insurerCode),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
@@ -723,12 +723,12 @@ async function getReferencePrice(cityCode, // 行驶城市代码
             "engineNo": engineNo,
             "isTrans": isTrans,
             "transDate": transDate,
-            "registerDate": registerDate
+            "registerDate": registerDate,
         };
         const personInfo = {
             "ownerName": ownerName,
             "ownerID": ownerID,
-            "ownerMobile": ownerMobile
+            "ownerMobile": ownerMobile,
         };
         const requestData = {
             "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -737,14 +737,14 @@ async function getReferencePrice(cityCode, // 行驶城市代码
             "carInfo": carInfo,
             "personInfo": personInfo,
             "insurerCode": insurerCode,
-            "coverageList": coverageList
+            "coverageList": coverageList,
         };
         const req = {
             "operType": "REF",
             "msg": "",
             "sendTime": getReferencePriceTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getReferencePricePostData = JSON.stringify(req);
         sendMessage(options, getReferencePricePostData, "request", unity, licenseNo);
@@ -756,7 +756,7 @@ async function getReferencePrice(cityCode, // 行驶城市代码
             "path": "/zkyq-web/calculate/entrance",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getReferencePricePostData)
+                "Content-Length": Buffer.byteLength(getReferencePricePostData),
             }
         };
         const getReferencePriceReq = http.request(getReferencePriceOptions, function (res) {
@@ -779,18 +779,18 @@ async function getReferencePrice(cityCode, // 行驶城市代码
                             integral: repData["data"][0]["integral"],
                             ciBeginDate: repData["data"][0]["ciBeginDate"],
                             ciPremium: repData["data"][0]["ciPremium"],
-                            carshipTax: repData["data"][0]["carshipTax"]
+                            carshipTax: repData["data"][0]["carshipTax"],
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getReferencePriceResult
+                            message: getReferencePriceResult,
                         });
                     }
                 }
@@ -801,14 +801,14 @@ async function getReferencePrice(cityCode, // 行驶城市代码
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getReferencePrice: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -849,13 +849,13 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             hive_verify_1.stringVerifier("responseNo", responseNo),
             hive_verify_1.stringVerifier("biBeginDate", biBeginDate),
             hive_verify_1.stringVerifier("ciBeginDate", ciBeginDate),
-            hive_verify_1.stringVerifier("insurerCode", insurerCode)
+            hive_verify_1.stringVerifier("insurerCode", insurerCode),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
@@ -867,7 +867,7 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             "engineNo": engineNo,
             "isTrans": isTrans,
             "transDate": transDate,
-            "registerDate": registerDate
+            "registerDate": registerDate,
         };
         const personInfo = {
             "ownerName": ownerName,
@@ -875,7 +875,7 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             "ownerMobile": ownerMobile,
             "insuredName": insuredName,
             "insuredID": insuredID,
-            "insuredMobile": insuredMobile
+            "insuredMobile": insuredMobile,
         };
         const requestData = {
             "applicationID": "FENGCHAOHUZHU_SERVICE",
@@ -888,14 +888,14 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             "personInfo": personInfo,
             "channelCode": null,
             "insurerCode": insurerCode,
-            "coverageList": coverageList
+            "coverageList": coverageList,
         };
         const req = {
             "operType": "ACCPRICE",
             "msg": "精准报价",
             "sendTime": getAccuratePriceTimeString,
             "sign": null,
-            "data": requestData
+            "data": requestData,
         };
         const getAccuratePricePostData = JSON.stringify(req);
         sendMessage(options, getAccuratePricePostData, "request", unity, licenseNo);
@@ -907,7 +907,7 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             "path": "/zkyq-web/pottingApi/CalculateApi",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getAccuratePricePostData)
+                "Content-Length": Buffer.byteLength(getAccuratePricePostData),
             }
         };
         const getAccuratePriceReq = http.request(getAccuratePriceOptions, function (res) {
@@ -939,18 +939,18 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
                             bIntegral: repData["data"][0]["bIntegral"],
                             showCiCost: repData["data"][0]["showCiCost"],
                             showBiCost: repData["data"][0]["showBiCost"],
-                            showSumIntegral: repData["data"][0]["showSumIntegral"]
+                            showSumIntegral: repData["data"][0]["showSumIntegral"],
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getAccuratePriceResult
+                            message: getAccuratePriceResult,
                         });
                     }
                 }
@@ -961,14 +961,14 @@ async function getAccuratePrice(thpBizID, // 请求方业务号
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getAccuratePrice: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -1008,13 +1008,13 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
             hive_verify_1.stringVerifier("addresseeDetails", addresseeDetails),
             hive_verify_1.stringVerifier("addresseeCounty", addresseeCounty),
             hive_verify_1.stringVerifier("addresseeCity", addresseeCity),
-            hive_verify_1.stringVerifier("policyEmail", policyEmail)
+            hive_verify_1.stringVerifier("policyEmail", policyEmail),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
@@ -1033,14 +1033,14 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
             "addresseeProvince": addresseeProvince,
             "addresseeMobile": addresseeMobile,
             "policyEmail": policyEmail,
-            "applicantUrl": applicantUrl
+            "applicantUrl": applicantUrl,
         };
         const req = {
             "operType": "PMT",
             "msg": "核保接口",
             "sign": null,
             "sendTime": applyPolicyCheckTimeString,
-            "data": requestData
+            "data": requestData,
         };
         const applyPolicyCheckPostData = JSON.stringify(req);
         sendMessage(options, applyPolicyCheckPostData, "request", unity, bizID);
@@ -1052,7 +1052,7 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
             "path": "/zkyq-web/apiPay/reqRes",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(applyPolicyCheckPostData)
+                "Content-Length": Buffer.byteLength(applyPolicyCheckPostData),
             }
         };
         const applyPolicyCheckReq = http.request(applyPolicyCheckOptions, function (res) {
@@ -1071,18 +1071,18 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
                             biProposalNo: repData["data"]["biProposalNo"],
                             ciProposalNo: repData["data"]["ciProposalNo"],
                             payLink: repData["data"]["payLink"],
-                            synchFlag: repData["data"]["synchFlag"]
+                            synchFlag: repData["data"]["synchFlag"],
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: applyPolicyCheckResult
+                            message: applyPolicyCheckResult,
                         });
                     }
                 }
@@ -1093,14 +1093,14 @@ async function applyPolicyCheck(insurerCode, // 保险人代码
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on applyPolicyCheck: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -1117,25 +1117,25 @@ async function getPaylink(bizID, // 业务号
     logInfo(options, `sn: ${sn}, getPayLink => RequestTime: ${new Date()}, requestData: { bizID: ${bizID} }`);
     try {
         await hive_verify_1.verify([
-            hive_verify_1.stringVerifier("bizID", bizID)
+            hive_verify_1.stringVerifier("bizID", bizID),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
         const paylinkSendTimeString = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
         const requestData = {
             "applicationID": "FENGCHAOHUZHU_SERVICE",
-            "bizID": bizID
+            "bizID": bizID,
         };
         const req = {
             "msg": "获取支付链接",
             "sendTime": paylinkSendTimeString,
-            "data": requestData
+            "data": requestData,
         };
         const paylinkPostData = JSON.stringify(req);
         sendMessage(options, paylinkPostData, "request", unity, bizID);
@@ -1147,7 +1147,7 @@ async function getPaylink(bizID, // 业务号
             "path": "/zkyq-web/pottingApi/reGetPayLink",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(paylinkPostData)
+                "Content-Length": Buffer.byteLength(paylinkPostData),
             }
         };
         const paylinkReq = http.request(paylinkOptions, function (res) {
@@ -1166,39 +1166,39 @@ async function getPaylink(bizID, // 业务号
                             biProposalNo: repData["data"]["biProposalNo"],
                             ciProposalNo: repData["data"]["ciProposalNo"],
                             payLink: repData["data"]["payLink"],
-                            bizID: repData["data"]["bizID"]
+                            bizID: repData["data"]["bizID"],
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: paylinkResult
+                            message: paylinkResult,
                         });
                     }
                 }
                 else {
                     reject({
                         code: 400,
-                        message: paylinkResult
+                        message: paylinkResult,
                     });
                 }
             });
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getPayLink: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -1217,13 +1217,13 @@ async function getUnd(bizID, // 业务号
     try {
         await hive_verify_1.verify([
             hive_verify_1.stringVerifier("bizID", bizID),
-            hive_verify_1.stringVerifier("verificationCode", verificationCode)
+            hive_verify_1.stringVerifier("verificationCode", verificationCode),
         ]);
     }
     catch (err) {
         return {
             code: 410,
-            message: err.message
+            message: err.message,
         };
     }
     return new Promise((resolve, reject) => {
@@ -1231,12 +1231,12 @@ async function getUnd(bizID, // 业务号
         const requestData = {
             "applicationID": "FENGCHAOHUZHU_SERVICE",
             "bizID": bizID,
-            "verificationCode": verificationCode
+            "verificationCode": verificationCode,
         };
         const req = {
             "msg": "手机号验证码",
             "sendTime": getUndSendTimeString,
-            "data": requestData
+            "data": requestData,
         };
         const getUndPostData = JSON.stringify(req);
         sendMessage(options, getUndPostData, "request", unity, bizID);
@@ -1248,7 +1248,7 @@ async function getUnd(bizID, // 业务号
             "path": "/zkyq-web/pottingApi/getUndInfo",
             "headers": {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(getUndPostData)
+                "Content-Length": Buffer.byteLength(getUndPostData),
             }
         };
         const getUndReq = http.request(getUndOptions, function (res) {
@@ -1271,35 +1271,35 @@ async function getUnd(bizID, // 业务号
                         };
                         resolve({
                             code: 200,
-                            data: replyData
+                            data: replyData,
                         });
                     }
                     else {
                         // 从响应报文看,此情况从未出现
                         reject({
                             code: 404,
-                            message: getUndResult
+                            message: getUndResult,
                         });
                     }
                 }
                 else {
                     reject({
                         code: 400,
-                        message: getUndResult
+                        message: getUndResult,
                     });
                 }
             });
             res.setTimeout(6000, () => {
                 reject({
                     code: 408,
-                    message: "智通接口超时"
+                    message: "智通接口超时",
                 });
             });
             res.on("error", (err) => {
                 logError(options, `sn: ${sn}, Error on getUnd: ${err}`);
                 reject({
                     code: 500,
-                    message: err
+                    message: err,
                 });
             });
         });
@@ -1336,7 +1336,7 @@ function sendMessage(options, msg, type, unity, args) {
                 "body": JSON.parse(msg),
                 "args": args,
                 "src": "智通",
-                "timestamp": new Date()
+                "timestamp": new Date(),
             };
         }
         else {
@@ -1348,11 +1348,12 @@ function sendMessage(options, msg, type, unity, args) {
                 "args": args,
                 "src": "智通",
                 "timestamp": new Date(),
-                "state": decorateMessage(msg)
+                "state": decorateMessage(msg),
             };
         }
         const job_buff = msgpack.encode(job);
-        disque.addjob(queue, job_buff, () => { }, (e) => {
+        disque.addjob(queue, job_buff, () => {
+        }, (e) => {
             logError(options, e.message);
         });
     }
