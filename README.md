@@ -1,41 +1,52 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-# ztyq-library
 
 - [ChangeLog](#changelog)
+-
+    1. 增加 Option 的字段 sn, disque, queue
+    2. 修改 getAccuratePrice 和 getReferrencePrice 的入参
+
 - [Data Structure](#data-structure)
-  - [Agent](#agent)
-  - [SubAgent](#subagent)
+  - [Vehicle](#vehicle)
+  - [CarModel](#carmodel)
+  - [NextPolicyDate](#nextpolicydate)
+  - [Car](#car)
+  - [Person](#person)
+  - [Coverage](#coverage)
+  - [SPAgreement](#spagreement)
+  - [QuotePrice](#quoteprice)
+  - [Paylink](#paylink)
+  - [Option](#option)
 - [API](#api)
-  - [getVehicleByLicense](#getVehicleByLicense)
+  - [getVehicleByLicense](#getvehiclebylicense)
       - [request](#request)
       - [response](#response)
-  - [getVehicleByFrameNo](#getVehicleByFrameNo)
+  - [getVehicleByFrameNo](#getvehiclebyframeno)
       - [request](#request-1)
       - [response](#response-1)
-  - [getCarModel](#getCarModel)
+  - [getCarModel](#getcarmodel)
       - [request](#request-2)
       - [response](#response-2)
-  - [getFuzzyVehicle](#getFuzzyVehicle)
+  - [getFuzzyVehicle](#getfuzzyvehicle)
       - [request](#request-3)
       - [response](#response-3)
-  - [getNextPolicyDate](#getNextPolicyDate)
+  - [getNextPolicyDate](#getnextpolicydate)
       - [request](#request-4)
       - [response](#response-4)
-  - [getReferrencePrice](#getReferrencePrice)
+  - [getReferrencePrice](#getreferrenceprice)
       - [request](#request-5)
       - [response](#response-5)
-  - [getAccuratePrice](#getAccuratePrice)
+  - [getAccuratePrice](#getaccurateprice)
       - [request](#request-6)
       - [response](#response-6)
-  - [applyPolicyCheck](#applyPolicyCheck)
+  - [applyPolicyCheck](#applypolicycheck)
       - [request](#request-7)
       - [response](#response-7)
-  - [getPaylink](#getPaylink)
+  - [getPaylink](#getpaylink)
       - [request](#request-8)
       - [response](#response-8)
-  - [getUnd](#getUnd)
+  - [getUnd](#getund)
       - [request](#request-9)
       - [response](#response-9)
 
@@ -161,7 +172,10 @@ ztyq-library 是对智通接口的二次封装, 供相应的后端模块调用�
 
 | name              | type    | note                       |
 | ----              | ----    | ----                       |
-| log                | Logger  | 日志输出                 |
+| log?                | Logger  | 日志输出                 |
+| sn?                | string  | sn 码                 |
+| disque?                | Disq | Disq 对象                 |
+| queue?                | string  | disque 存储位置                 |
 
 # API
 
@@ -318,8 +332,16 @@ ztyq-library 是对智通接口的二次封装, 供相应的后端模块调用�
 | ---- | ---- | ----      |
 | cityCode  | string | 行驶城市代码 |
 | responseNo  | string | 响应码 |
-| car  | Car | 车辆信息 |
-| person  | Person | 人员信息 |
+| licenseNo  | string | 车牌号码 |
+| frameNo  | string | 车架号（vin) |
+| modelCode  | string | 品牌型号代码 |
+| engineNo  | string | 发动机号 |
+| isTrans  | string | 是否过户车 |
+| transDate  | string | 过户日期 |
+| registerDate  | string | 初登日期 |
+| ownerName  | string | 车主姓名 |
+| ownerID  | string | 车主身份证号 |
+| ownerMobile  | string | 车主手机号 |
 | insurerCode  | string | 保险人代码 |
 | coverageList  | Coverage[] | 险别列表 |
 | options  | Option | 可选参数 |
@@ -353,8 +375,19 @@ ztyq-library 是对智通接口的二次封装, 供相应的后端模块调用�
 | responseNo  | string | 响应码 |
 | biBeginDate  | string | 商业险起期 |
 | ciBeginDate  | string | 交强险去起期 |
-| car  | Car | 车辆信息 |
-| person  | Person | 人员信息 |
+| licenseNo  | string | 车牌号码 |
+| frameNo  | string | 车架号（vin) |
+| modelCode  | string | 品牌型号代码 |
+| engineNo  | string | 发动机号 |
+| isTrans  | string | 是否过户车 |
+| transDate  | string | 过户日期 |
+| registerDate  | string | 初登日期 |
+| ownerName  | string | 车主姓名 |
+| ownerID  | string | 车主身份证号 |
+| ownerMobile  | string | 车主手机号 |
+| insuredName  | string | 被保人姓名 |
+| insuredID  | string | 被保人身份证号 |
+| insuredMobile  | string | 被保人手机号 |
 | insurerCode  | string | 保险人代码 |
 | coverageList  | Coverage[] | 险别列表 |
 | options  | Option | 可选参数 |
