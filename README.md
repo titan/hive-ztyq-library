@@ -52,8 +52,9 @@ ztyq-library 是对智通接口的二次封装, 供相应的后端模块调用�
 
 # ChangeLog
 
-    1. 增加 Option 的字段 sn, disque, queue
-    2. 修改 getAccuratePrice 和 getReferrencePrice 的入参
+1. 2017-04-07
+  * 增加 Option 的字段 sn, disque, queue
+  * 修改 getAccuratePrice 和 getReferrencePrice 的入参
 
 # Data Structure
 
