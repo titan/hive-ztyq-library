@@ -3,10 +3,6 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [ChangeLog](#changelog)
--
-    1. 增加 Option 的字段 sn, disque, queue
-    2. 修改 getAccuratePrice 和 getReferrencePrice 的入参
-
 - [Data Structure](#data-structure)
   - [Vehicle](#vehicle)
   - [CarModel](#carmodel)
@@ -55,6 +51,9 @@
 ztyq-library 是对智通接口的二次封装, 供相应的后端模块调用。所有的返回数据以Promise进行封装。后端调用时使用async-await可以方便地处理Promise，try-catch 的err 返回的是智通接口访问不成功的捕获，根据业务情况在catch中，根据code处理err。
 
 # ChangeLog
+
+    1. 增加 Option 的字段 sn, disque, queue
+    2. 修改 getAccuratePrice 和 getReferrencePrice 的入参
 
 # Data Structure
 
